@@ -11,13 +11,15 @@
 <table class="table">
     <tr>
         <th>Subject</th>
-        <th>Grade</th>
+        <th>Grades</th>
+        <th>Teachers</th>
     </tr>
-    @foreach (var grade in Model.Grades)
+    @foreach (var cs in Model.CoursesSubjects)
     {
         <tr>
-            <td>@grade.Subject.Name</td>
-            <td>@grade.GradeValue</td>
+            <td>@cs.Subject.Name</td>
+            <td>@string.Join(", ", cs.Subject.Grades.Where(g => g.StudentId == Model.Student.Id).Select(g=>g.GradeValue))</td>
+            <td>@string.Join(", ", cs.Teachers.Select(t=>t.LastName))</td>
         </tr>
     }
 </table>

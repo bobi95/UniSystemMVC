@@ -25,8 +25,10 @@ namespace UniversitySystemMVC.Controllers
             if (AuthenticationManager.IsStudent)
             {
                 StudentsIndexVM model = new StudentsIndexVM();
+                model.Student = unitOfWork.StudentRepository.GetById(AuthenticationManager.LoggedUser.Id);
                 model.Grades = unitOfWork.GradeRepository.GetByStudentId(AuthenticationManager.LoggedUser.Id).ToList();
                 model.Course = unitOfWork.CourseRepository.GetById(((Student)AuthenticationManager.LoggedUser).CourseId.Value);
+                model.CoursesSubjects = unitOfWork.CoursesSubjectsRepository.GetByCourseId(model.Course.Id, true);
 
                 return View(model);
             }
