@@ -11,6 +11,7 @@ using UniversitySystemMVC.Filters;
 using UniversitySystemMVC.Hasher;
 using UniversitySystemMVC.ViewModels.TeachersVM;
 using UniversitySystemMVC.Extensions;
+using UniversitySystemMVC.Models;
 
 namespace UniversitySystemMVC.Controllers
 {
@@ -19,14 +20,10 @@ namespace UniversitySystemMVC.Controllers
         UnitOfWork unitOfWork = new UnitOfWork();
 
         // GET: Teacher
-        public ActionResult Index(int? id)
+        [AuthorizeUser(UserType = UserTypeEnum.Teacher, CheckType = true)]
+        public ActionResult Index()
         {
-            if (!id.HasValue)
-            {
-                return RedirectToAction("Index", "Home");
-            }
-
-            Teacher teacher = unitOfWork.TeacherRepository.GetById(id.Value);
+            Teacher teacher = unitOfWork.TeacherRepository.GetById(AuthenticationManager.LoggedUser.Id);
 
             if (teacher == null)
             {
