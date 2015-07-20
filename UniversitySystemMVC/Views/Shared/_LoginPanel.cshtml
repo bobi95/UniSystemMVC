@@ -4,7 +4,18 @@
         <li><a>Hello, @UniversitySystemMVC.Models.AuthenticationManager.LoggedUser.Username</a></li>
         if (UniversitySystemMVC.Models.AuthenticationManager.IsAdmin)
         {
-            <li>@Html.ActionLink("Admin Panel", "Index", "Admin")</li>
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Admin Panel <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    <li>@Html.ActionLink("Manage Students", "ManageStudents", "Admin")</li>
+                    <li>@Html.ActionLink("Manage Teachers", "ManageTeachers", "Admin")</li>
+                    <li>@Html.ActionLink("Manage Admins", "ManageAdmins", "Admin")</li>
+                    <li role="separator" class="divider"></li>
+                    <li>@Html.ActionLink("Manage Courses", "ManageCourses", "Admin")</li>
+                    <li>@Html.ActionLink("Manage Subjects", "ManageSubjects", "Admin")</li>
+                    <li>@Html.ActionLink("Manage Titles", "ManageTitles", "Admin")</li>
+                </ul>
+            </li>
         }
         <li>@Html.ActionLink("Logout", "Logout", "Account")</li>
     }
