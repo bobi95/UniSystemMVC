@@ -1,24 +1,25 @@
 ﻿var UniSystem = UniSystem || {};
 
-UniSystem.Ajax = UniSystem.Ajax || {};
+UniSystem.Ajax = (function () {
 
-(function () {
-
-    var _private = {
-        async: true
-    };
+    var _async = true;
 
     function _getData(data) {
+
         // avoid cache of response
-        var dataString = "noCacheIndex=" + Math.random();
-        var stringData = [];
+        var dataString = "noCacheIndex=" + Math.random(),
+            stringData = [];
+
         for (var index in data) {
             stringData.push(index + "=" + data[index]);
         }
+
         stringData = stringData.join('&');
+
         if (stringData) {
-        	dataString += '&';
+            dataString += '&';
         }
+
         return dataString + stringData;
     }
 
@@ -27,27 +28,27 @@ UniSystem.Ajax = UniSystem.Ajax || {};
         var xmlhttp;
 
         if (window.XMLHttpRequest) {
+
             xmlhttp = new XMLHttpRequest();
+
         } else {
+
             xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+
         }
 
-        if (method === "GET")  {
+        if (method === "GET") {
             url = url + "?" + _getData(data);
         }
 
-        xmlhttp.open(method, url, _private.async);
+        xmlhttp.open(method, url, _async);
 
-        if (_private.async === true) {
-
+        if (_async === true && callback) {
             xmlhttp.onreadystatechange = function () {
-
                 if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
-                    callback(JSON.parse(xmlhttp.responseText));
+                    callback(xmlhttp.responseText);
                 }
-
             }
-
         }
 
         if (method === "POST") {
@@ -61,29 +62,50 @@ UniSystem.Ajax = UniSystem.Ajax || {};
 
         }
 
-        if (_private.async === false) {
-        	callback(JSON.parse(xmlhttp.responseText));
+        if (_async === false && callback) {
+            callback(xmlhttp.responseText);
         }
     }
 
-    UniSystem.Ajax.isAsync = function () {
-        return _private.async;
-    }
+    var publicAPI = {
 
-    UniSystem.Ajax.setAsync = function (value) {
-        _private.async = value === true ? true : false;
-    }
+        isAsync: function () {
+            /// <summary>
+            /// Is the Ajax script using async callbacks.
+            /// </summary>
+            /// <returns type="Boolean">True if async is enabled.</returns>
+            return _async;
+        },
 
-    UniSystem.Ajax.get = function (url, data, callback) {
+        setAsync: function (value) {
+            /// <summary>
+            /// Set true to use async callbacks.
+            /// </summary>
+            /// <param name="value" type="Boolean">True for async callbacks.</param>
+            _async = value === true ? true : false;
+        },
 
-        _sendAjax("GET", url, data, callback);
+        get: function (url, data, callback) {
+            /// <summary>
+            /// Send data using a get request.
+            /// </summary>
+            /// <param name="url" type="String">Url to send data to</param>
+            /// <param name="data" type="Object|Array">Data to be sent. Must be key-value.</param>
+            /// <param name="callback" type="Function">Function to be called when response is gotten.</param>
+            _sendAjax('GET', url, data, callback);
+        },
 
+        post: function (url, data, callback) {
+            /// <summary>
+            /// Send data using a post request.
+            /// </summary>
+            /// <param name="url" type="String">Url to send data to</param>
+            /// <param name="data" type="Object|Array">Data to be sent. Must be key-value.</param>
+            /// <param name="callback" type="Function">Function to be called when response is gotten.</param>
+            _sendAjax('POST', url, data, callback);
+        }
     };
 
-    UniSystem.Ajax.post = function (url, data, callback) {
-
-        _sendAjax("POST", url, data, callback);
-
-    }
+    return publicAPI;
 
 })();
