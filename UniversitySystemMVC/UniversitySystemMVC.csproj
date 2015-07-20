@@ -185,10 +185,12 @@
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AuthenticationManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service\AppConfig.cs" />
     <Compile Include="Service\AuthenticationService.cs" />
     <Compile Include="ViewModels\AdminsVM\AdminsConfirmAccount.cs" />
     <Compile Include="ViewModels\AdminsVM\AdminsCreateAccountVM.cs" />
     <Compile Include="ViewModels\AdminsVM\AdminsDeleteAdminVM.cs" />
+    <Compile Include="ViewModels\PagingVM\PagingVM.cs" />
     <Compile Include="ViewModels\StudentsVM\StudentDetailsVM.cs" />
     <Compile Include="ViewModels\StudentsVM\StudentsDeleteAccountVM.cs" />
     <Compile Include="ViewModels\TeachersVM\TeachersDeleteAccountVM.cs" />
@@ -277,6 +279,7 @@
     <Content Include="Views\Shared\_FlashMessage.cshtml" />
     <Content Include="Views\Student\Details.cshtml" />
     <Content Include="Scripts\UniSystem.Ajax.js" />
+    <Content Include="Views\Shared\_PagingPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

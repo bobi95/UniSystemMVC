@@ -1,0 +1,68 @@
+﻿@model UniversitySystemMVC.ViewModels.PagingVM.PagingVM
+
+<ul class="pagination">
+
+    <li>
+        @{
+            Model.LinkParameters[Model.Prefix + ".Page"] = Model.Page == 1 ? 1 : Model.Page - 1;
+            @Html.ActionLink("«", Model.Action, Model.Controller, new RouteValueDictionary(Model.LinkParameters), null)
+        }
+    </li>
+    @{
+        int i = Model.Page - Model.PagesShown / 2; ;
+        int max = i + Model.PagesShown - 1;
+        if (Model.MaxPages < Model.PagesShown)
+        {
+            i = 1;
+            max = Model.MaxPages;
+
+        }
+        else if (Model.Page <= Model.PagesShown / 2)
+        {
+            i = 1;
+            max = Model.PagesShown;
+        }
+        else if (Model.Page >= Model.MaxPages - (Model.PagesShown / 2))
+        {
+            i = Model.MaxPages - Model.PagesShown + 1;
+            max = Model.MaxPages;
+        }
+        else
+        {
+            i = Model.Page - Model.PagesShown / 2;
+            max = i + Model.PagesShown - 1;
+        }
+
+        for (; i <= max; i++)
+        {
+            Model.LinkParameters[Model.Prefix + ".Page"] = i;
+            <li @if (i == Model.Page) { @Html.Raw("class=\"active\"")      }>
+                @Html.ActionLink(i.ToString(), Model.Action, Model.Controller, new RouteValueDictionary(Model.LinkParameters), null)
+            </li>
+        }
+    }
+    <li>
+        @{
+            Model.LinkParameters[Model.Prefix + ".Page"] = Model.Page == Model.MaxPages ? Model.MaxPages : Model.Page + 1;
+            @Html.ActionLink("»", Model.Action, Model.Controller, new RouteValueDictionary(Model.LinkParameters), null)
+        }
+    </li>
+</ul>
+
+<div>
+    @using (Html.BeginForm(Model.Action, Model.Controller, FormMethod.Get))
+    {
+        foreach (var item in Model.LinkParameters)
+        {
+            if (item.Key == Model.Prefix + ".Page" || item.Key == Model.Prefix + ".PerPage")
+            {
+                continue;
+            }
+
+            <input type="hidden" name="@item.Key" value="@item.Value" />
+        }
+        <span>Per Page: <input type="number" value="@Model.PerPage" name="@Html.Raw(Model.Prefix + ".PerPage")" /></span>
+        <input type="submit" value="Show" />
+    }
+
+</div>
