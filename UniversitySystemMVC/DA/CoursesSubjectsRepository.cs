@@ -59,6 +59,31 @@ namespace UniversitySystemMVC.DA
             return query.Include(cs => cs.Subject).Include(cs => cs.Course).ToList();
         }
 
+        public IEnumerable<CoursesSubjects> GetAllByTeacherId(int teacherId)
+        {
+            return dbSet.Where(cs => cs.Teachers.Any(t => t.Id == teacherId))
+                .Include(cs => cs.Teachers)
+                .Include(cs => cs.Subject)
+                .Include(cs => cs.Course)
+                .ToList();
+
+            //List<CoursesSubjects> result = new List<CoursesSubjects>();
+            //foreach (var item in query)
+            //{
+            //    foreach (var t in item.Teachers)
+            //    {
+            //        if (t.Id == teacherId)
+            //        {
+            //            result.Add(item);
+            //        }
+            //    }
+            //}
+
+            //return css..ToList();
+
+            //return result;
+        }
+
         public void UpdateTable(Course course, IEnumerable<Subject> subjects)
         {
             var all = dbSet.Where(x => x.CourseId == course.Id).Include(x => x.Teachers).ToList();

@@ -1,7 +1,64 @@
-﻿
+﻿@model UniversitySystemMVC.ViewModels.TeachersVM.TeachersIndexVM
+
 @{
     ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Welcome Teacher. This is your account</h2>
+<h2>Hello @Model.FullName</h2>
 
+@foreach (var item in Model.CoursesSubjects)
+{
+    <h3>@item.Subject.Name - @item.Course.Name</h3>
+    <table class="table">
+        <tr>
+            <th>Faculty Number</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Course</th>
+            <th>Grades</th>
+            <th>Add grade</th>
+        </tr>
+
+        @foreach (var student in item.Course.Students)
+        {
+            <tr>
+                <td>@student.FacultyNumber</td>
+                <td>@student.FirstName @student.LastName</td>
+                <td>@student.Email</td>
+                <td>@student.Course.Name</td>
+                <td>@String.Join(", ", student.Grades.Where(g => g.SubjectId == item.Subject.Id).Select(g => g.GradeValue))</td>
+                <td class="grade-crud" grade-student="@student.Id" grade-subject="@item.Subject.Id">
+                    <button class="btn add-grade-btn">
+                        <img src="~/Content/images/plus.png" alt="Add Grade" />
+                    </button>
+                </td>
+            </tr>
+            <tr>
+                <td>@student.FacultyNumber</td>
+                <td>@student.FirstName @student.LastName</td>
+                <td>@student.Email</td>
+                <td>@student.Course.Name</td>
+                <td>@String.Join(", ", student.Grades.Where(g => g.SubjectId == item.Subject.Id).Select(g => g.GradeValue))</td>
+                <td class="grade-crud" grade-student="@student.Id" grade-subject="@item.Subject.Id">
+                    <input type="text" class="add-grade-input" title="Enter Grade and Press Enter" />
+                    <button class="btn remove-grade-btn">
+                        <img src="~/Content/images/x.png" alt="Remove Grade">
+                    </button>
+                </td>
+            </tr>
+        }
+
+    </table>
+}
+
+@Html.BeginForm("AddGrade", "Grade", FormMethod.Post)
+{
+<input type="submit" value="try" />
+}
+
+<script>
+  $(function() {
+    $( document ).tooltip();
+  });
+</script>
