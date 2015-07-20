@@ -1,0 +1,31 @@
+﻿@model UniversitySystemMVC.ViewModels.AdminsVM.AdminsManageTitlesVM
+
+@{
+    ViewBag.Title = "ManageTitles";
+}
+
+<h2>Manage Titles</h2>
+
+<p>
+    @Html.ActionLink("Create New Title", "CreateTitle", "Title")
+</p>
+<table class="table">
+    <tr>
+        <th>Title</th>
+        <th>Teachers</th>
+        <th>Actions</th>
+    </tr>
+
+@foreach (var title in Model.Titles) {
+    <tr>
+        <td>@title.Name</td>
+        <td>@String.Join(", ", title.Teachers.Select(t => t.LastName))</td>
+        <td>
+            @Html.ActionLink("Edit", "EditTitle", "Title", new { id = title.Id }, null) |
+            @Html.ActionLink("Details", "Details", "Title", new { id = title.Id }, null) |
+            @Html.ActionLink("Delete", "DeleteTitle", "Title", new { id = title.Id }, null)
+        </td>
+    </tr>
+}
+
+</table>

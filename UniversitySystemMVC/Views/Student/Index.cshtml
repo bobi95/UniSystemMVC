@@ -1,0 +1,23 @@
+﻿@model UniversitySystemMVC.ViewModels.StudentsVM.StudentsIndexVM
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Welcome Student. This is your account</h2>
+
+<h3>Course: @Model.Course.Name</h3>
+
+<table class="table">
+    <tr>
+        <th>Subject</th>
+        <th>Grade</th>
+    </tr>
+    @foreach (var grade in Model.Grades)
+    {
+        <tr>
+            <td>@grade.Subject.Name</td>
+            <td>@grade.GradeValue</td>
+        </tr>
+    }
+</table>

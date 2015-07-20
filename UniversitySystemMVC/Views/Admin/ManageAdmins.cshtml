@@ -1,0 +1,35 @@
+﻿@model UniversitySystemMVC.ViewModels.AdminsVM.AdminsManageAdminsVM
+@{
+    ViewBag.Title = "ManageAdmins";
+}
+
+<h2>Manage Admins</h2>
+
+<p>
+    @Html.ActionLink("Create New Admin", "CreateAdmin")
+</p>
+
+
+<table class="table">
+    <tr>
+        <th>Name</th>
+        <th>Username</th>
+        <th>Email</th>
+        <th>Actions</th>
+    </tr>
+
+    @foreach (var a in Model.Admins)
+    {
+        if (a.IsActive)
+        {
+            <tr>
+                <td>@a.FirstName @a.LastName</td>
+                <td>@a.Username</td>
+                <td>@a.Email</td>
+                <td>
+                    @Html.ActionLink("Edit", "EditAdmin", new { id = a.Id })
+                </td>
+            </tr>
+        }
+    }
+</table>

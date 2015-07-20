@@ -1,0 +1,16 @@
+﻿<ul class="nav navbar-nav navbar-right">
+    @if (UniversitySystemMVC.Models.AuthenticationManager.LoggedUser != null)
+    {
+        <li><a>Hello, @UniversitySystemMVC.Models.AuthenticationManager.LoggedUser.Username</a></li>
+        if (UniversitySystemMVC.Models.AuthenticationManager.IsAdmin)
+        {
+            <li>@Html.ActionLink("Admin Panel", "Index", "Admin")</li>
+        }
+        <li>@Html.ActionLink("Logout", "Logout", "Account")</li>
+    }
+    else
+    {
+
+        <li>@Html.ActionLink("Login", "Login", "Account")</li>
+    }
+</ul>

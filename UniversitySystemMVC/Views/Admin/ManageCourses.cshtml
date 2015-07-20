@@ -1,0 +1,38 @@
+﻿@model UniversitySystemMVC.ViewModels.AdminsVM.AdminsManageCoursesVM
+
+@{
+    ViewBag.Title = "ManageCourses";
+}
+
+<h2>Manage Courses</h2>
+
+<p>
+    @Html.ActionLink("Create New Course", "CreateCourse", "Course")
+</p>
+
+
+<table class="table">
+    <tr>
+        <th>Course Code</th>
+        <th>Course Name</th>
+        <th>Students</th>
+        <th>Subjects</th>
+        <th>Actions</th>
+    </tr>
+
+    @foreach (var c in Model.Courses)
+    {
+        <tr>
+            <td>@c.Code</td>
+            <td>@c.Name</td>
+            <td>@string.Join(", ", @c.Students.Select(s=>s.LastName))</td>
+            <td>@string.Join(", ", @c.CoursesSubjects.Where(s => s.CourseId == c.Id).Select(s => s.Subject.Name))</td>
+            <td>
+                @Html.ActionLink("Edit", "EditCourse", "Course", new { id = c.Id }, null) |
+                @Html.ActionLink("Details", "Details", "Course", new { id = c.Id }, null) |
+                @Html.ActionLink("Delete", "DeleteCourse", "Course", new { id = c.Id }, null)
+            </td>
+        </tr>
+        
+    }
+</table>
