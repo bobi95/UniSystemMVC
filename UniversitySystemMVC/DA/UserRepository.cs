@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Web;
 using UniversitySystemMVC.Entity;
 
@@ -15,9 +16,9 @@ namespace UniversitySystemMVC.DA
             return GetAll().Where(u => u.Username == username).FirstOrDefault();
         }
 
-        public override IEnumerable<T> GetAll()
+        public override IEnumerable<T> GetAll(Expression<Func<T, bool>> predicate = null)
         {
-            return base.GetAll().Where(u => u.IsActive);
+            return base.GetAll(predicate).Where(u => u.IsActive);
         }
     }
 }

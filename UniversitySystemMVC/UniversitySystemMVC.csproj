@@ -149,6 +149,7 @@
     <Compile Include="Entity\Title.cs" />
     <Compile Include="Entity\User.cs" />
     <Compile Include="Extensions\FlashMessageExtensions.cs" />
+    <Compile Include="Extensions\GenerateFacultyNumber.cs" />
     <Compile Include="Filters\AuthorizeUser.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
