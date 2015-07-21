@@ -19,7 +19,11 @@ namespace UniversitySystemMVC.DA
                 query = query.Include(x => x.Teachers);
             }
 
-            return query.Include(cs => cs.Subject).Include(cs => cs.Course).ToList();
+            var result = query.Include(cs => cs.Subject).Include(cs => cs.Course).ToList();
+
+            result.ForEach(cs => cs.Teachers = cs.Teachers.Where(t => t.IsActive).ToList());
+
+            return result;
         }
 
         public List<CoursesSubjects> GetBySubjectId(int id, bool pullTeachers = false)
