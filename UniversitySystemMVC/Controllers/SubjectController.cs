@@ -156,7 +156,7 @@ namespace UniversitySystemMVC.Controllers
         }
         #endregion DeleteSubject
 
-        public ActionResult Details(int? id)
+        public ActionResult Details(int? id, SubjectsDetailsVM model)
         {
             if (!id.HasValue)
             {
@@ -170,7 +170,6 @@ namespace UniversitySystemMVC.Controllers
                 return RedirectToAction("ManageSubjects", "Admin");
             }
 
-            SubjectsDetailsVM model = new SubjectsDetailsVM();
             model.Subject = subject;
             model.CoursesSubjects = unitOfWork.CoursesSubjectsRepository.GetBySubjectId(subject.Id, true);
 
@@ -199,6 +198,34 @@ namespace UniversitySystemMVC.Controllers
                     model.SubjectAverages.Add(cs.Course.Id, studentaverages.Average());
                 }
             });
+
+            #region SortingFiltering
+            model.Props = new Dictionary<string, object>();
+
+            switch (model.SortOrder)
+            {
+                case "fnum_desc":
+                    model.CoursesSubjects = model.CoursesSubjects.Select(cs => { cs.Course.Students = cs.Course.Students.OrderByDescending(c => c.FacultyNumber).ToList(); return cs; }).ToList();
+                    break;
+                case "name_asc":
+                    model.CoursesSubjects = model.CoursesSubjects.Select(cs => { cs.Course.Students = cs.Course.Students.OrderBy(c => c.FirstName).ToList(); return cs; }).ToList();
+                    break;
+                case "name_desc":
+                    model.CoursesSubjects = model.CoursesSubjects.Select(cs => { cs.Course.Students = cs.Course.Students.OrderByDescending(c => c.FirstName).ToList(); return cs; }).ToList();
+                    break;
+                //case "grade_asc":
+                //    model.CoursesSubjects = model.CoursesSubjects.Select(cs => { cs.Course.Students = cs.Course.Students.OrderBy(s => s.Grades).ToList(); return cs; }).ToList();
+                //    break;
+                //case "grade_desc":
+                //    model.CoursesSubjects = model.CoursesSubjects.Select(cs => { cs.Course.Students = cs.Course.Students.OrderByDescending(s => s.Grades).ToList(); return cs; }).ToList();
+                //    break;
+                case "fnum_asc":
+                default:
+                    model.CoursesSubjects = model.CoursesSubjects.Select(cs => { cs.Course.Students = cs.Course.Students.OrderBy(c => c.FacultyNumber).ToList(); return cs; }).ToList();
+                    break;
+            }
+
+            #endregion SortingFiltering
 
             return View(model);
         }

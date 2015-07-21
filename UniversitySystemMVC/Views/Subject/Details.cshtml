@@ -37,10 +37,25 @@
         </tr>
 
         <tr>
-            <th>Faculty number</th>
-            <th>Name</th>
+            <th>
+                @{
+                    Model.Props["sortOrder"] = Model.SortOrder == "fnum_asc" ? "fnum_desc" : "fnum_asc";
+                    @Html.ActionLink("Faculty number", "Details", "Subject", new RouteValueDictionary(Model.Props), null)
+                }
+            </th>
+            <th>
+                @{
+                    Model.Props["sortOrder"] = Model.SortOrder == "name_asc" ? "name_desc" : "name_asc";
+                    @Html.ActionLink("Name", "Details", "Subject", new RouteValueDictionary(Model.Props), null)
+                }
+            </th>
             <th>Grades</th>
-            <th>Final Grade</th>
+            <th>
+                @{
+                    Model.Props["sortOrder"] = Model.SortOrder == "grade_asc" ? "grade_desc" : "grade_asc";
+                    @Html.ActionLink("Final Grade", "Details", "Subject", new RouteValueDictionary(Model.Props), null)
+                }
+            </th>
         </tr>
         foreach (var s in item.Course.Students)
         {
@@ -53,7 +68,6 @@
                     {
                         @s.Grades.Where(g => g.SubjectId == item.Subject.Id).Average(g => g.GradeValue)
                     }
-
                 </td>
             </tr>
         }
