@@ -30,7 +30,7 @@ UniSystem.Templater = (function () {
         newTemplate: new RegExp('^{{' + expressionsRAW.newTemplate + '}}$', 'i'),
 
         closeNewTemplate: function (name) {
-            return new RegExp('^{{' + expressionsRAW.closeNewTemplate(name) + '}}$', 'i');
+            return new RegExp('{{' + expressionsRAW.closeNewTemplate(name) + '}}', 'i');
         }
     };
 
@@ -90,11 +90,13 @@ UniSystem.Templater = (function () {
 
             if (match) {
 
-                var closingTagIndex = html.search(expressions.closeNewTemplate(match[1]));
+                var closeTagExpression = expressions.closeNewTemplate(match[1]);
 
-                var newHTML = html.substring(closingTagIndex);
+                var closingTagIndex = html.search(closeTagExpression);
 
-                html = html.substring(closingTagIndex);
+                var newHTML = html.substring(match[0].length, closingTagIndex);
+
+                html = html.substring(closingTagIndex + html.match(closeTagExpression)[0].length);
 
                 var newTemplate = _compile(newHTML);
 
