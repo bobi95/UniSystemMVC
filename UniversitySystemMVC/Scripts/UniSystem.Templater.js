@@ -146,7 +146,7 @@ UniSystem.Templater = (function () {
 
                 }
 
-                templateCode.push();
+                templateCode.push(codeResult);
                 continue;
 
             }
@@ -184,7 +184,7 @@ UniSystem.Templater = (function () {
 
                     for (var i = 0, n = item.keys.length; i < n; i++)
                     {
-                        answer = answer[item[i]];
+                        answer = answer[item.keys[i]];
                     }
 
                     result.push(answer);
@@ -194,7 +194,7 @@ UniSystem.Templater = (function () {
                 if (item.type === 'function') {
 
                     if (funcs[item.key]) {
-                        
+                        var answer;
                         if (item.context) {
 
                             var funcContext = context;
@@ -203,11 +203,19 @@ UniSystem.Templater = (function () {
                                 funcContext = funcContext[item[i]];
                             }
 
-                            funcs[item.key](funcContext);
+                            answer = funcs[item.key](funcContext);
+
+                            if (answer) {
+                                result.push(answer)
+                            }
                             return;
                         }
 
-                        funcs[item.key]();
+                        answer = funcs[item.key]();
+
+                        if (answer) {
+                            result.push(answer)
+                        }
                         return;
                     }
                 }
