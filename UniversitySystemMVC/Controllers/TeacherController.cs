@@ -282,6 +282,7 @@ namespace UniversitySystemMVC.Controllers
             }
 
             TeachersDetailsVM model = new TeachersDetailsVM();
+            model.Teacher = teacher;
             model.CoursesSubjects = unitOfWork.CoursesSubjectsRepository.GetAllByTeacherId(teacher.Id).ToList();
 
             return View(model);

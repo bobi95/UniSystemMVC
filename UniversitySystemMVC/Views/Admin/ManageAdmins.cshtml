@@ -27,7 +27,10 @@
                 <td>@a.Username</td>
                 <td>@a.Email</td>
                 <td>
-                    @Html.ActionLink("Edit", "EditAdmin", new { id = a.Id })
+                    @if (@UniversitySystemMVC.Models.AuthenticationManager.LoggedUser.Id == a.Id)
+                    {
+                        @Html.ActionLink("Edit", "EditAdmin", new { id = a.Id })
+                    }
                 </td>
             </tr>
         }

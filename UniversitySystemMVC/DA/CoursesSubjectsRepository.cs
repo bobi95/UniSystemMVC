@@ -14,14 +14,13 @@ namespace UniversitySystemMVC.DA
         public List<CoursesSubjects> GetByCourseId(int id, bool pullTeachers = false)
         {
             var query = dbSet.Where(cs => cs.CourseId == id);
+            var result = query.Include(cs => cs.Subject).Include(cs => cs.Course).ToList();
+
             if (pullTeachers)
             {
                 query = query.Include(x => x.Teachers);
+                result.ForEach(cs => cs.Teachers = cs.Teachers.Where(t => t.IsActive).ToList());
             }
-
-            var result = query.Include(cs => cs.Subject).Include(cs => cs.Course).ToList();
-
-            result.ForEach(cs => cs.Teachers = cs.Teachers.Where(t => t.IsActive).ToList());
 
             return result;
         }

@@ -6,16 +6,17 @@
 
 <h2>Manage Courses</h2>
 
-<p>
+<p class="pull-left">
     @Html.ActionLink("Create New Course", "CreateCourse", "Course")
 </p>
+
+<p class="pull-right">@Model.Courses.Count courses</p>
 
 
 <table class="table">
     <tr>
         <th>Course Code</th>
         <th>Course Name</th>
-        <th>Students</th>
         <th>Subjects</th>
         <th>Actions</th>
     </tr>
@@ -25,8 +26,7 @@
         <tr>
             <td>@c.Code</td>
             <td>@c.Name</td>
-            <td>@string.Join(", ", @c.Students.Select(s=>s.LastName))</td>
-            <td>@string.Join(", ", @c.CoursesSubjects.Where(s => s.CourseId == c.Id).Select(s => s.Subject.Name))</td>
+            <td>@Html.Raw(String.Join(", ", @c.CoursesSubjects.Where(s => s.CourseId == c.Id).Select(s => { return Html.ActionLink(s.Subject.Name, "Details", "Subject", new { id = s.Subject.Id }, new { target = "_blank" }); })))</td>
             <td>
                 @Html.ActionLink("Edit", "EditCourse", "Course", new { id = c.Id }, null) |
                 @Html.ActionLink("Details", "Details", "Course", new { id = c.Id }, null) |

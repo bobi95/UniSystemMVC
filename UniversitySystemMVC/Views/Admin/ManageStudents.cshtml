@@ -1,53 +1,58 @@
 ﻿@model UniversitySystemMVC.ViewModels.AdminsVM.AdminsManageStudentsVM
 
 @{
-	ViewBag.Title = "ManageStudents";
+    ViewBag.Title = "ManageStudents";
 }
 
 <h2>ManageStudents</h2>
 
 <p>
-	@Html.ActionLink("Create New Student", "CreateStudent", "Student")
+    @Html.ActionLink("Create New Student", "CreateStudent", "Student")
 </p>
 
 
 @foreach (var item in Model.Courses)
 {
-	<h2>@item.Name</h2>
-	<table class="table">
-		<tr>
-			<th>Faculty Number</th>
-			<th>Name</th>
-			<th>Username</th>
-			<th>Email</th>
-			<th>Actions</th>
-		</tr>
-		@foreach (var st in item.Students)
-		{
-			if (st.IsActive)
-			{
-				<tr>
-					<td>@st.FacultyNumber</td>
-					<td>@st.FirstName @st.LastName</td>
-					<td>@st.Username</td>
-					<td>@st.Email</td>
-					@*<td>
-							@String.Join(",", st.Grades.Select(g => g.GradeValue))
-						</td>
-						<td>
-							@if (st.Grades.Count > 0)
-							{
-								@st.Grades.Average(g => decimal.Parse(g.GradeValue))
-							}
+    <div>
+        <h3 class="pull-left">@item.Name</h3>
+        <div class="pull-right">
+            <h5>@item.Students.Count(s => s.IsActive) students</h5>
+        </div>
+    </div>
+    <table class="table">
+        <tr>
+            <th>Faculty Number</th>
+            <th>Name</th>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Actions</th>
+        </tr>
+        @foreach (var st in item.Students)
+        {
+            if (st.IsActive)
+            {
+                <tr>
+                    <td>@st.FacultyNumber</td>
+                    <td>@st.FirstName @st.LastName</td>
+                    <td>@st.Username</td>
+                    <td>@st.Email</td>
+                    @*<td>
+                            @String.Join(",", st.Grades.Select(g => g.GradeValue))
+                        </td>
+                        <td>
+                            @if (st.Grades.Count > 0)
+                            {
+                                @st.Grades.Average(g => decimal.Parse(g.GradeValue))
+                            }
 
-						</td>*@
-					<td>
-						@Html.ActionLink("Edit", "EditStudent", "Student", new { id = st.Id }, null) |
-						@Html.ActionLink("Details", "Details", "Student", new { id = st.Id }, null) |
-						@Html.ActionLink("Delete", "DeleteStudent", "Student", new { id = st.Id }, null)
-					</td>
-				</tr>
-			}
-		}
-	</table>
+                        </td>*@
+                    <td>
+                        @Html.ActionLink("Edit", "EditStudent", "Student", new { id = st.Id }, null) |
+                        @Html.ActionLink("Details", "Details", "Student", new { id = st.Id }, null) |
+                        @Html.ActionLink("Delete", "DeleteStudent", "Student", new { id = st.Id }, null)
+                    </td>
+                </tr>
+            }
+        }
+    </table>
 }

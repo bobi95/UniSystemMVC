@@ -6,9 +6,11 @@
 
 <h2>Manage Teachers</h2>
 
-<p>
+<p class="pull-left">
     @Html.ActionLink("Create New Teacher", "CreateTeacher", "Teacher")
 </p>
+
+<p class="pull-right">@Model.Teachers.Count(t => t.IsActive) teachers</p>
 
 
 <table class="table">

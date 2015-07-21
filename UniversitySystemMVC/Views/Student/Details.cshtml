@@ -78,15 +78,10 @@
         <dd>
             <table class="table">
                 <tr>
-                    <th>
-                        Subject
-                    </th>
-                    <th>
-                        Grades
-                    </th>
-                    <th>
-                        Teachers
-                    </th>
+                    <th>Subject</th>
+                    <th>Grades</th>
+                    <th>Final grade</th>
+                    <th>Teachers</th>
                 </tr>
 
                 @foreach (var item in Model.CoursesSubjects)
@@ -97,6 +92,12 @@
                         </td>
                         <td>
                             @String.Join(", ", item.Subject.Grades)
+                        </td>
+                        <td>
+                            @if (item.Subject.Grades != null && item.Subject.Grades.Count > 0)
+                            {
+                                @item.Subject.Grades.Average(g => g.GradeValue)
+                            }
                         </td>
                         <td>
                             @Html.Raw(String.Join(", ", item.Teachers.Select(t => { return Html.ActionLink(t.FirstName + " " + t.LastName, "Details", "Teacher", new { id = t.Id }, new { target = "_blank" }); })))

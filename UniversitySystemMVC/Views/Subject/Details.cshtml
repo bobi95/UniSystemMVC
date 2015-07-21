@@ -35,7 +35,8 @@
     {
         <tr>
             <th colspan="3">
-                <h3>@item.Course.Name</h3>
+                <h3 class="pull-left">@item.Course.Name</h3>
+                <span class="pull-right">@item.Course.Students.Count(s => s.IsActive) students</span>
             </th>
         </tr>
 
@@ -55,7 +56,7 @@
         <tr>
             <td></td>
             <td></td>
-            <td>@item.Course.Students.Select( s => s.Grades.Count > 0 ? s.Grades.Where(g => g.SubjectId == item.SubjectId).Select(g => g.GradeValue).Average() : 0).Average()</td>
+            @*<td>@item.Course.Students.Select( s => s.Grades.Count > 0 ? s.Grades.Where(g => g.SubjectId == item.SubjectId).Select(g => g.GradeValue).Average() : 0).Average()</td>*@
         </tr>
 
     }
