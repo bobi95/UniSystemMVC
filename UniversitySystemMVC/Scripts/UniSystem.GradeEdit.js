@@ -1,61 +1,39 @@
 ﻿var UniSystem = UniSystem || {};
 
 UniSystem.GradeEdit = (function () {
+    
+    var containers = [],
 
-    /*
-     * These settigns are used by the form creating function of this object.
-     * Settings members:
-     *  - attributes: uses the given DOM object's attributes in the post request
-     *      Array of Strings
-     * 
-     *  - url: url for the post request
-     *      String
-     * 
-     *  - domObject: generated dom object's classes, attributes and events
-     *          
-     *  - TODO: more settings
-     */
-
-    var settings = {
-        attributes: [],
-        url: '',
-        domObject: {
-            tagName: 'button',
-            classes: [],
-            attributes: {},
-            events: {}
-        }
-    };
+        settings = {
+            containerClass: 'grade-crud',
+            studentIdAttribute: 'grade-student',
+            subjectIdAttribute: 'grade-subject', 
+            btnAddClass: 'add-grade-btn',
+            btnCancelClass: 'remove-grade-btn',
+            inputClass: 'add-grade-input'
+        };
 
     var publicAPI = {
 
-        setSettings: function (values) {
-            settings = values || {};
+        setSettings: function(newSettings) {
+            settings = newSettings;
         },
 
-        formCreate: function (item) {
-            /// <summary>
-            /// 
-            /// </summary>
-            /// <param name="item" domElement="true">DOM element with data attributes.</param>
+        addEvents: function () {
 
-            var data = {};
-
-            for (var key in settings.attributes) {
-                if (item.hasAttribute(settings.attributes[key])) {
-
-                    data[settings.attributes[key]] = item.getAttribute(settings.attributes[key]);
-
-                }
-            }
+            var containers = document.querySelectorAll(settings.containerClass);
             
-            var obj = document.createElement(settings.domObject.tagName);
-            for (var key in settings.domObject.classes) {
-                obj.classList.add(settings.domObject.classes[key]);
-            }
+            for (var key in containers) {
 
+                var addBtn = containers[key].querySelector(settings.btnAddClass),
+                    cancelBtn = containers[key].querySelector(settings.btnCancelClass),
+                    inputClass = containers[key].querySelector(settings.inputClass);
+
+                // TODO: add event habdlers
+            }
 
         }
+        
     };
 
     return publicAPI;

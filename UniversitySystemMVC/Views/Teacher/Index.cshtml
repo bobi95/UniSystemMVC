@@ -32,17 +32,8 @@
                     <button class="btn add-grade-btn">
                         <img src="~/Content/images/plus.png" alt="Add Grade" />
                     </button>
-                </td>
-            </tr>
-            <tr>
-                <td>@student.FacultyNumber</td>
-                <td>@student.FirstName @student.LastName</td>
-                <td>@student.Email</td>
-                <td>@student.Course.Name</td>
-                <td>@String.Join(", ", student.Grades.Where(g => g.SubjectId == item.Subject.Id).Select(g => g.GradeValue))</td>
-                <td class="grade-crud" grade-student="@student.Id" grade-subject="@item.Subject.Id">
-                    <input type="text" class="add-grade-input" title="Enter Grade and Press Enter" />
-                    <button class="btn remove-grade-btn">
+                    <input style="display: none;" type="text" class="add-grade-input" title="Enter Grade and Press Enter" />
+                    <button style="display: none;" class="btn remove-grade-btn">
                         <img src="~/Content/images/x.png" alt="Remove Grade">
                     </button>
                 </td>
