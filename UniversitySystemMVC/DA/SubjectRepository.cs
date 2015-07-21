@@ -18,6 +18,11 @@ namespace UniversitySystemMVC.DA
             {
                 var cs = context.Set<CoursesSubjects>().AsQueryable<CoursesSubjects>().Include(s => s.Course).Include(s => s.Teachers).ToList();
 
+                foreach (var item in cs)
+                {
+                    item.Teachers = item.Teachers.Where(t => t.IsActive).ToList();
+                }
+
                 foreach (var q in query)
                 {
                     q.CoursesSubjects = cs.Where(x => x.SubjectId == q.Id).ToList();

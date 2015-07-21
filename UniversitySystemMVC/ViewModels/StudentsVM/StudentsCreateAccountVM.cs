@@ -23,7 +23,6 @@ namespace UniversitySystemMVC.ViewModels.StudentsVM
         [Required]
         public string Email { get; set; }
 
-        [Required]
         public string FacultyNumber { get; set; }
 
         public int CourseId { get; set; }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Web;
 using UniversitySystemMVC.Entity;
 
@@ -21,8 +22,13 @@ namespace UniversitySystemMVC.DA
         {
             return dbSet.Find(id);
         }
-        public virtual IEnumerable<T> GetAll()
+        public virtual IEnumerable<T> GetAll(Expression<Func<T, bool>> predicate = null)
         {
+            if (predicate != null)
+            {
+                return dbSet.Where(predicate).ToList();
+            }
+
             return dbSet.ToList();
         }
 

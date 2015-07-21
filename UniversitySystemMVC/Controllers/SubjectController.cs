@@ -174,6 +174,32 @@ namespace UniversitySystemMVC.Controllers
             model.Subject = subject;
             model.CoursesSubjects = unitOfWork.CoursesSubjectsRepository.GetBySubjectId(subject.Id, true);
 
+            model.SubjectAverages = new Dictionary<int, double>();
+
+            model.CoursesSubjects.ForEach(cs =>
+            {
+                if (cs.Course.Students == null || cs.Course.Students.Count(s => s.IsActive) == 0)
+                {
+                    return;
+                }
+
+                var studentaverages = cs.Course.Students.Where(s => s.IsActive && s.Grades.Count > 0).Select(s =>
+                {
+                    var grades = s.Grades.Where(g => g.SubjectId == cs.Subject.Id).ToArray();
+                    if (grades.Length > 0)
+                    {
+                        return grades.Average(g => g.GradeValue);
+                    }
+                    return 0;
+
+                }).ToArray();
+
+                if (studentaverages.Length > 0)
+                {
+                    model.SubjectAverages.Add(cs.Course.Id, studentaverages.Average());
+                }
+            });
+
             return View(model);
         }
     }

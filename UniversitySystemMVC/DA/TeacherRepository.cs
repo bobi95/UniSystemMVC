@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Data.Entity;
 using UniversitySystemMVC.Entity;
+using System.Linq.Expressions;
 
 namespace UniversitySystemMVC.DA
 {
@@ -22,7 +23,7 @@ namespace UniversitySystemMVC.DA
             return query.FirstOrDefault();
         }
 
-        public override IEnumerable<Teacher> GetAll()
+        public override IEnumerable<Teacher> GetAll(Expression<Func<Teacher, bool>> predicate = null)
         {
             return dbSet.Where(t => t.IsActive).ToList();
         }

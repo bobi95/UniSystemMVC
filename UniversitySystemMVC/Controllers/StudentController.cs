@@ -20,7 +20,7 @@ namespace UniversitySystemMVC.Controllers
         UnitOfWork unitOfWork = new UnitOfWork();
 
         // GET: Student
-        [AuthorizeUser(UserType=UserTypeEnum.Student, CheckType=true)]
+        [AuthorizeUser(UserType = UserTypeEnum.Student, CheckType = true)]
         public ActionResult Index()
         {
             if (AuthenticationManager.IsStudent)
@@ -110,7 +110,8 @@ namespace UniversitySystemMVC.Controllers
                                 new SelectListItem
                                 {
                                     Value = x.Id.ToString(),
-                                    Text = x.Name
+                                    Text = x.Name,
+                                    //Selected = x.Id==
                                 });
 
             return new SelectList(courses, "Value", "Text");
@@ -163,8 +164,8 @@ namespace UniversitySystemMVC.Controllers
                 student.FirstName = model.FirstName;
                 student.LastName = model.LastName;
                 student.Email = model.Email;
-                student.FacultyNumber = model.FacultyNumber;
-                student.CourseId = model.CourseId;
+                //student.FacultyNumber = model.FacultyNumber;
+                
                 student.IsActive = true;
 
                 if (model.Id == 0)
@@ -176,6 +177,9 @@ namespace UniversitySystemMVC.Controllers
                     student.Hash = passPhrase.Hash;
                     student.Salt = passPhrase.Salt;
                     student.IsConfirmed = false;
+                    student.CourseId = model.CourseId;
+                    Course course = unitOfWork.CourseRepository.GetById(model.CourseId);
+                    student.FacultyNumber = GenerateFacultyNumber.Generate(course, unitOfWork);
 
                     unitOfWork.StudentRepository.Insert(student);
                     unitOfWork.Save();
@@ -200,6 +204,13 @@ namespace UniversitySystemMVC.Controllers
                 }
                 else
                 {
+                    if (student.CourseId != model.CourseId)
+                    {
+                        Course course = unitOfWork.CourseRepository.GetById(model.CourseId);
+                        student.CourseId = course.Id;
+                        student.FacultyNumber = GenerateFacultyNumber.Generate(course, unitOfWork);
+                    }
+
                     unitOfWork.StudentRepository.Update(student);
                     unitOfWork.Save();
                     TempData.FlashMessage("Student has been edited. Faculty number: " + student.FacultyNumber);
@@ -283,6 +294,7 @@ namespace UniversitySystemMVC.Controllers
             model.IsActive = student.IsActive;
             model.Email = student.Email;
             model.FacultyNumber = student.FacultyNumber;
+
             if (student.CourseId != null)
             {
                 model.CoursesSubjects = unitOfWork.CoursesSubjectsRepository.GetStudentsDetails(student.CourseId.Value, student.Id, unitOfWork);
