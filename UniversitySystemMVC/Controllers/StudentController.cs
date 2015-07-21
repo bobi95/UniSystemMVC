@@ -20,6 +20,7 @@ namespace UniversitySystemMVC.Controllers
         UnitOfWork unitOfWork = new UnitOfWork();
 
         // GET: Student
+        [AuthorizeUser(UserType=UserTypeEnum.Student, CheckType=true)]
         public ActionResult Index()
         {
             if (AuthenticationManager.IsStudent)
@@ -43,14 +44,14 @@ namespace UniversitySystemMVC.Controllers
         {
             if (!id.HasValue)
             {
-                return RedirectToAction("NotFound", "Error");
+                return RedirectToAction("Index", "Home");
             }
 
             Student student = unitOfWork.StudentRepository.GetById(id.Value);
 
             if (student == null || student.IsConfirmed)
             {
-                return RedirectToAction("NotFound", "Error");
+                return RedirectToAction("Index", "Home");
             }
 
             StudentsConfirmAccountVM model = new StudentsConfirmAccountVM();
@@ -121,14 +122,14 @@ namespace UniversitySystemMVC.Controllers
         {
             if (!id.HasValue)
             {
-                return RedirectToAction("Index");
+                return RedirectToAction("ManageStudents", "Admin");
             }
 
             Student student = unitOfWork.StudentRepository.GetById(id.Value);
 
             if (student == null)
             {
-                return RedirectToAction("NotFound", "Error");
+                return RedirectToAction("ManageStudents", "Admin");
             }
 
             StudentsCreateAccountVM model = new StudentsCreateAccountVM();

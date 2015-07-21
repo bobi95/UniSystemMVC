@@ -1,0 +1,14 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using UniversitySystemMVC.Entity;
+
+namespace UniversitySystemMVC.ViewModels.SubjectsVM
+{
+    public class SubjectsDetailsVM
+    {
+        public Subject Subject { get; set; }
+        public List<CoursesSubjects> CoursesSubjects { get; set; }
+    }
+}

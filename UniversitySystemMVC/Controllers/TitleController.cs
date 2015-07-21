@@ -127,5 +127,26 @@ namespace UniversitySystemMVC.Controllers
             return View(model);
         }
         #endregion DeleteTitle
+
+        public ActionResult Details(int? id)
+        {
+            if (!id.HasValue)
+            {
+                return RedirectToAction("ManageTitles", "Admin");
+            }
+
+            Title title = unitOfWork.TitleRepository.GetById(id.Value);
+
+            if (title == null)
+            {
+                return RedirectToAction("ManageTitles", "Admin");
+            }
+
+            TitlesDetailsVM model = new TitlesDetailsVM();
+            model.Title = title;
+            model.Teachers = unitOfWork.TeacherRepository.GetByTitleId(title.Id, unitOfWork, true).ToList();
+
+            return View(model);
+        }
     }
 }

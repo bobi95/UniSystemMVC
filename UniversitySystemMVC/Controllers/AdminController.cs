@@ -311,7 +311,6 @@ namespace UniversitySystemMVC.Controllers
                 List<CoursesSubjects> css = unitOfWork.CoursesSubjectsRepository.GetByCourseId(model.SelectedCourseId);
 
                 int a;
-
                 // keys to be assigned for the course
                 List<int> ids = Request.Form.AllKeys.Where(x =>
                     int.TryParse(x, out a)).Select<string, int>(x => int.Parse(x)).ToList();

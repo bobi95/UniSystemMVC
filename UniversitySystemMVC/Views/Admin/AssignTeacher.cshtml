@@ -46,6 +46,7 @@
                 var url = '@Url.Action("GetSubjects")';
                 // send an AJAX request
                 UniSystem.Ajax.get(url, data, function (json) {
+                    json = JSON.parse(json);
                     var listParent = $('#subjects-' + data.id);
                     var uls = [];
                     for (var s in json) {

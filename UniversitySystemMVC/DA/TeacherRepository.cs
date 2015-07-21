@@ -26,5 +26,35 @@ namespace UniversitySystemMVC.DA
         {
             return dbSet.Where(t => t.IsActive).ToList();
         }
+
+        public ICollection<Teacher> GetByTitleId(int titleId, UnitOfWork unitOfWork, bool pullCoursesSubjects = false)
+        {
+            var teachers = dbSet.Where(t => t.TitleId == titleId && t.IsActive).ToList();
+
+            var css = context.Set<CoursesSubjects>()
+                .Include(cs => cs.Subject)
+                .Include(cs => cs.Course)
+                .Include(cs => cs.Teachers)
+                .ToList();
+
+            teachers.ForEach(t => t.CourseSubjects = css.Where(cs => cs.Teachers.Any(tt => t.Id == tt.Id)).ToList());
+            return teachers;
+            //if (pullCoursesSubjects)
+            //{
+            //    var css = context.Set<CoursesSubjects>()
+
+            //    //query = query.Include(t => t.CourseSubjects);
+            //    //foreach (var q in query)
+            //    //{
+            //    //    foreach (var cs in q.CourseSubjects)
+            //    //    {
+            //    //        cs.Subject = unitOfWork.SubjectRepository.GetById(cs.SubjectId);
+            //    //        cs.Course = unitOfWork.CourseRepository.GetById(cs.CourseId);
+            //    //    }
+            //    //}
+            //}
+
+            //return query.ToList();
+        }
     }
 }

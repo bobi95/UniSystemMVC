@@ -78,28 +78,29 @@
         <dd>
             <table class="table">
                 <tr>
-                    <th>
-                        Subject
-                    </th>
-                    <th>
-                        Grades
-                    </th>
-                    <th>
-                        Teachers
-                    </th>
+                    <th>Subject</th>
+                    <th>Grades</th>
+                    <th>Final grade</th>
+                    <th>Teachers</th>
                 </tr>
 
                 @foreach (var item in Model.CoursesSubjects)
                 {
                     <tr>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Subject.Name)
+                            @Html.ActionLink(item.Subject.Name, "Details", "Subject", new { id = item.Subject.Id }, new { target = "_blank"})
                         </td>
                         <td>
                             @String.Join(", ", item.Subject.Grades)
                         </td>
                         <td>
-                            @String.Join(", ", item.Teachers.Select(t => { return t.FirstName + " " + t.LastName; }))
+                            @if (item.Subject.Grades != null && item.Subject.Grades.Count > 0)
+                            {
+                                @item.Subject.Grades.Average(g => g.GradeValue)
+                            }
+                        </td>
+                        <td>
+                            @Html.Raw(String.Join(", ", item.Teachers.Select(t => { return Html.ActionLink(t.FirstName + " " + t.LastName, "Details", "Teacher", new { id = t.Id }, new { target = "_blank" }); })))
                         </td>
                     </tr>
                 }
