@@ -155,5 +155,26 @@ namespace UniversitySystemMVC.Controllers
             return View(model);
         }
         #endregion DeleteSubject
+
+        public ActionResult Details(int? id)
+        {
+            if (!id.HasValue)
+            {
+                return RedirectToAction("ManageSubjects", "Admin");
+            }
+
+            Subject subject = unitOfWork.SubjectRepository.GetById(id.Value);
+
+            if (subject == null)
+            {
+                return RedirectToAction("ManageSubjects", "Admin");
+            }
+
+            SubjectsDetailsVM model = new SubjectsDetailsVM();
+            model.Subject = subject;
+            model.CoursesSubjects = unitOfWork.CoursesSubjectsRepository.GetBySubjectId(subject.Id, true);
+
+            return View(model);
+        }
     }
 }

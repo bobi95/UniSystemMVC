@@ -1,0 +1,36 @@
+﻿@model UniversitySystemMVC.ViewModels.TitlesVM.TitlesDetailsVM
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>Teacher</th>
+        <th>Subjects</th>
+    </tr>
+
+@foreach (var item in Model.Teachers) {
+    <tr>
+        <td>@Html.ActionLink(item.FirstName + " " + item.LastName, "Details", "Teacher", new { id = @item.Id }, new { target = "_blank" })</td>
+        <td>
+            @foreach (var cs in item.CourseSubjects)
+            {
+                <span>
+                    @Html.ActionLink(@cs.Subject.Name, "Details", "Subject", new { id = cs.Subject.Id }, new { target = "_blank" }) -
+                    @Html.ActionLink(@cs.Course.Name, "Details", "Course", new { id = cs.Course.Id }, new { target = "_blank" })
+                </span><br />
+            }
+            @*@String.Join(", ", item.CourseSubjects.Select(cs => cs.Subject.Name))*@
+        </td>
+
+    </tr>
+}
+
+</table>

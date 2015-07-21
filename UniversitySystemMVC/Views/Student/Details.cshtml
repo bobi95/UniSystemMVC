@@ -93,13 +93,13 @@
                 {
                     <tr>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Subject.Name)
+                            @Html.ActionLink(item.Subject.Name, "Details", "Subject", new { id = item.Subject.Id }, new { target = "_blank"})
                         </td>
                         <td>
                             @String.Join(", ", item.Subject.Grades)
                         </td>
                         <td>
-                            @String.Join(", ", item.Teachers.Select(t => { return t.FirstName + " " + t.LastName; }))
+                            @Html.Raw(String.Join(", ", item.Teachers.Select(t => { return Html.ActionLink(t.FirstName + " " + t.LastName, "Details", "Teacher", new { id = t.Id }, new { target = "_blank" }); })))
                         </td>
                     </tr>
                 }

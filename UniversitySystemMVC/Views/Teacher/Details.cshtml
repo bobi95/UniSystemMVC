@@ -1,0 +1,28 @@
+﻿@model UniversitySystemMVC.ViewModels.TeachersVM.TeachersDetailsVM
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>Subjects</th>
+        <th>Course</th>
+    </tr>
+
+@foreach (var item in Model.CoursesSubjects) {
+    <tr>
+        <td>@Html.ActionLink(item.Subject.Name, "Details", "Subject", new { id = item.Subject.Id }, new { target = "blank" })</td>
+        <td>@Html.ActionLink(item.Course.Name, "Details", "Course", new { id = item.Course.Id }, new { target = "blank" })</td>
+    </tr>
+}
+
+</table>
+
+@Html.ActionLink("Back to list", "ManageTeachers", "Admin")

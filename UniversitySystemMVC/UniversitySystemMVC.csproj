@@ -191,9 +191,11 @@
     <Compile Include="ViewModels\AdminsVM\AdminsConfirmAccount.cs" />
     <Compile Include="ViewModels\AdminsVM\AdminsCreateAccountVM.cs" />
     <Compile Include="ViewModels\AdminsVM\AdminsDeleteAdminVM.cs" />
+    <Compile Include="ViewModels\CoursesVM\CoursesDetailsVM.cs" />
     <Compile Include="ViewModels\PagingVM\PagingVM.cs" />
     <Compile Include="ViewModels\StudentsVM\StudentDetailsVM.cs" />
     <Compile Include="ViewModels\StudentsVM\StudentsDeleteAccountVM.cs" />
+    <Compile Include="ViewModels\SubjectsVM\SubjectsDetailsVM.cs" />
     <Compile Include="ViewModels\TeachersVM\TeachersDeleteAccountVM.cs" />
     <Compile Include="ViewModels\AdminsVM\AdminsManageAdminsVM.cs" />
     <Compile Include="ViewModels\AdminsVM\AdminsManageCoursesVM.cs" />
@@ -211,9 +213,11 @@
     <Compile Include="ViewModels\TeachersVM\TeachersAssignVM.cs" />
     <Compile Include="ViewModels\TeachersVM\TeachersConfirmAccountVM.cs" />
     <Compile Include="ViewModels\TeachersVM\TeachersCreateAccountVM.cs" />
+    <Compile Include="ViewModels\TeachersVM\TeachersDetailsVM.cs" />
     <Compile Include="ViewModels\TeachersVM\TeachersIndexVM.cs" />
     <Compile Include="ViewModels\TitlesVM\TitlesDeleteVM.cs" />
     <Compile Include="ViewModels\TitlesVM\TitlesCreateVM.cs" />
+    <Compile Include="ViewModels\TitlesVM\TitlesDetailsVM.cs" />
     <Compile Include="ViewModels\UsersVM\UsersLoginVM.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -320,6 +324,10 @@
     <Content Include="Scripts\UniSystem.Ajax.js" />
     <Content Include="Views\Shared\_PagingPartial.cshtml" />
     <Content Include="Scripts\UniSystem.DaD.js" />
+    <Content Include="Views\Course\Details.cshtml" />
+    <Content Include="Views\Teacher\Details.cshtml" />
+    <Content Include="Views\Subject\Details.cshtml" />
+    <Content Include="Views\Title\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

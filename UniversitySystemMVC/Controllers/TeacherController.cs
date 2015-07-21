@@ -267,9 +267,24 @@ namespace UniversitySystemMVC.Controllers
         }
         #endregion DeleteTeacher
 
-        public ActionResult AssignGrades()
+        public ActionResult Details(int? id)
         {
-            return View();
+            if (!id.HasValue)
+            {
+                return RedirectToAction("ManageTeachers", "Admin");    
+            }
+
+            Teacher teacher = unitOfWork.TeacherRepository.GetById(id.Value);
+
+            if (teacher == null)
+            {
+                return RedirectToAction("ManageTeachers", "Admin");
+            }
+
+            TeachersDetailsVM model = new TeachersDetailsVM();
+            model.CoursesSubjects = unitOfWork.CoursesSubjectsRepository.GetAllByTeacherId(teacher.Id).ToList();
+
+            return View(model);
         }
     }
 }

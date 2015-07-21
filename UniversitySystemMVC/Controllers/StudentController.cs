@@ -20,6 +20,7 @@ namespace UniversitySystemMVC.Controllers
         UnitOfWork unitOfWork = new UnitOfWork();
 
         // GET: Student
+        [AuthorizeUser(UserType=UserTypeEnum.Student, CheckType=true)]
         public ActionResult Index()
         {
             if (AuthenticationManager.IsStudent)

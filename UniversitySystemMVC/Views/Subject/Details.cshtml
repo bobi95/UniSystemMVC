@@ -1,0 +1,62 @@
+﻿@model UniversitySystemMVC.ViewModels.SubjectsVM.SubjectsDetailsVM
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@Model.Subject.Name - Details</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+
+@*@foreach (var item in Model.CoursesSubjects)
+    {
+        <h3>@item.Course.Name</h3>
+        <table class="table">
+            <tr>
+                <th>Faculty number</th>
+                <th>Name</th>
+                <th>Grades</th>
+            </tr>
+            @foreach (var s in item.Course.Students)
+            {
+                <tr>
+                    <td>@s.FacultyNumber</td>
+                    <td>@Html.ActionLink(s.FirstName + " " + s.LastName, "Details", "Student", new { id = s.Id }, new { target = "_blank" })</td>
+                    <td>@String.Join(", ", s.Grades.Where(g => g.SubjectId == @item.SubjectId).Select(g => g.GradeValue))</td>
+                </tr>
+            }
+        </table>
+    }*@
+<table class="table">
+    @foreach (var item in Model.CoursesSubjects)
+    {
+        <tr>
+            <th colspan="3">
+                <h3>@item.Course.Name</h3>
+            </th>
+        </tr>
+
+        <tr>
+            <th>Faculty number</th>
+            <th>Name</th>
+            <th>Grades</th>
+        </tr>
+        foreach (var s in item.Course.Students)
+        {
+            <tr>
+                <td>@s.FacultyNumber</td>
+                <td>@Html.ActionLink(s.FirstName + " " + s.LastName, "Details", "Student", new { id = s.Id }, new { target = "_blank" })</td>
+                <td>@String.Join(", ", s.Grades.Where(g => g.SubjectId == @item.SubjectId).Select(g => g.GradeValue))</td>
+            </tr>
+        }
+        <tr>
+            <td></td>
+            <td></td>
+            <td>@item.Course.Students.Select( s => s.Grades.Count > 0 ? s.Grades.Where(g => g.SubjectId == item.SubjectId).Select(g => g.GradeValue).Average() : 0).Average()</td>
+        </tr>
+
+    }
+</table>

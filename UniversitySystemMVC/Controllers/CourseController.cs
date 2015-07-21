@@ -8,6 +8,7 @@ using UniversitySystemMVC.Entity;
 using UniversitySystemMVC.Filters;
 using UniversitySystemMVC.ViewModels.CoursesVM;
 using UniversitySystemMVC.Extensions;
+using UniversitySystemMVC.ViewModels.StudentsVM;
 
 namespace UniversitySystemMVC.Controllers
 {
@@ -155,5 +156,26 @@ namespace UniversitySystemMVC.Controllers
             return View(model);
         }
         #endregion DeleteCourse
+
+        public ActionResult Details(int? id)
+        {
+            if (!id.HasValue)
+            {
+                return RedirectToAction("ManageStudents", "Admin");
+            }
+
+            Course course = unitOfWork.CourseRepository.GetById(id.Value);
+
+            if (course == null)
+            {
+                return RedirectToAction("ManageStudents", "Admin");
+            }
+
+            CoursesDetailsVM model = new CoursesDetailsVM();
+            model.Course = course;
+            model.Students = unitOfWork.StudentRepository.GetByCourseId(course.Id);
+
+            return View(model);
+        }
     }
 }
