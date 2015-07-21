@@ -20,7 +20,7 @@ namespace UniversitySystemMVC.Controllers
         UnitOfWork unitOfWork = new UnitOfWork();
 
         // GET: Student
-        [AuthorizeUser(UserType=UserTypeEnum.Student, CheckType=true)]
+        [AuthorizeUser(UserType = UserTypeEnum.Student, CheckType = true)]
         public ActionResult Index()
         {
             if (AuthenticationManager.IsStudent)
@@ -283,6 +283,7 @@ namespace UniversitySystemMVC.Controllers
             model.IsActive = student.IsActive;
             model.Email = student.Email;
             model.FacultyNumber = student.FacultyNumber;
+
             if (student.CourseId != null)
             {
                 model.CoursesSubjects = unitOfWork.CoursesSubjectsRepository.GetStudentsDetails(student.CourseId.Value, student.Id, unitOfWork);

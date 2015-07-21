@@ -5,11 +5,10 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Details</h2>
+<h2>@Model.Title.Name - Details</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
+<p>@Model.Teachers.Count(t => t.IsActive) teachers</p>
+
 <table class="table">
     <tr>
         <th>Teacher</th>
@@ -27,7 +26,6 @@
                     @Html.ActionLink(@cs.Course.Name, "Details", "Course", new { id = cs.Course.Id }, new { target = "_blank" })
                 </span><br />
             }
-            @*@String.Join(", ", item.CourseSubjects.Select(cs => cs.Subject.Name))*@
         </td>
 
     </tr>

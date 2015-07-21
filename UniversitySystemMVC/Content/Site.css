@@ -63,3 +63,10 @@ textarea {
 .add-grade-input {
     max-width: 26px;
 }
+
+.flash-msg {
+    margin-top: 22px;
+}
+    .flash-msg h4 {
+        margin-top: 10px;
+    }

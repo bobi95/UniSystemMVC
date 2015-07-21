@@ -9,6 +9,9 @@ namespace UniversitySystemMVC.ViewModels.SubjectsVM
     public class SubjectsDetailsVM
     {
         public Subject Subject { get; set; }
+
         public List<CoursesSubjects> CoursesSubjects { get; set; }
+
+        public Dictionary<int, double> SubjectAverages { get; set; }
     }
 }
