@@ -26,10 +26,13 @@
         </select>
         <br />
         @*@Html.HiddenFor(model => Model.CourseId)*@
-        <input type="submit" value="Filter" class="btn btn-default" />
+        <input type="submit" name="submitBtn" value="Filter" class="btn btn-default" />
+        <input type="submit" name="submitBtn" value="Export" class="btn btn-default" />
     </p>
 }
 
+
+@Html.ActionLink("Export Grades", "ExportGrades", "Subject")
 
 <table class="table">
     @foreach (var item in Model.CoursesSubjects)

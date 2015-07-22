@@ -18,8 +18,14 @@ namespace UniversitySystemMVC.DA
 
             if (pullTeachers)
             {
-                query = query.Include(x => x.Teachers);
-                result.ForEach(cs => cs.Teachers = cs.Teachers.Where(t => t.IsActive).ToList());
+                result = query.Include(x => x.Teachers).ToList();
+
+                result.ForEach( cs => {
+                    if (cs.Teachers != null)
+                    {
+                        cs.Teachers = cs.Teachers.Where(t => t.IsActive).ToList();    
+                    }
+                });
             }
 
             return result;

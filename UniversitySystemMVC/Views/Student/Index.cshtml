@@ -19,7 +19,12 @@
         <tr>
             <td>@cs.Subject.Name</td>
             <td>@string.Join(", ", cs.Subject.Grades.Where(g => g.StudentId == Model.Student.Id).Select(g=>g.GradeValue))</td>
-            <td>@string.Join(", ", cs.Teachers.Select(t=>t.LastName))</td>
+            <td>
+                @if (cs.Teachers != null)
+                {
+                    <span>@string.Join(", ", cs.Teachers.Select(t => t.LastName))</span>
+                }
+            </td>
         </tr>
     }
 </table>
