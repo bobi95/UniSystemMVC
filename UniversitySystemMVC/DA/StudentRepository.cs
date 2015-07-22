@@ -12,7 +12,7 @@ namespace UniversitySystemMVC.DA
 
         public List<Student> GetByCourseId(int id)
         {
-            return GetAll().Where(s => s.CourseId == id).ToList();
+            return GetAll(null, false).Where(s => s.CourseId == id).ToList();
         }
     }
 }

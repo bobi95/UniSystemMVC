@@ -32,7 +32,7 @@
                         var grades = student.Grades.Where(g => g.SubjectId == item.Subject.Id).ToArray();
                         for (int i = 0; i < grades.Length; i++)
                         {
-                            <span data-toggle="modal" data-target="#grade-edit" data-grade="@grades[i].Id">
+                            <span data-toggle="modal" data-target="#grade-edit" data-grade="@grades[i].Id" class="grade-value">
                                 @grades[i].GradeValue
                             </span>
                             if (i < grades.Length - 1)

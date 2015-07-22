@@ -70,3 +70,8 @@ textarea {
     .flash-msg h4 {
         margin-top: 10px;
     }
+
+.grade-value:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}

@@ -63,6 +63,7 @@ namespace UniversitySystemMVC.Controllers
             if (ModelState.IsValid)
             {
                 Course course;
+                
                 if (model.Id == 0)
                 {
                     course = new Course();
@@ -72,8 +73,9 @@ namespace UniversitySystemMVC.Controllers
                     course = unitOfWork.CourseRepository.GetById(model.Id);
                 }
 
+                int oldCourseCode = course.Code;
+
                 course.Name = model.Name;
-                course.Code = model.CourseCode;
 
                 model.Subjects = unitOfWork.SubjectRepository.GetAll();
 
@@ -89,11 +91,36 @@ namespace UniversitySystemMVC.Controllers
 
                 if (model.Id == 0)
                 {
+                    course.Code = model.CourseCode;
                     unitOfWork.CourseRepository.Insert(course);
                     TempData.FlashMessage("Course Created");
                 }
                 else
                 {
+                    if (course.Code != model.CourseCode)
+                    {
+                        course.Code = model.CourseCode;
+
+                        List<Student> students = new List<Student>();
+                        foreach (var s in unitOfWork.StudentRepository.GetAll(null, false))
+                        {
+                            if (s.FacultyNumber.Substring(4, 2) == oldCourseCode.ToString("00"))
+                            {
+                                students.Add(s);
+                            }
+                        }
+
+                        GenerateFacultyNumber.ResetFacultyNumbersbyCourseId(course.Id, students);
+
+                        unitOfWork.StudentRepository.Save();
+
+                        foreach (var s in students)
+                        {
+                            s.FacultyNumber = GenerateFacultyNumber.Generate(course, unitOfWork);
+                        }
+                    }
+
+                    course.Code = model.CourseCode;
                     unitOfWork.CourseRepository.Update(course);
                     TempData.FlashMessage("Course Edited");
                 }

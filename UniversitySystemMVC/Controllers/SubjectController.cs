@@ -170,6 +170,7 @@ namespace UniversitySystemMVC.Controllers
                 return RedirectToAction("ManageSubjects", "Admin");
             }
 
+            model.Courses = unitOfWork.CourseRepository.GetAll().ToList();
             model.Subject = subject;
             model.CoursesSubjects = unitOfWork.CoursesSubjectsRepository.GetBySubjectId(subject.Id, true);
 
@@ -202,26 +203,105 @@ namespace UniversitySystemMVC.Controllers
             #region SortingFiltering
             model.Props = new Dictionary<string, object>();
 
+            model.Props["firstname"] = model.FirstName;
+            model.Props["lastname"] = model.LastName;
+            model.Props["facultyNumber"] = model.FacultyNumber;
+            model.Props["courseId"] = model.CourseId;
+
+            if (model.CourseId!= 0)
+            {
+                model.CoursesSubjects = model.CoursesSubjects.Where(cs => cs.Course.Id == model.CourseId).ToList();
+            }
+
+            if (!String.IsNullOrEmpty(model.FirstName))
+            {
+                foreach (var cs in model.CoursesSubjects)
+                {
+                    List<Student> students = new List<Student>();
+                    foreach (var s in cs.Course.Students)
+                    {
+                        if (s.FirstName.ToLower().Contains(model.FirstName.ToLower()))
+                        {
+                            students.Add(s);
+                        }
+                    }
+                    cs.Course.Students = students;
+                    students = null;
+                }
+            }
+            if (!String.IsNullOrEmpty(model.FacultyNumber))
+            {
+
+                foreach (var cs in model.CoursesSubjects)
+                {
+                    List<Student> students = new List<Student>();
+                    foreach (var s in cs.Course.Students)
+                    {
+                        if (s.FacultyNumber == model.FacultyNumber)
+                        {
+                            students.Add(s);
+                        }
+                    }
+                    cs.Course.Students = students;
+                    students = null;
+                }
+            }
+            if (!String.IsNullOrEmpty(model.LastName))
+            {
+                
+                foreach (var cs in model.CoursesSubjects)
+                {
+                    List<Student> students = new List<Student>();
+                    foreach (var s in cs.Course.Students)
+                    {
+                        if (s.LastName.ToLower().Contains(model.LastName.ToLower()))
+                        {
+                            students.Add(s);
+                        }
+                    }
+                    cs.Course.Students = students;
+                    students = null;
+                }
+            }
+
             switch (model.SortOrder)
             {
                 case "fnum_desc":
-                    model.CoursesSubjects = model.CoursesSubjects.Select(cs => { cs.Course.Students = cs.Course.Students.OrderByDescending(c => c.FacultyNumber).ToList(); return cs; }).ToList();
+                    model.CoursesSubjects = model.CoursesSubjects.Select(cs => {
+                        if (cs.Course.Students != null)
+                        {
+                            cs.Course.Students = cs.Course.Students.OrderByDescending(c => c.FacultyNumber).ToList(); 
+                        }
+                        return cs; 
+                    }).ToList();
                     break;
                 case "name_asc":
-                    model.CoursesSubjects = model.CoursesSubjects.Select(cs => { cs.Course.Students = cs.Course.Students.OrderBy(c => c.FirstName).ToList(); return cs; }).ToList();
+                    model.CoursesSubjects = model.CoursesSubjects.Select(cs => {
+                        if (cs.Course.Students != null)
+                        {
+                            cs.Course.Students = cs.Course.Students.OrderBy(c => c.FirstName).ToList(); 
+                        }
+                        return cs; 
+                    }).ToList();
                     break;
                 case "name_desc":
-                    model.CoursesSubjects = model.CoursesSubjects.Select(cs => { cs.Course.Students = cs.Course.Students.OrderByDescending(c => c.FirstName).ToList(); return cs; }).ToList();
+                    model.CoursesSubjects = model.CoursesSubjects.Select(cs => {
+                        if (cs.Course.Students != null)
+                        {
+                            cs.Course.Students = cs.Course.Students.OrderByDescending(c => c.FirstName).ToList(); 
+                        }
+                        return cs; 
+                    }).ToList();
                     break;
-                //case "grade_asc":
-                //    model.CoursesSubjects = model.CoursesSubjects.Select(cs => { cs.Course.Students = cs.Course.Students.OrderBy(s => s.Grades).ToList(); return cs; }).ToList();
-                //    break;
-                //case "grade_desc":
-                //    model.CoursesSubjects = model.CoursesSubjects.Select(cs => { cs.Course.Students = cs.Course.Students.OrderByDescending(s => s.Grades).ToList(); return cs; }).ToList();
-                //    break;
                 case "fnum_asc":
                 default:
-                    model.CoursesSubjects = model.CoursesSubjects.Select(cs => { cs.Course.Students = cs.Course.Students.OrderBy(c => c.FacultyNumber).ToList(); return cs; }).ToList();
+                    model.CoursesSubjects = model.CoursesSubjects.Select(cs => {
+                        if (cs.Course.Students != null)
+                        {
+                            cs.Course.Students = cs.Course.Students.OrderBy(c => c.FacultyNumber).ToList();   
+                        }
+                        return cs;
+                    }).ToList();
                     break;
             }
 

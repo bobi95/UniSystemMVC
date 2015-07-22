@@ -7,32 +7,42 @@
 
 <h2>@Model.Subject.Name - Details</h2>
 
-@*@foreach (var item in Model.CoursesSubjects)
-    {
-        <h3>@item.Course.Name</h3>
-        <table class="table">
-            <tr>
-                <th>Faculty number</th>
-                <th>Name</th>
-                <th>Grades</th>
-            </tr>
-            @foreach (var s in item.Course.Students)
+
+@using (Html.BeginForm("Details", "Subject", FormMethod.Get))
+{
+    <p>
+        Find by faculty number: @Html.TextBox("facultynumber", null, new { @class = "form-control" }) <br />
+        Find by first name: @Html.TextBox("firstname", null, new { @class = "form-control" }) <br />
+        Find by last name: @Html.TextBox("lastname", null, new { @class = "form-control" }) <br />
+        Filter by course:
+        <select name="courseId" class="form-control">
+            <option value="0">All Courses</option>
+            @foreach (var item in Model.Courses)
             {
-                <tr>
-                    <td>@s.FacultyNumber</td>
-                    <td>@Html.ActionLink(s.FirstName + " " + s.LastName, "Details", "Student", new { id = s.Id }, new { target = "_blank" })</td>
-                    <td>@String.Join(", ", s.Grades.Where(g => g.SubjectId == @item.SubjectId).Select(g => g.GradeValue))</td>
-                </tr>
+
+                bool selected = item.Id == Model.CourseId;
+                <option value="@item.Id" selected="@selected">@item.Name</option>
             }
-        </table>
-    }*@
+        </select>
+        <br />
+        @*@Html.HiddenFor(model => Model.CourseId)*@
+        <input type="submit" value="Filter" class="btn btn-default" />
+    </p>
+}
+
+
 <table class="table">
     @foreach (var item in Model.CoursesSubjects)
     {
         <tr>
             <th colspan="4">
                 <h3 class="pull-left">@item.Course.Name</h3>
-                <span class="pull-right">@item.Course.Students.Count(s => s.IsActive) students</span>
+                <span class="pull-right">
+                    @if(item.Course.Students != null)
+                    {
+                        item.Course.Students.Count(s => s.IsActive);
+                    }
+                </span>
             </th>
         </tr>
 
@@ -50,34 +60,32 @@
                 }
             </th>
             <th>Grades</th>
-            <th>
-                @{
-                    Model.Props["sortOrder"] = Model.SortOrder == "grade_asc" ? "grade_desc" : "grade_asc";
-                    @Html.ActionLink("Final Grade", "Details", "Subject", new RouteValueDictionary(Model.Props), null)
-                }
-            </th>
+            <th>Final Grade</th>
         </tr>
-        foreach (var s in item.Course.Students)
+        if (item.Course.Students != null)
         {
-            <tr @if (!s.IsActive) { @Html.Raw("style=color:red") }>
-                <td>@s.FacultyNumber</td>
-                <td>@Html.ActionLink(s.FirstName + " " + s.LastName, "Details", "Student", new { id = s.Id }, new { target = "_blank" })</td>
-                <td>@String.Join(", ", s.Grades.Where(g => g.SubjectId == @item.SubjectId).Select(g => g.GradeValue))</td>
+            foreach (var s in item.Course.Students)
+            {
+                <tr @if (!s.IsActive) { @Html.Raw("style=color:red")  }>
+                    <td>@s.FacultyNumber</td>
+                    <td>@Html.ActionLink(s.FirstName + " " + s.LastName, "Details", "Student", new { id = s.Id }, new { target = "_blank" })</td>
+                    <td>@String.Join(", ", s.Grades.Where(g => g.SubjectId == @item.SubjectId).Select(g => g.GradeValue))</td>
+                    <td>
+                        @if (s.Grades.Where(g => g.SubjectId == item.Subject.Id).Count() > 0)
+                        {
+                            @s.Grades.Where(g => g.SubjectId == item.Subject.Id).Average(g => g.GradeValue)
+                        }
+                    </td>
+                </tr>
+            }
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
                 <td>
-                    @if (s.Grades.Where(g => g.SubjectId == item.Subject.Id).Count() > 0)
-                    {
-                        @s.Grades.Where(g => g.SubjectId == item.Subject.Id).Average(g => g.GradeValue)
-                    }
+                    <strong>Average (course):</strong> @Model.SubjectAverages[item.Course.Id]
                 </td>
             </tr>
         }
-        <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td>
-                <strong>Average:</strong> @Model.SubjectAverages[item.Course.Id]
-            </td>
-        </tr>
     }
 </table>
