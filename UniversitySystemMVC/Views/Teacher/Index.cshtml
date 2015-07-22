@@ -22,19 +22,29 @@
 
         @foreach (var student in item.Course.Students)
         {
-            <tr>
+            <tr @if (!student.IsActive) { @Html.Raw("style=color:red") }>
                 <td>@student.FacultyNumber</td>
                 <td>@student.FirstName @student.LastName</td>
                 <td>@student.Email</td>
                 <td>@student.Course.Name</td>
-                <td>@String.Join(", ", student.Grades.Where(g => g.SubjectId == item.Subject.Id).Select(g => g.GradeValue))</td>
-                <td class="grade-crud" grade-student="@student.Id" grade-subject="@item.Subject.Id">
-                    <button class="btn add-grade-btn">
+                <td>
+                    @{
+                        var grades = student.Grades.Where(g => g.SubjectId == item.Subject.Id).ToArray();
+                        for (int i = 0; i < grades.Length; i++)
+                        {
+                            <span data-toggle="modal" data-target="#grade-edit" data-grade="@grades[i].Id">
+                                @grades[i].GradeValue
+                            </span>
+                            if (i < grades.Length - 1)
+                            {
+                                @Html.Raw(", ")
+                            }
+                        }
+                    }
+                </td>
+                <td class="grade-crud">
+                    <button class="btn add-grade-btn" data-toggle="modal" data-target="#grade-add" data-student="@student.Id" data-subject="@item.Subject.Id">
                         <img src="~/Content/images/plus.png" alt="Add Grade" />
-                    </button>
-                    <input style="display: none;" type="text" class="add-grade-input" title="Enter Grade and Press Enter" />
-                    <button style="display: none;" class="btn remove-grade-btn">
-                        <img src="~/Content/images/x.png" alt="Remove Grade">
                     </button>
                 </td>
             </tr>
@@ -43,13 +53,98 @@
     </table>
 }
 
-@Html.BeginForm("AddGrade", "Grade", FormMethod.Post)
-{
-<input type="submit" value="try" />
-}
+<!-- Modal -->
+<div class="modal fade" id="grade-add" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        @using (Html.BeginForm("AddGrade", "Grade", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Add grade</h4>
+                </div>
+                <div class="modal-body">
+                    <input id="add-grade-input" type="text" name="gradeValue" title="Enter Grade and Press Enter" required />
+                    <input type="hidden" name="subjectId" class="subjectId" value="" />
+                    <input type="hidden" name="studentId" class="studentId" value="" />
+                </div>
+                <div class="modal-footer">
+                    <input type="submit" class="btn btn-primary" value="Add Grade" />
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+
+            </div>
+        }
+    </div>
+</div>
+
+<div class="modal fade" id="grade-edit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+
+        <div class="modal-content">
+            @using (Html.BeginForm("EditGrade", "Grade", FormMethod.Post, new { id = "form-edit-grade" }))
+            {
+                @Html.AntiForgeryToken()
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Edit grade</h4>
+                </div>
+                <div class="modal-body">
+                    <input id="edit-grade-input" type="text" name="gradeValue" title="Enter Grade and Press Enter" required />
+                    <input type="hidden" name="gradeId" class="gradeId" value="" />
+                </div>
+            }
+            @using (Html.BeginForm("DeleteGrade", "Grade", FormMethod.Post, new { id = "form-delete-grade" }))
+            {
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="gradeId" class="gradeId" value="" />
+            }
+
+            <div class="modal-footer">
+                <button id="edit-btn" type="button" class="btn btn-primary">Edit Grade</button>
+                <button id="delete-btn" type="button" class="btn btn-danger">Delete Grade</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+
+    </div>
+</div>
 
 <script>
-  $(function() {
-    $( document ).tooltip();
-  });
+    $(function () {
+        $(document).tooltip();
+    });
+
+    $('#grade-add').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget); // Button that triggered the modal
+        var student = button.data('student'); // Extract info from data-* attributes
+        // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+        // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+        var subject = button.data('subject');
+        var modal = $(this);
+        document.querySelector('#grade-add .studentId').value = student;
+        document.querySelector('#grade-add .subjectId').value = subject;
+    })
+
+    $('#grade-edit').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget);
+        var gradeId = button.data('grade');
+        var grade = button.text().trim(); // Button that triggered the modal
+        // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+        // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+        var modal = $(this);
+        document.querySelector('#form-edit-grade .gradeId').value = gradeId;
+        document.querySelector('#form-delete-grade .gradeId').value = gradeId;
+        document.querySelector('#edit-grade-input').value = grade;
+
+        document.getElementById('edit-btn').onclick = function () {
+            document.getElementById('form-edit-grade').submit();
+        }
+        document.getElementById('delete-btn').onclick = function () {
+            document.getElementById('form-delete-grade').submit();
+        }
+    })
 </script>

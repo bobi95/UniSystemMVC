@@ -19,7 +19,8 @@ namespace UniversitySystemMVC.Controllers
         }
 
         [HttpPost]
-        public ActionResult AddGrade(int studentId = 1, int subjectId = 1, double gradeValue = 5.7)
+        [ValidateAntiForgeryToken]
+        public ActionResult AddGrade(int studentId, int subjectId, double gradeValue)
         {
             Grade grade = new Grade();
             grade.GradeValue = gradeValue;
@@ -27,6 +28,28 @@ namespace UniversitySystemMVC.Controllers
             grade.SubjectId = subjectId;
 
             unitOfWork.GradeRepository.Insert(grade);
+            unitOfWork.Save();
+
+            return RedirectToAction("Index", "Teacher");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditGrade(int gradeId, double gradeValue)
+        {
+            Grade grade = unitOfWork.GradeRepository.GetById(gradeId);
+            grade.GradeValue = gradeValue;
+            unitOfWork.GradeRepository.Update(grade);
+            unitOfWork.Save();
+
+            return RedirectToAction("Index", "Teacher");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteGrade(int gradeId)
+        {
+            unitOfWork.GradeRepository.Delete(gradeId);
             unitOfWork.Save();
 
             return RedirectToAction("Index", "Teacher");
