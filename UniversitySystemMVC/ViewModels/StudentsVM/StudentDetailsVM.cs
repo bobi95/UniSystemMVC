@@ -27,5 +27,9 @@ namespace UniversitySystemMVC.ViewModels.StudentsVM
         public Course Course { get; set; }
 
         public List<CoursesSubjects> CoursesSubjects { get; set; }
+
+        public Dictionary<string, object> Props { get; set; }
+
+        public string SortOrder { get; set; }
     }
 }

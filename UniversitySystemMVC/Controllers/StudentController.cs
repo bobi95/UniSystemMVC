@@ -12,6 +12,7 @@ using UniversitySystemMVC.Hasher;
 using UniversitySystemMVC.Models;
 using UniversitySystemMVC.ViewModels.StudentsVM;
 using UniversitySystemMVC.Extensions;
+using System.Text;
 
 namespace UniversitySystemMVC.Controllers
 {
@@ -271,7 +272,7 @@ namespace UniversitySystemMVC.Controllers
         #endregion DeleteStudent
 
         [AuthorizeUser(UserType = UserTypeEnum.Administrator, CheckType = true)]
-        public ActionResult Details(int? id)
+        public ActionResult Details(int? id, StudentDetailsVM model, string submitBtn)
         {
             if (!id.HasValue)
             {
@@ -285,7 +286,6 @@ namespace UniversitySystemMVC.Controllers
                 return RedirectToAction("ManageStudents", "Admin");
             }
 
-            StudentDetailsVM model = new StudentDetailsVM();
             model.Id = student.Id;
             model.FirstName = student.FirstName;
             model.LastName = student.LastName;
@@ -299,6 +299,44 @@ namespace UniversitySystemMVC.Controllers
             {
                 model.CoursesSubjects = unitOfWork.CoursesSubjectsRepository.GetStudentsDetails(student.CourseId.Value, student.Id, unitOfWork);
                 model.Course = unitOfWork.CourseRepository.GetById(student.CourseId.Value);
+            }
+
+            model.Props = new Dictionary<string, object>();
+            switch (model.SortOrder)
+            {
+                case "subject_desc":
+                    model.CoursesSubjects = model.CoursesSubjects.OrderByDescending(cs => cs.Subject.Name).ToList();
+                    break;
+                case "subject_asc":
+                default:
+                    model.CoursesSubjects = model.CoursesSubjects.OrderBy(cs => cs.Subject.Name).ToList();
+                    break;
+            }
+
+            if (submitBtn == "Export") // Export grades for single Student
+            {
+                StringBuilder sb = new StringBuilder();
+                sb.AppendLine(String.Format("Subject,Grade"));
+                foreach (var cs in model.CoursesSubjects)
+                {
+                    double total = 0.0;
+                    double avg = 0.0;
+                    if (cs.Subject != null)
+                    {
+                        
+                        foreach (var grade in cs.Subject.Grades)
+                        {
+                            total += grade.GradeValue;
+                        }
+                        avg = total / cs.Subject.Grades.Count;
+                    }
+                    
+                    sb.AppendLine(String.Format("{0},{1}", cs.Subject.Name, avg));
+                }
+
+                string filename = "students-grades-" + model.FacultyNumber + "-" + DateTime.Now.Date + ".csv"; 
+
+                return File(new System.Text.UTF8Encoding().GetBytes(sb.ToString()), "text/csv", filename);
             }
 
             return View(model);

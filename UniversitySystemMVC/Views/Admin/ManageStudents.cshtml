@@ -33,19 +33,9 @@
             {
                 <tr>
                     <td>@st.FacultyNumber</td>
-                    <td>@st.FirstName @st.LastName</td>
+                    <td>@Html.ActionLink(st.FirstName + " " + @st.LastName, "Details", "Student", new { id = st.Id }, new { target = "_blank" })</td>
                     <td>@st.Username</td>
                     <td>@st.Email</td>
-                    @*<td>
-                            @String.Join(",", st.Grades.Select(g => g.GradeValue))
-                        </td>
-                        <td>
-                            @if (st.Grades.Count > 0)
-                            {
-                                @st.Grades.Average(g => decimal.Parse(g.GradeValue))
-                            }
-
-                        </td>*@
                     <td>
                         @Html.ActionLink("Edit", "EditStudent", "Student", new { id = st.Id }, null) |
                         @Html.ActionLink("Details", "Details", "Student", new { id = st.Id }, null) |
