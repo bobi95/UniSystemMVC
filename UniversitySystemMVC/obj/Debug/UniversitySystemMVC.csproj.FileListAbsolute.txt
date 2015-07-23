@@ -112,3 +112,7 @@ C:\Users\Borislav\Desktop\UniSystemMVC\UniversitySystemMVC\obj\Debug\UniversityS
 C:\Users\Borislav\Desktop\UniSystemMVC\UniversitySystemMVC\obj\Debug\UniversitySystemMVC.csproj.GenerateResource.Cache
 C:\Users\Borislav\Desktop\UniSystemMVC\UniversitySystemMVC\obj\Debug\UniversitySystemMVC.dll
 C:\Users\Borislav\Desktop\UniSystemMVC\UniversitySystemMVC\obj\Debug\UniversitySystemMVC.pdb
+D:\UniSystemMVC\UniversitySystemMVC\obj\Debug\UniversitySystemMVC.Migrations.NewEntitiesAdded.resources
+D:\UniSystemMVC\UniversitySystemMVC\obj\Debug\UniversitySystemMVC.Migrations.ContentPropertyChanged.resources
+D:\UniSystemMVC\UniversitySystemMVC\obj\Debug\UniversitySystemMVC.Migrations.ParentCommentAdded.resources
+D:\UniSystemMVC\UniversitySystemMVC\obj\Debug\UniversitySystemMVC.Migrations.DatesAdded.resources

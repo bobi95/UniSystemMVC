@@ -119,6 +119,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\ArticleController.cs" />
     <Compile Include="Controllers\CourseController.cs" />
     <Compile Include="Controllers\GradeController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -128,6 +129,7 @@
     <Compile Include="Controllers\TitleController.cs" />
     <Compile Include="DA\AdministratorRepository.cs" />
     <Compile Include="DA\AppContext.cs" />
+    <Compile Include="DA\ArticleRepository.cs" />
     <Compile Include="DA\BaseRepository.cs" />
     <Compile Include="DA\CourseRepository.cs" />
     <Compile Include="DA\CoursesSubjectsRepository.cs" />
@@ -139,10 +141,13 @@
     <Compile Include="DA\UnitOfWork.cs" />
     <Compile Include="DA\UserRepository.cs" />
     <Compile Include="Entity\Administrator.cs" />
+    <Compile Include="Entity\Article.cs" />
     <Compile Include="Entity\BaseEntity.cs" />
+    <Compile Include="Entity\Comment.cs" />
     <Compile Include="Entity\Course.cs" />
     <Compile Include="Entity\CoursesSubjects.cs" />
     <Compile Include="Entity\Grade.cs" />
+    <Compile Include="Entity\Like.cs" />
     <Compile Include="Entity\Student.cs" />
     <Compile Include="Entity\Subject.cs" />
     <Compile Include="Entity\Teacher.cs" />
@@ -184,6 +189,22 @@
     <Compile Include="Migrations\201507171425275_NullableTitle.Designer.cs">
       <DependentUpon>201507171425275_NullableTitle.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201507231128255_NewEntitiesAdded.cs" />
+    <Compile Include="Migrations\201507231128255_NewEntitiesAdded.Designer.cs">
+      <DependentUpon>201507231128255_NewEntitiesAdded.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201507231131251_ContentPropertyChanged.cs" />
+    <Compile Include="Migrations\201507231131251_ContentPropertyChanged.Designer.cs">
+      <DependentUpon>201507231131251_ContentPropertyChanged.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201507231134516_ParentCommentAdded.cs" />
+    <Compile Include="Migrations\201507231134516_ParentCommentAdded.Designer.cs">
+      <DependentUpon>201507231134516_ParentCommentAdded.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201507231500146_DatesAdded.cs" />
+    <Compile Include="Migrations\201507231500146_DatesAdded.Designer.cs">
+      <DependentUpon>201507231500146_DatesAdded.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AuthenticationManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -192,6 +213,8 @@
     <Compile Include="ViewModels\AdminsVM\AdminsConfirmAccountVM.cs" />
     <Compile Include="ViewModels\AdminsVM\AdminsCreateAccountVM.cs" />
     <Compile Include="ViewModels\AdminsVM\AdminsDeleteAdminVM.cs" />
+    <Compile Include="ViewModels\ArticlesVM\ArticlesCreateVM.cs" />
+    <Compile Include="ViewModels\ArticlesVM\ArticlesIndexVM.cs" />
     <Compile Include="ViewModels\CoursesVM\CoursesDetailsVM.cs" />
     <Compile Include="ViewModels\PagingVM\PagingVM.cs" />
     <Compile Include="ViewModels\StudentsVM\StudentDetailsVM.cs" />
@@ -329,6 +352,8 @@
     <Content Include="Views\Teacher\Details.cshtml" />
     <Content Include="Views\Subject\Details.cshtml" />
     <Content Include="Views\Title\Details.cshtml" />
+    <Content Include="Views\Article\CreateEditArticle.cshtml" />
+    <Content Include="Views\Article\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -363,6 +388,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201507171425275_NullableTitle.resx">
       <DependentUpon>201507171425275_NullableTitle.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201507231128255_NewEntitiesAdded.resx">
+      <DependentUpon>201507231128255_NewEntitiesAdded.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201507231131251_ContentPropertyChanged.resx">
+      <DependentUpon>201507231131251_ContentPropertyChanged.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201507231134516_ParentCommentAdded.resx">
+      <DependentUpon>201507231134516_ParentCommentAdded.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201507231500146_DatesAdded.resx">
+      <DependentUpon>201507231500146_DatesAdded.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

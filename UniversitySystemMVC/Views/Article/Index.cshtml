@@ -1,0 +1,23 @@
+﻿@model UniversitySystemMVC.ViewModels.ArticlesVM.ArticlesIndexVM
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+
+<section>
+    @foreach (var a in Model.Articles)
+    {
+        <article>
+            <header>@a.Title</header>
+            <p>@a.DateCreated</p>
+            <p>@a.Content</p>
+        </article>
+    }
+</section>
