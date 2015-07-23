@@ -4,10 +4,12 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using UniversitySystemMVC.DA;
 using UniversitySystemMVC.Entity;
+using UniversitySystemMVC.Extensions;
 using UniversitySystemMVC.Filters;
 using UniversitySystemMVC.Hasher;
 using UniversitySystemMVC.Models;
@@ -161,11 +163,20 @@ namespace UniversitySystemMVC.Controllers
 
                     #region Send password to mail
                     MailMessage message = new MailMessage();
+                    message.IsBodyHtml = true;
+
                     message.Sender = new MailAddress("no-reply@unisystem.com");
                     message.To.Add(model.Email);
                     message.Subject = "Welcome to the University System";
                     message.From = new MailAddress("no-reply@unisystem.com");
-                    message.Body = "Hello Admin! Here is your password: " + password;
+
+                    StringBuilder msgBody = new StringBuilder();
+                    msgBody.AppendLine(String.Format("<h3>Hello, {0} {1}</h3>", admin.FirstName, admin.LastName));
+                    msgBody.AppendLine("<h4>Welcome to our University System!</h4>");
+                    msgBody.AppendLine(String.Format("<p>You must confirm your account: <a href='{0}'>Confirm</a></p>", Url.Action("ConfirmAccount", "Admin", new { id = admin.Id }, Request.Url.Scheme)));
+                    msgBody.AppendLine(String.Format("<p>Use this password to confirm: <strong>{0}</string></p>", password));
+                    message.Body = msgBody.ToString();
+
                     SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587);
                     smtp.EnableSsl = true;
                     smtp.UseDefaultCredentials = false;
@@ -248,7 +259,7 @@ namespace UniversitySystemMVC.Controllers
                 return RedirectToAction("NotFound", "Error");
             }
 
-            AdminsConfirmAccount model = new AdminsConfirmAccount();
+            AdminsConfirmAccountVM model = new AdminsConfirmAccountVM();
             model.Id = id.Value;
 
             return View(model);
@@ -256,7 +267,7 @@ namespace UniversitySystemMVC.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public ActionResult ConfirmAccount(AdminsConfirmAccount model)
+        public ActionResult ConfirmAccount(AdminsConfirmAccountVM model)
         {
             if (ModelState.IsValid)
             {
@@ -267,10 +278,14 @@ namespace UniversitySystemMVC.Controllers
                 {
                     if (PasswordHasher.Equals(model.Password, admin.Salt, admin.Hash))
                     {
+                        var passPhrase = PasswordHasher.Hash(model.NewPassword);
+                        admin.Hash = passPhrase.Hash;
+                        admin.Salt = passPhrase.Salt;
                         admin.IsConfirmed = true;
                         unitOfWork.AdminRepository.Update(admin);
                         unitOfWork.Save();
 
+                        TempData.FlashMessage("Your account has been confirmed. Please, login!");
                         return RedirectToAction("Login", "Account");
                     }
                     else

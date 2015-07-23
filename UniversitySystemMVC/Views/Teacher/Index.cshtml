@@ -17,7 +17,8 @@
             <th>Email</th>
             <th>Course</th>
             <th>Grades</th>
-            <th>Add grade</th>
+            <th>Final Grade</th>
+            <th>Add Grade</th>
         </tr>
 
         @foreach (var student in item.Course.Students)
@@ -40,6 +41,12 @@
                                 @Html.Raw(", ")
                             }
                         }
+                    }
+                </td>
+                <td>
+                    @if (@student.Grades.Count > 0)
+                    {
+                        <strong>@student.Grades.Where(g => g.SubjectId == item.Subject.Id).Average(g => g.GradeValue)</strong>
                     }
                 </td>
                 <td class="grade-crud">

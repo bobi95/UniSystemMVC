@@ -12,6 +12,7 @@ using UniversitySystemMVC.Hasher;
 using UniversitySystemMVC.ViewModels.TeachersVM;
 using UniversitySystemMVC.Extensions;
 using UniversitySystemMVC.Models;
+using System.Text;
 
 namespace UniversitySystemMVC.Controllers
 {
@@ -72,6 +73,9 @@ namespace UniversitySystemMVC.Controllers
                 {
                     if (PasswordHasher.Equals(model.Password, teacher.Salt, teacher.Hash))
                     {
+                        var passPhrase = PasswordHasher.Hash(model.NewPassword);
+                        teacher.Hash = passPhrase.Hash;
+                        teacher.Salt = passPhrase.Salt;
                         teacher.IsConfirmed = true;
                         unitOfWork.TeacherRepository.Update(teacher);
                         unitOfWork.Save();
@@ -191,11 +195,20 @@ namespace UniversitySystemMVC.Controllers
 
                     #region Send password to mail
                     MailMessage message = new MailMessage();
+                    message.IsBodyHtml = true;
+
                     message.Sender = new MailAddress("no-reply@unisystem.com");
                     message.To.Add(model.Email);
                     message.Subject = "Welcome to the University System";
                     message.From = new MailAddress("no-reply@unisystem.com");
-                    message.Body = "Hello Teacher! Here is your password: " + password;
+
+                    StringBuilder msgBody = new StringBuilder();
+                    msgBody.AppendLine(String.Format("<h3>Hello, {0} {1}</h3>", teacher.FirstName, teacher.LastName));
+                    msgBody.AppendLine("<h4>Welcome to our University System!</h4>");
+                    msgBody.AppendLine(String.Format("<p>You must confirm your account: <a href='{0}'>Confirm</a></p>", Url.Action("ConfirmAccount", "Teacher", new { id = teacher.Id }, Request.Url.Scheme)));
+                    msgBody.AppendLine(String.Format("<p>Use this password to confirm: <strong>{0}</string></p>", password));
+                    message.Body = msgBody.ToString();
+
                     SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587);
                     smtp.EnableSsl = true;
                     smtp.UseDefaultCredentials = false;

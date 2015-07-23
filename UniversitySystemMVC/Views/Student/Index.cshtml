@@ -4,9 +4,9 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Welcome Student. This is your account</h2>
+<h2>Welcome, @Model.Student.FirstName @Model.Student.LastName!</h2>
 
-<h3>Course: @Model.Course.Name</h3>
+<h3>Course: <strong>@Model.Course.Name</strong></h3>
 
 <table class="table">
     <tr>

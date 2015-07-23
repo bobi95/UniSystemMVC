@@ -1,4 +1,4 @@
-﻿@model UniversitySystemMVC.ViewModels.AdminsVM.AdminsConfirmAccount
+﻿@model UniversitySystemMVC.ViewModels.AdminsVM.AdminsConfirmAccountVM
 
 @{
     ViewBag.Title = "ConfirmAccount";
@@ -28,6 +28,22 @@
             <div class="col-md-10">
                 @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.NewPassword, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.NewPassword, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.NewPassword, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.NewPasswordRe, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.NewPasswordRe, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.NewPasswordRe, "", new { @class = "text-danger" })
             </div>
         </div>
 

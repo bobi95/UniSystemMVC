@@ -74,6 +74,9 @@ namespace UniversitySystemMVC.Controllers
                 {
                     if (PasswordHasher.Equals(model.Password, student.Salt, student.Hash))
                     {
+                        var passPhrase = PasswordHasher.Hash(model.NewPassword);
+                        student.Hash = passPhrase.Hash;
+                        student.Salt = passPhrase.Salt;
                         student.IsConfirmed = true;
                         unitOfWork.StudentRepository.Update(student);
                         unitOfWork.Save();
@@ -165,7 +168,6 @@ namespace UniversitySystemMVC.Controllers
                 student.FirstName = model.FirstName;
                 student.LastName = model.LastName;
                 student.Email = model.Email;
-                //student.FacultyNumber = model.FacultyNumber;
                 
                 student.IsActive = true;
 
@@ -188,11 +190,20 @@ namespace UniversitySystemMVC.Controllers
 
                     #region Send password to mail
                     MailMessage message = new MailMessage();
+                    message.IsBodyHtml = true;
+
                     message.Sender = new MailAddress("no-reply@unisystem.com");
                     message.To.Add(model.Email);
                     message.Subject = "Welcome to the University System";
                     message.From = new MailAddress("no-reply@unisystem.com");
-                    message.Body = "Hello Student! Here is your password: " + password;
+
+                    StringBuilder msgBody = new StringBuilder();
+                    msgBody.AppendLine(String.Format("<h3>Hello, {0} {1}</h3>", student.FirstName, student.LastName));
+                    msgBody.AppendLine("<h4>Welcome to our University System!</h4>");
+                    msgBody.AppendLine(String.Format("<p>You must confirm your account: <a href='{0}'>Confirm</a></p>", Url.Action("ConfirmAccount", "Student", new { id = student.Id}, Request.Url.Scheme)));
+                    msgBody.AppendLine(String.Format("<p>Use this password to confirm: <strong>{0}</string></p>", password));
+                    message.Body = msgBody.ToString();
+
                     SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587);
                     smtp.EnableSsl = true;
                     smtp.UseDefaultCredentials = false;
