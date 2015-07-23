@@ -17,6 +17,8 @@ namespace UniversitySystemMVC.Entity
 
         public DateTime DateCreated { get; set; }
 
+        public DateTime DateModified { get; set; }
+
         public virtual Subject Subject { get; set; }
 
         public virtual Teacher Teacher { get; set; }

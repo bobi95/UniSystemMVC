@@ -17,6 +17,7 @@ namespace UniversitySystemMVC.DA
         private GradeRepository gradeRepo;
         private SubjectRepository subjectRepo;
         private CoursesSubjectsRepository coursesSubjectRepo;
+        private ArticleRepository articleRepo;
 
         private AppContext context;
 
@@ -118,6 +119,18 @@ namespace UniversitySystemMVC.DA
                     coursesSubjectRepo = new CoursesSubjectsRepository(context);
                 }
                 return coursesSubjectRepo;
+            }
+        }
+
+        public ArticleRepository ArticleRepository
+        {
+            get
+            {
+                if (articleRepo == null)
+                {
+                    articleRepo = new ArticleRepository(context);
+                }
+                return articleRepo;
             }
         }
 

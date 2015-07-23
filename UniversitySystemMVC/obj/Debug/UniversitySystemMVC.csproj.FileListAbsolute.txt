@@ -115,3 +115,4 @@ C:\Users\Borislav\Desktop\UniSystemMVC\UniversitySystemMVC\obj\Debug\UniversityS
 D:\UniSystemMVC\UniversitySystemMVC\obj\Debug\UniversitySystemMVC.Migrations.NewEntitiesAdded.resources
 D:\UniSystemMVC\UniversitySystemMVC\obj\Debug\UniversitySystemMVC.Migrations.ContentPropertyChanged.resources
 D:\UniSystemMVC\UniversitySystemMVC\obj\Debug\UniversitySystemMVC.Migrations.ParentCommentAdded.resources
+D:\UniSystemMVC\UniversitySystemMVC\obj\Debug\UniversitySystemMVC.Migrations.DatesAdded.resources

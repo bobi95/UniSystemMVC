@@ -15,6 +15,10 @@ namespace UniversitySystemMVC.Entity
 
         public string Content { get; set; }
 
+        public DateTime DateCreated { get; set; }
+
+        public DateTime DateModified { get; set; }
+
         public int? CommentId { get; set; }
 
         public Article Article { get; set; }

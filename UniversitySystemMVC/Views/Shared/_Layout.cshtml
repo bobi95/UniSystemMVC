@@ -24,6 +24,10 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                    @if (UniversitySystemMVC.Models.AuthenticationManager.IsStudent || UniversitySystemMVC.Models.AuthenticationManager.IsTeacher)
+                    {
+                        <li>@Html.ActionLink("Articles", "Index", "Article")</li>
+                    }
                 </ul>
                 @Html.Partial("_LoginPanel")
             </div>
