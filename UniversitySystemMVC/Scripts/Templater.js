@@ -496,12 +496,60 @@ var Templater = (function() {
         return result;
     }
 
+    /**
+     * Creates a raw js string, ready for use in .js files.
+     * Uses JSSerializer!
+     * 
+     * @param  {Array}  runCollection The template's run collection
+     * @param  {Object} funcs         The template's functions
+     * @param  {Object} subTemplates  The template's sub-templates
+     * @return {String}               Raw Javascript
+     */
+    function _rawTemplate(runCollection, funcs, subTemplates) {
 
+        if (!JSSerializer) {
+            throw new Error('JSSerializer missing!');
+        }
+
+        var result = [];
+
+        result.push('Templater.blankTemplate(');
+        result.push(JSSerializer.data(runCollection));
+        result.push(',');
+        result.push(JSSerializer.data(funcs));
+        result.push(',');
+        result.push('{');
+
+        var subTs = [];
+
+        for (var key in subTemplates) {
+
+            subTs.push(key + ': ' + _rawTemplate(subTemplates[key].runCollection, subTemplates[key].funcs, subTemplates[key].subTemplates));
+        }
+
+        result.push(subTs.join(','));
+        result.push('})');
+
+        return result.join('');
+    }
 
     var publicAPI = {
+
+        /**
+         * Compiles the given html to a Template object
+         * @param  {String}   html Html to be compiled
+         * @return {Template}      Result of compilation
+         */
         compile: function(html) {
             return _compile(html);
         },
+
+        /**
+         * Runs the template with the given VM
+         * @param  {Template} template Template to run
+         * @param  {Object}   context  View Model
+         * @return {String}            Executed template's html
+         */
         run: function(template, context) {
             var result = [];
 
@@ -515,7 +563,44 @@ var Templater = (function() {
 
             return result.join('');
         },
-        demo: function() {
+
+        /**
+         * Create a new Template
+         * @param  {Array}    runCollection Template run collection
+         * @param  {Object}   funcs         Template functions
+         * @param  {Object}   subTemplates  Sub-templates
+         * @return {Template}               New template
+         */
+        newTemplate: function(runCollection, funcs, subTemplates) {
+
+            return new Template(runCollection, funcs, subTemplates);
+
+        },
+
+        /**
+         * Generate a raw JS vertion of the template
+         * @param  {Template} template Template
+         * @param  {String} name     Variable name to be automatically given
+         * @param  {Boolean} download Redirect to a javascript file
+         * @return {String}          Raw javascript
+         */
+        raw: function(template, name, download) {
+
+            var result = 'var Templater=Templater || {};Templater.' + name + '=' + _rawTemplate(template.runCollection, template.funcs, template.subTemplates) + ';';
+
+            if (download) {
+                window.open('data:text/javascript;charset=utf-8,' + escape(result));
+            } else {
+                return result;
+            }
+
+        },
+
+        /**
+         * Get the demo template
+         * @return {Template} Demo template
+         */
+        demoTemplate: function() {
             var html =
             '<p>This is the {{template_name}} template. <br>' +
             'Its sub-template is going to execute {{number}} number of times:<br>' +
@@ -531,17 +616,21 @@ var Templater = (function() {
                 return result;
             });
 
-            var vm = {
+            return template;
+       },
+
+       /**
+        * Get the demo VM
+        * @return {Object} Demo View Model
+        */
+       demoView: function() {
+            return {
                 template_name: "My Template",
                 number: 10,
                 subtemplate: {
                     time: 1
                 }
             };
-
-            var result = Templater.run(template, vm);
-
-            document.getElementsByTagName('body')[0].innerHTML = result;
        }
     };
 
