@@ -19,7 +19,7 @@ namespace UniversitySystemMVC.Extensions
             sb.Append("1");
 
             int idNumber = 1;
-            var students = unitOfWork.StudentRepository.GetAll();
+            var students = unitOfWork.StudentRepository.GetAll(null, false);
             if (students.Count() > 0)
             {
                 foreach (var s in students)

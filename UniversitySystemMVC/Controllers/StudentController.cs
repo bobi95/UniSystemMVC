@@ -114,8 +114,7 @@ namespace UniversitySystemMVC.Controllers
                                 new SelectListItem
                                 {
                                     Value = x.Id.ToString(),
-                                    Text = x.Name,
-                                    //Selected = x.Id==
+                                    Text = x.Name
                                 });
 
             return new SelectList(courses, "Value", "Text");

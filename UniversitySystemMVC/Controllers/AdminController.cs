@@ -104,18 +104,19 @@ namespace UniversitySystemMVC.Controllers
         {
             if (!id.HasValue)
             {
-                return RedirectToAction("Index");
+                return RedirectToAction("ManageAdmins");
             }
 
             Administrator admin = unitOfWork.AdminRepository.GetById(id.Value);
+
             if (admin == null)
             {
-                return RedirectToAction("NotFound", "Error");
+                return RedirectToAction("ManageAdmins");
             }
 
             if (admin.Id != UniversitySystemMVC.Models.AuthenticationManager.LoggedUser.Id)
             {
-                return RedirectToAction("NoPermission", "Error");
+                return RedirectToAction("ManageAdmins");
             }
 
             AdminsCreateAccountVM model = new AdminsCreateAccountVM();

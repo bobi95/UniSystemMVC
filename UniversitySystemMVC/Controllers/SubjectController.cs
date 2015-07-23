@@ -97,7 +97,6 @@ namespace UniversitySystemMVC.Controllers
 						courses.Add(s);
 					}
 				}
-
 				unitOfWork.CoursesSubjectsRepository.UpdateTable(subject, courses);
 
 				return RedirectToAction("ManageSubjects", "Admin");
@@ -195,10 +194,13 @@ namespace UniversitySystemMVC.Controllers
 
 				}).ToArray();
 
+				double val = 0.0;
 				if (studentaverages.Length > 0)
 				{
-					model.SubjectAverages.Add(cs.Course.Id, studentaverages.Average());
+					val = studentaverages.Average();
 				}
+				model.SubjectAverages.Add(cs.Course.Id, val);
+				
 			});
 
 			#region SortingFiltering

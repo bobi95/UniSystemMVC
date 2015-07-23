@@ -112,11 +112,17 @@ namespace UniversitySystemMVC.DA
 
         public void UpdateTable(Subject subject, IEnumerable<Course> courses)
         {
-            var all = dbSet.Where(x => x.SubjectId == subject.Id).ToList();
-            dbSet.RemoveRange(all.Where(r => courses.FirstOrDefault(x => x.Id == r.CourseId) == null));
+            var all = dbSet.Where(x => x.SubjectId == subject.Id).Include(x => x.Teachers).ToList();
+            dbSet.RemoveRange(
+                all.Where(r => courses.FirstOrDefault(x => x.Id == r.CourseId) == null)).Select(s =>
+                {
+                    s.Teachers.Clear();
+                    return s;
+                }
+                );
 
             var newEntries = courses.Where(x => all.FirstOrDefault(y => y.CourseId == x.Id) == null);
-            dbSet.AddRange(newEntries.Select<Course, CoursesSubjects>(x => new CoursesSubjects() { SubjectId = subject.Id, CourseId = x.Id }));
+            dbSet.AddRange(newEntries.Select<Course, CoursesSubjects>(x => new CoursesSubjects() { CourseId = x.Id, SubjectId = subject.Id }));
 
             context.SaveChanges();
         }
