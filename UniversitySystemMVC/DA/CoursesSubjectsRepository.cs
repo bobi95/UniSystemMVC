@@ -18,8 +18,14 @@ namespace UniversitySystemMVC.DA
 
             if (pullTeachers)
             {
-                query = query.Include(x => x.Teachers);
-                result.ForEach(cs => cs.Teachers = cs.Teachers.Where(t => t.IsActive).ToList());
+                result = query.Include(x => x.Teachers).ToList();
+
+                result.ForEach( cs => {
+                    if (cs.Teachers != null)
+                    {
+                        cs.Teachers = cs.Teachers.Where(t => t.IsActive).ToList();    
+                    }
+                });
             }
 
             return result;
@@ -106,11 +112,17 @@ namespace UniversitySystemMVC.DA
 
         public void UpdateTable(Subject subject, IEnumerable<Course> courses)
         {
-            var all = dbSet.Where(x => x.SubjectId == subject.Id).ToList();
-            dbSet.RemoveRange(all.Where(r => courses.FirstOrDefault(x => x.Id == r.CourseId) == null));
+            var all = dbSet.Where(x => x.SubjectId == subject.Id).Include(x => x.Teachers).ToList();
+            dbSet.RemoveRange(
+                all.Where(r => courses.FirstOrDefault(x => x.Id == r.CourseId) == null)).Select(s =>
+                {
+                    s.Teachers.Clear();
+                    return s;
+                }
+                );
 
             var newEntries = courses.Where(x => all.FirstOrDefault(y => y.CourseId == x.Id) == null);
-            dbSet.AddRange(newEntries.Select<Course, CoursesSubjects>(x => new CoursesSubjects() { SubjectId = subject.Id, CourseId = x.Id }));
+            dbSet.AddRange(newEntries.Select<Course, CoursesSubjects>(x => new CoursesSubjects() { CourseId = x.Id, SubjectId = subject.Id }));
 
             context.SaveChanges();
         }

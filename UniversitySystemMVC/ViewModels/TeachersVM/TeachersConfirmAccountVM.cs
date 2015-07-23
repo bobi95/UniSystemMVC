@@ -15,5 +15,12 @@ namespace UniversitySystemMVC.ViewModels.TeachersVM
 
         [Required]
         public string Password { get; set; }
+
+        [Required]
+        public string NewPassword { get; set; }
+
+        [Required]
+        [Compare("NewPassword")]
+        public string NewPasswordRe { get; set; }
     }
 }

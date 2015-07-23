@@ -16,9 +16,14 @@ namespace UniversitySystemMVC.DA
             return GetAll().Where(u => u.Username == username).FirstOrDefault();
         }
 
-        public override IEnumerable<T> GetAll(Expression<Func<T, bool>> predicate = null)
+        public IEnumerable<T> GetAll(Expression<Func<T, bool>> predicate = null, bool getActive = true)
         {
-            return base.GetAll(predicate).Where(u => u.IsActive);
+            if (getActive)
+            {
+                return base.GetAll(predicate).Where(u => u.IsActive);
+            }
+
+            return base.GetAll(predicate);
         }
     }
 }

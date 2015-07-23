@@ -12,6 +12,7 @@ using UniversitySystemMVC.Hasher;
 using UniversitySystemMVC.Models;
 using UniversitySystemMVC.ViewModels.StudentsVM;
 using UniversitySystemMVC.Extensions;
+using System.Text;
 
 namespace UniversitySystemMVC.Controllers
 {
@@ -73,6 +74,9 @@ namespace UniversitySystemMVC.Controllers
                 {
                     if (PasswordHasher.Equals(model.Password, student.Salt, student.Hash))
                     {
+                        var passPhrase = PasswordHasher.Hash(model.NewPassword);
+                        student.Hash = passPhrase.Hash;
+                        student.Salt = passPhrase.Salt;
                         student.IsConfirmed = true;
                         unitOfWork.StudentRepository.Update(student);
                         unitOfWork.Save();
@@ -110,8 +114,7 @@ namespace UniversitySystemMVC.Controllers
                                 new SelectListItem
                                 {
                                     Value = x.Id.ToString(),
-                                    Text = x.Name,
-                                    //Selected = x.Id==
+                                    Text = x.Name
                                 });
 
             return new SelectList(courses, "Value", "Text");
@@ -164,7 +167,6 @@ namespace UniversitySystemMVC.Controllers
                 student.FirstName = model.FirstName;
                 student.LastName = model.LastName;
                 student.Email = model.Email;
-                //student.FacultyNumber = model.FacultyNumber;
                 
                 student.IsActive = true;
 
@@ -187,11 +189,20 @@ namespace UniversitySystemMVC.Controllers
 
                     #region Send password to mail
                     MailMessage message = new MailMessage();
+                    message.IsBodyHtml = true;
+
                     message.Sender = new MailAddress("no-reply@unisystem.com");
                     message.To.Add(model.Email);
                     message.Subject = "Welcome to the University System";
                     message.From = new MailAddress("no-reply@unisystem.com");
-                    message.Body = "Hello Student! Here is your password: " + password;
+
+                    StringBuilder msgBody = new StringBuilder();
+                    msgBody.AppendLine(String.Format("<h3>Hello, {0} {1}</h3>", student.FirstName, student.LastName));
+                    msgBody.AppendLine("<h4>Welcome to our University System!</h4>");
+                    msgBody.AppendLine(String.Format("<p>You must confirm your account: <a href='{0}'>Confirm</a></p>", Url.Action("ConfirmAccount", "Student", new { id = student.Id}, Request.Url.Scheme)));
+                    msgBody.AppendLine(String.Format("<p>Use this password to confirm: <strong>{0}</string></p>", password));
+                    message.Body = msgBody.ToString();
+
                     SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587);
                     smtp.EnableSsl = true;
                     smtp.UseDefaultCredentials = false;
@@ -271,7 +282,7 @@ namespace UniversitySystemMVC.Controllers
         #endregion DeleteStudent
 
         [AuthorizeUser(UserType = UserTypeEnum.Administrator, CheckType = true)]
-        public ActionResult Details(int? id)
+        public ActionResult Details(int? id, StudentDetailsVM model, string submitBtn)
         {
             if (!id.HasValue)
             {
@@ -285,7 +296,6 @@ namespace UniversitySystemMVC.Controllers
                 return RedirectToAction("ManageStudents", "Admin");
             }
 
-            StudentDetailsVM model = new StudentDetailsVM();
             model.Id = student.Id;
             model.FirstName = student.FirstName;
             model.LastName = student.LastName;
@@ -299,6 +309,44 @@ namespace UniversitySystemMVC.Controllers
             {
                 model.CoursesSubjects = unitOfWork.CoursesSubjectsRepository.GetStudentsDetails(student.CourseId.Value, student.Id, unitOfWork);
                 model.Course = unitOfWork.CourseRepository.GetById(student.CourseId.Value);
+            }
+
+            model.Props = new Dictionary<string, object>();
+            switch (model.SortOrder)
+            {
+                case "subject_desc":
+                    model.CoursesSubjects = model.CoursesSubjects.OrderByDescending(cs => cs.Subject.Name).ToList();
+                    break;
+                case "subject_asc":
+                default:
+                    model.CoursesSubjects = model.CoursesSubjects.OrderBy(cs => cs.Subject.Name).ToList();
+                    break;
+            }
+
+            if (submitBtn == "Export") // Export grades for single Student
+            {
+                StringBuilder sb = new StringBuilder();
+                sb.AppendLine(String.Format("Subject,Grade"));
+                foreach (var cs in model.CoursesSubjects)
+                {
+                    double total = 0.0;
+                    double avg = 0.0;
+                    if (cs.Subject != null)
+                    {
+                        
+                        foreach (var grade in cs.Subject.Grades)
+                        {
+                            total += grade.GradeValue;
+                        }
+                        avg = total / cs.Subject.Grades.Count;
+                    }
+                    
+                    sb.AppendLine(String.Format("{0},{1}", cs.Subject.Name, avg));
+                }
+
+                string filename = "students-grades-" + model.FacultyNumber + "-" + DateTime.Now.Date + ".csv"; 
+
+                return File(new System.Text.UTF8Encoding().GetBytes(sb.ToString()), "text/csv", filename);
             }
 
             return View(model);

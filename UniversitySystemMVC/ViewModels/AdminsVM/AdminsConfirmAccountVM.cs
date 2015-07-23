@@ -6,7 +6,7 @@ using System.Web;
 
 namespace UniversitySystemMVC.ViewModels.AdminsVM
 {
-    public class AdminsConfirmAccount
+    public class AdminsConfirmAccountVM
     {
         public int Id { get; set; }
 
@@ -15,5 +15,12 @@ namespace UniversitySystemMVC.ViewModels.AdminsVM
 
         [Required]
         public string Password { get; set; }
+
+        [Required]
+        public string NewPassword { get; set; }
+
+        [Required]
+        [Compare("NewPassword")]
+        public string NewPasswordRe { get; set; }
     }
 }

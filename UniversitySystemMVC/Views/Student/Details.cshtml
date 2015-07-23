@@ -4,17 +4,17 @@
     ViewBag.Title = "Details";
 }
 
-<h2>Details</h2>
+<h2>@Model.FacultyNumber - @Model.FirstName @Model.LastName - Details</h2>
 
 <div>
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.Username)
+            @Html.DisplayNameFor(model => model.FacultyNumber)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Username)
+            @Html.DisplayFor(model => model.FacultyNumber)
         </dd>
 
         <dt>
@@ -31,6 +31,14 @@
 
         <dd>
             @Html.DisplayFor(model => model.LastName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Username)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Username)
         </dd>
 
         <dt>
@@ -58,14 +66,6 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.FacultyNumber)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.FacultyNumber)
-        </dd>
-
-        <dt>
             Course
         </dt>
         <dd>
@@ -76,9 +76,20 @@
             Subjects
         </dt>
         <dd>
+            @using (Html.BeginForm("Details", "Student", new RouteValueDictionary(Model.Props), FormMethod.Get))
+            {
+                <p>
+                    <input type="submit" name="submitBtn" value="Export" class="btn btn-default" />
+                </p>
+            }
             <table class="table">
                 <tr>
-                    <th>Subject</th>
+                    <th>
+                        @{
+                            Model.Props["sortOrder"] = Model.SortOrder == "subject_asc" ? "subject_desc" : "subject_asc";
+                            @Html.ActionLink("Subjects", "Details", "Student", new RouteValueDictionary(Model.Props), null)
+                        }
+                    </th>
                     <th>Grades</th>
                     <th>Final grade</th>
                     <th>Teachers</th>
