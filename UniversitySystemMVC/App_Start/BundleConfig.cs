@@ -26,7 +26,7 @@ namespace UniversitySystemMVC
 
             bundles.Add(new ScriptBundle("~/bundles/unisystem").Include(
                     "~/Scripts/UniSystem.Ajax.js",
-                    "~/Scripts/UniSystem.Templater.js"));
+                    "~/Scripts/Templater.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
