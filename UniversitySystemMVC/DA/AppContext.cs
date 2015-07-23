@@ -22,6 +22,9 @@ namespace UniversitySystemMVC.DA
         public DbSet<Subject> Subjects { get; set; }
         public DbSet<Grade> Grades { get; set; }
         public DbSet<CoursesSubjects> CoursesSubjects { get; set; }
+        public DbSet<Article> Articles { get; set; }
+        public DbSet<Comment> Comments { get; set; }
+        public DbSet<Like> Likes { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -51,24 +54,6 @@ namespace UniversitySystemMVC.DA
                 .HasMany(s => s.CoursesSubjects)
                 .WithRequired(cs => cs.Subject)
                 .WillCascadeOnDelete(false);
-
-            //modelBuilder.Entity<Administrator>().Map(m =>
-            //{
-            //    m.MapInheritedProperties();
-            //    m.ToTable("Administrators");
-            //});
-
-            //modelBuilder.Entity<Student>().Map(m =>
-            //{
-            //    m.MapInheritedProperties();
-            //    m.ToTable("Students");
-            //});
-
-            //modelBuilder.Entity<Teacher>().Map(m =>
-            //{
-            //    m.MapInheritedProperties();
-            //    m.ToTable("Teachers");
-            //});
         }
     }
 }

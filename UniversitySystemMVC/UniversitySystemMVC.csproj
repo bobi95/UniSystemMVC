@@ -139,10 +139,13 @@
     <Compile Include="DA\UnitOfWork.cs" />
     <Compile Include="DA\UserRepository.cs" />
     <Compile Include="Entity\Administrator.cs" />
+    <Compile Include="Entity\Article.cs" />
     <Compile Include="Entity\BaseEntity.cs" />
+    <Compile Include="Entity\Comment.cs" />
     <Compile Include="Entity\Course.cs" />
     <Compile Include="Entity\CoursesSubjects.cs" />
     <Compile Include="Entity\Grade.cs" />
+    <Compile Include="Entity\Like.cs" />
     <Compile Include="Entity\Student.cs" />
     <Compile Include="Entity\Subject.cs" />
     <Compile Include="Entity\Teacher.cs" />
@@ -183,6 +186,18 @@
     <Compile Include="Migrations\201507171425275_NullableTitle.cs" />
     <Compile Include="Migrations\201507171425275_NullableTitle.Designer.cs">
       <DependentUpon>201507171425275_NullableTitle.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201507231128255_NewEntitiesAdded.cs" />
+    <Compile Include="Migrations\201507231128255_NewEntitiesAdded.Designer.cs">
+      <DependentUpon>201507231128255_NewEntitiesAdded.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201507231131251_ContentPropertyChanged.cs" />
+    <Compile Include="Migrations\201507231131251_ContentPropertyChanged.Designer.cs">
+      <DependentUpon>201507231131251_ContentPropertyChanged.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201507231134516_ParentCommentAdded.cs" />
+    <Compile Include="Migrations\201507231134516_ParentCommentAdded.Designer.cs">
+      <DependentUpon>201507231134516_ParentCommentAdded.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AuthenticationManager.cs" />
@@ -363,6 +378,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201507171425275_NullableTitle.resx">
       <DependentUpon>201507171425275_NullableTitle.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201507231128255_NewEntitiesAdded.resx">
+      <DependentUpon>201507231128255_NewEntitiesAdded.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201507231131251_ContentPropertyChanged.resx">
+      <DependentUpon>201507231131251_ContentPropertyChanged.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201507231134516_ParentCommentAdded.resx">
+      <DependentUpon>201507231134516_ParentCommentAdded.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
