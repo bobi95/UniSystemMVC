@@ -16,46 +16,77 @@
     {
         <article>
             <header>
-                <h2 class="pull-left">@a.Title</h2>
-                
+                <h2 class="pull-left">@Html.ActionLink(@a.Title, "Read", "Article", new { id = @a.Id }, null)</h2>
+
                 @if (UniversitySystemMVC.Models.AuthenticationManager.IsTeacher && (a.Teacher.Id == UniversitySystemMVC.Models.AuthenticationManager.LoggedUser.Id))
                 {
                     <div class="pull-right">
                         @Html.ActionLink("Edit", "EditArticle", "Article", new { id = @a.Id }, null) |
-                        <a href="#" data-toggle="modal"  data-target="#article-delete" data-article="@a.Id">Delete</a>
+                        <a href="#" data-toggle="modal" data-target="#article-delete" data-article="@a.Id">Delete</a>
                     </div>
                 }
             </header>
             <h4>@a.Subject.Name</h4>
-            <p class="article-date">@a.DateCreated</p>
+            <p class="article-date">Created: @a.DateCreated</p>
             <p class="article-content">@a.Content</p>
+            @Html.ActionLink("Read More", "Read", "Article", new { id = @a.Id }, null)
+
+            <br />
+
+
+            <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#comment-container-@a.Id" aria-expanded="false">
+                Show Comments
+            </button>
+            <div class="collapse comment-container" id="comment-container-@a.Id">
+                <div class="well">
+
+                    <div class="comments">
+                        <h4><span class="ui-icon ui-icon-comment pull-left"></span> Comment Title</h4>
+                        <p class="comment-date">datetime</p>
+                        <p class="comment-content">content</p>
+                    </div>
+
+                    <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#comment-add-@a.Id" aria-expanded="false">
+                        Add Comment
+                    </button>
+
+                    <div class="collapse comment-container" id="comment-add-@a.Id">
+                        @using (Html.BeginForm("CreateComment", "Comment", new { articleId = @a.Id }, FormMethod.Post, null))
+                        {
+                            <textarea></textarea>
+                            <input type="submit" class="btn btn-primary" />
+                        }
+                    </div>
+                </div>
+            </div>
+
         </article>
     }
 </section>
 
-
-<!-- Modal -->
+<!-- Modal Delete Article -->
 <div class="modal fade" id="article-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog modal-sm" role="document">
 
         <div class="modal-content">
-                @Html.AntiForgeryToken()
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">Delete Article</h4>
-                </div>
-                <div class="modal-body">
-                    Are you sure?
-                </div>
-            
+            @Html.AntiForgeryToken()
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Delete Article</h4>
+            </div>
+            <div class="modal-body">
+                Are you sure?
+            </div>
+
             @using (Html.BeginForm("DeleteArticle", "Article", FormMethod.Post, new { id = "form-delete-article" }))
             {
-                @Html.AntiForgeryToken()
-                <input type="hidden" name="articleId" class="articleId" value="" />
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="articleId" class="articleId" value="" />
             }
 
             <div class="modal-footer">
                 <button id="delete-btn" type="button" class="btn btn-danger">Delete Article</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
 
         </div>

@@ -1,0 +1,87 @@
+﻿@model UniversitySystemMVC.ViewModels.ArticlesVM.ArticlesReadVM
+
+@{
+    ViewBag.Title = "Read";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>@Model.User.FirstName @Model.User.LastName @Model.User.Id</h1>
+
+<h2>@Model.Title</h2>
+
+<section id="articles" class="row">
+    <article>
+        <header>
+            <h2>@Model.Title</h2>
+            <p class="article-date">Created: @Model.DateCreated</p>
+            <p class="article-date">Last modified: @Model.DateModified</p>
+        </header>
+
+        <p class="article-content">@Model.Content</p>
+
+        <div class="comment-container" id="comment-container-@Model.Id">
+            <div class="well">
+
+                <div class="comments" id="comments">
+                    <h4>Comments</h4>
+                    @foreach (var c in Model.Comments)
+                    {
+                        <div class="comment-entry" id="@c.Id">
+                            <h5><span class="ui-icon ui-icon-comment pull-left"></span><strong>@c.Title</strong></h5>
+                            <p class="comment-creator">Added by: @Model.User.FirstName @Model.User.LastName</p>
+                            <p class="comment-date">Created: @c.DateCreated</p>
+                            <p class="comment-date">Last modified:  @c.DateModified</p>
+
+                            <p class="comment-content">@c.Content</p>
+                        </div>
+                    }
+                </div>
+
+                <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#comment-add-@Model.Id" aria-expanded="false">
+                    Add Comment
+                </button>
+
+                <div class="collapse comment-container" id="comment-add-@Model.Id">
+                    <h3>Add a comment</h3>
+                    @using (Ajax.BeginForm("CreateComment", "Comment", new AjaxOptions { InsertionMode = InsertionMode.InsertAfter, UpdateTargetId = "comments" }))
+                    {
+                        @Html.TextBox("Title", "Enter title", new { @class = "form-control" })
+                        @Html.TextArea("Content", "Enter content", new { @class = "form-control" })
+                        @Html.HiddenFor(model => model.Id)
+                        @Html.Hidden("UserId", Model.User.Id)
+                        @Html.Hidden("UserType", UniversitySystemMVC.Models.AuthenticationManager.UserType)
+                        
+
+                        @*<textarea class="form-control"></textarea>*@
+                        <input type="submit" class="btn btn-block add-comment-btn" value="Add comment" id="submit-comment" />
+                    }
+                    
+                </div>
+            </div>
+        </div>
+
+    </article>
+</section>
+
+<script>
+    $(function () {
+        //$('#')
+        //var data = { title = }
+        alert('asdasd');
+        document.getElementById('submit-comment').addEventListener('click', function (e) {
+            var data = { id = @Model.Id, title = @Model.Title, content = @Model.Content }
+            UniSystem.Ajax.get(@Url.Action("CreateComment"), data, function(json) {
+                json = JSON.parse(json);
+                //var appendComment = data.title
+                <div class="co@*mment-entry" id="@c.Id">
+                            <h5><span class="ui-icon ui-icon-comment pull-left"></span><strong>@c.Title</strong></h5>
+                            <p class="comment-creator">Added by: @Model.User.FirstName @Model.User.LastName</p>
+                            <p class="comment-date">Created: @c.DateCreated</p>
+                            <p class="comment-date">Last modified:  @c.DateModified</p>
+
+                            <p class="comment-content">@c.Content</p>
+                        </div>*@
+            });
+        });
+    })
+</script>

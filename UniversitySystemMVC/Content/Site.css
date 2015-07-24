@@ -84,30 +84,52 @@ textarea {
     margin: 22px 0;
     background-color: rgb(250, 242, 255);
 }
+
     #articles article header {
         border-bottom: 1px solid #ccc;
     }
-    #articles article header:after {
-        content: "";
-        clear: both;
-        display: block;
-    }
+
+        #articles article header:after {
+            content: "";
+            clear: both;
+            display: block;
+        }
+
         #articles article header h2 {
             font-size: 168%;
-            
             padding-bottom: 4px;
             margin-top: 0;
         }
 
-    #articles article .article-date {
+    #articles article .article-date, .comment-date {
         font-style: italic;
     }
-    #articles article .article-content {
 
-    }
-    #articles article .article-content::first-letter {
+    #articles article .article-content::first-letter, .comment-content::first-letter {
         font-weight: bold;
         font-size: 250%;
         font-family: 'Times New Roman';
         padding: 3px;
     }
+
+.comment-date {
+    font-size: 11px;
+}
+
+.comments h4 {
+    margin-top: 0;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #ccc;
+}
+
+.comment-entry {
+    border-bottom: 1px solid #ccc;
+}
+
+.comment-container textarea {
+    max-width: 50%!important;
+}
+.add-comment-btn {
+    margin-top: 12px;
+    padding: 6px 20px;
+}

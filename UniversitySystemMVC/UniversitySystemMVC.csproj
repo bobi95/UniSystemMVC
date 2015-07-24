@@ -120,6 +120,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\ArticleController.cs" />
+    <Compile Include="Controllers\CommentController.cs" />
     <Compile Include="Controllers\CourseController.cs" />
     <Compile Include="Controllers\GradeController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -131,6 +132,7 @@
     <Compile Include="DA\AppContext.cs" />
     <Compile Include="DA\ArticleRepository.cs" />
     <Compile Include="DA\BaseRepository.cs" />
+    <Compile Include="DA\CommentRepository.cs" />
     <Compile Include="DA\CourseRepository.cs" />
     <Compile Include="DA\CoursesSubjectsRepository.cs" />
     <Compile Include="DA\GradeRepository.cs" />
@@ -205,6 +207,10 @@
     <Compile Include="Migrations\201507231500146_DatesAdded.Designer.cs">
       <DependentUpon>201507231500146_DatesAdded.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201507241118090_CommentTitleAdded.cs" />
+    <Compile Include="Migrations\201507241118090_CommentTitleAdded.Designer.cs">
+      <DependentUpon>201507241118090_CommentTitleAdded.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AuthenticationManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -215,6 +221,8 @@
     <Compile Include="ViewModels\AdminsVM\AdminsDeleteAdminVM.cs" />
     <Compile Include="ViewModels\ArticlesVM\ArticlesCreateVM.cs" />
     <Compile Include="ViewModels\ArticlesVM\ArticlesIndexVM.cs" />
+    <Compile Include="ViewModels\ArticlesVM\ArticlesReadVM.cs" />
+    <Compile Include="ViewModels\CommentsVM\CommentsCreateCommentVM.cs" />
     <Compile Include="ViewModels\CoursesVM\CoursesDetailsVM.cs" />
     <Compile Include="ViewModels\PagingVM\PagingVM.cs" />
     <Compile Include="ViewModels\StudentsVM\StudentDetailsVM.cs" />
@@ -293,6 +301,8 @@
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery-ui-1.11.4.js" />
     <Content Include="Scripts\jquery-ui-1.11.4.min.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
@@ -354,10 +364,12 @@
     <Content Include="Views\Title\Details.cshtml" />
     <Content Include="Views\Article\CreateEditArticle.cshtml" />
     <Content Include="Views\Article\Index.cshtml" />
+    <Content Include="Views\Article\Read.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="ViewModels\SharedVM\" />
+    <Folder Include="Views\Comment\" />
     <Folder Include="Views\Grade\" />
   </ItemGroup>
   <ItemGroup>
@@ -400,6 +412,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201507231500146_DatesAdded.resx">
       <DependentUpon>201507231500146_DatesAdded.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201507241118090_CommentTitleAdded.resx">
+      <DependentUpon>201507241118090_CommentTitleAdded.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

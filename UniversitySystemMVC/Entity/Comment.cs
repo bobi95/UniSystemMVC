@@ -13,6 +13,8 @@ namespace UniversitySystemMVC.Entity
 
         public UserTypeEnum UserType { get; set; }
 
+        public string Title { get; set; }
+
         public string Content { get; set; }
 
         public DateTime DateCreated { get; set; }

@@ -160,5 +160,46 @@ namespace UniversitySystemMVC.Controllers
             TempData.FlashMessage("The article was deleted!");
             return RedirectToAction("Index");
         }
+
+        public ActionResult Read(int? id)
+        {
+            if (!id.HasValue)
+            {
+                return RedirectToAction("Index");
+            }
+
+            Article article = unitOfWork.ArticleRepository.GetById(id.Value);
+
+            if (article == null)
+            {
+                return RedirectToAction("Index");
+            }
+
+            ArticlesReadVM model = new ArticlesReadVM();
+            model.Id = article.Id;
+            model.SubjectId = article.SubjectId;
+            model.Title = article.Title;
+            model.Content = article.Content;
+            model.DateCreated = article.DateCreated;
+            model.DateModified = article.DateModified;
+            model.Comments = unitOfWork.CommentRepository.GetAll().Where(c => c.ArticleId == article.Id).ToList();
+            foreach (var c in model.Comments)
+            {
+                switch (c.UserType)
+                {
+                    case UserTypeEnum.Administrator:
+                        model.User = unitOfWork.AdminRepository.GetById(c.UserId);
+                        break;
+                    case UserTypeEnum.Student:
+                        model.User = unitOfWork.StudentRepository.GetById(c.UserId);
+                        break;
+                    case UserTypeEnum.Teacher:
+                        model.User = unitOfWork.TeacherRepository.GetById(c.UserId);
+                        break;
+                }
+            }
+
+            return View(model);
+        }
     }
 }
