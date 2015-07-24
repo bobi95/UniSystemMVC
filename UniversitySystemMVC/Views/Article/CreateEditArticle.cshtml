@@ -1,11 +1,11 @@
 ﻿@model UniversitySystemMVC.ViewModels.ArticlesVM.ArticlesCreateVM
 
 @{
-    ViewBag.Title = "CreateArticle";
+    ViewBag.Title = "CreateEditArticle";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>CreateArticle</h2>
+<h2>Create-Edit Article</h2>
 
 @using (Html.BeginForm("CreateEditArticle", "Article", FormMethod.Post)) 
 {
@@ -42,7 +42,7 @@
             <div class="col-md-offset-2 col-md-10">
                 @Html.HiddenFor(model => model.Id)
                 @Html.HiddenFor(model => model.DateCreated)
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input type="submit" value="Save" class="btn btn-default" />
             </div>
         </div>
     </div>

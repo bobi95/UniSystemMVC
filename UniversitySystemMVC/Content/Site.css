@@ -44,21 +44,23 @@ textarea {
     margin: 0;
     padding: 2px;
 }
+
 .remove-grade-btn {
     padding: 0;
 }
 
-    .add-grade-btn img {
-        display: inline-block;
-        padding: 0;
-        margin: 0;
-        max-width: 19px;
-        max-height: 19px;
-    }
-    .remove-grade-btn img {
-        max-width: 14px;
-        max-height: 14px;
-    }
+.add-grade-btn img {
+    display: inline-block;
+    padding: 0;
+    margin: 0;
+    max-width: 19px;
+    max-height: 19px;
+}
+
+.remove-grade-btn img {
+    max-width: 14px;
+    max-height: 14px;
+}
 
 .add-grade-input {
     max-width: 26px;
@@ -67,6 +69,7 @@ textarea {
 .flash-msg {
     margin-top: 22px;
 }
+
     .flash-msg h4 {
         margin-top: 10px;
     }
@@ -75,3 +78,36 @@ textarea {
     text-decoration: underline;
     cursor: pointer;
 }
+
+#articles article {
+    padding: 18px;
+    margin: 22px 0;
+    background-color: rgb(250, 242, 255);
+}
+    #articles article header {
+        border-bottom: 1px solid #ccc;
+    }
+    #articles article header:after {
+        content: "";
+        clear: both;
+        display: block;
+    }
+        #articles article header h2 {
+            font-size: 168%;
+            
+            padding-bottom: 4px;
+            margin-top: 0;
+        }
+
+    #articles article .article-date {
+        font-style: italic;
+    }
+    #articles article .article-content {
+
+    }
+    #articles article .article-content::first-letter {
+        font-weight: bold;
+        font-size: 250%;
+        font-family: 'Times New Roman';
+        padding: 3px;
+    }

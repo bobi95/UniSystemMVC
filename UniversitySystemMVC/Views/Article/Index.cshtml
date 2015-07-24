@@ -5,19 +5,77 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Index</h2>
+<h2>Articles</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Create New", "CreateArticle")
 </p>
 
-<section>
+<section id="articles" class="row">
     @foreach (var a in Model.Articles)
     {
         <article>
-            <header>@a.Title</header>
-            <p>@a.DateCreated</p>
-            <p>@a.Content</p>
+            <header>
+                <h2 class="pull-left">@a.Title</h2>
+                
+                @if (UniversitySystemMVC.Models.AuthenticationManager.IsTeacher && (a.Teacher.Id == UniversitySystemMVC.Models.AuthenticationManager.LoggedUser.Id))
+                {
+                    <div class="pull-right">
+                        @Html.ActionLink("Edit", "EditArticle", "Article", new { id = @a.Id }, null) |
+                        <a href="#" data-toggle="modal"  data-target="#article-delete" data-article="@a.Id">Delete</a>
+                    </div>
+                }
+            </header>
+            <h4>@a.Subject.Name</h4>
+            <p class="article-date">@a.DateCreated</p>
+            <p class="article-content">@a.Content</p>
         </article>
     }
 </section>
+
+
+<!-- Modal -->
+<div class="modal fade" id="article-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-sm" role="document">
+
+        <div class="modal-content">
+                @Html.AntiForgeryToken()
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Delete Article</h4>
+                </div>
+                <div class="modal-body">
+                    Are you sure?
+                </div>
+            
+            @using (Html.BeginForm("DeleteArticle", "Article", FormMethod.Post, new { id = "form-delete-article" }))
+            {
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="articleId" class="articleId" value="" />
+            }
+
+            <div class="modal-footer">
+                <button id="delete-btn" type="button" class="btn btn-danger">Delete Article</button>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<script>
+    $('#article-delete').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget);
+        var articleId = button.data('article');
+
+        var modal = $(this);
+        document.querySelector('#form-delete-article .articleId').value = articleId;
+
+        //document.getElementById('edit-btn').onclick = function () {
+        //    document.getElementById('form-edit-grade').submit();
+        //}
+        document.getElementById('delete-btn').onclick = function () {
+            document.getElementById('form-delete-article').submit();
+        }
+    })
+</script>

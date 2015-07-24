@@ -17,27 +17,53 @@ namespace UniversitySystemMVC.Controllers
         UnitOfWork unitOfWork = new UnitOfWork();
 
         // GET: Article
+        [AuthorizeUser]
         public ActionResult Index()
         {
             ArticlesIndexVM model = new ArticlesIndexVM();
-            model.Articles = unitOfWork.ArticleRepository.GetAll().ToList();
+            List<Subject> subjects = GetSubjectsAsList().ToList();
+
+            model.Articles = unitOfWork.ArticleRepository.GetAll().Where(a => subjects.Contains(a.Subject)).ToList();
 
             return View(model);
         }
 
         #region CreateEditArticle
 
+        private ICollection<Subject> GetSubjectsAsList()
+        {
+            List<Subject> subjects = unitOfWork.SubjectRepository.GetAll(true).Where(s => s.CoursesSubjects.Any(cs => cs.Teachers.Any(t => t.Id == AuthenticationManager.LoggedUser.Id))).ToList();
+
+            return subjects;
+        } 
         private IEnumerable<SelectListItem> GetSubjects()
         {
-            var subjects = unitOfWork.SubjectRepository.GetAll()
-                        .Select(x =>
+            return GetSubjectsAsList().Select(s =>
                                 new SelectListItem
                                 {
-                                    Value = x.Id.ToString(),
-                                    Text = x.Name
+                                    Value = s.Id.ToString(),
+                                    Text = s.Name
                                 });
 
-            return new SelectList(subjects, "Value", "Text");
+            //var subjects = new List<Subject>();
+            //foreach (var s in unitOfWork.SubjectRepository.GetAll())
+            //{
+            //    s.CoursesSubjects = unitOfWork.CoursesSubjectsRepository.GetBySubjectId(s.Id, true);
+            //    foreach (var cs in s.CoursesSubjects)
+            //    {
+            //        if (s.Id == cs.Subject.Id)
+            //        {
+            //            foreach (var t in cs.Teachers)
+            //            {
+            //                if (t.Id == AuthenticationManager.LoggedUser.Id && !subjects.Contains(s))
+            //                {
+            //                    subjects.Add(s);
+            //                }
+            //            }    
+            //        }
+
+            //    }
+            //}
         }
 
         [HttpGet]
@@ -94,7 +120,7 @@ namespace UniversitySystemMVC.Controllers
 
                 article.Title = model.Title;
                 article.Content = model.Content;
-                
+                article.DateModified = DateTime.Now;
                 article.Subject = unitOfWork.SubjectRepository.GetById(model.SubjectId);
 
                 article.TeacherId = AuthenticationManager.LoggedUser.Id;
@@ -122,5 +148,17 @@ namespace UniversitySystemMVC.Controllers
         }
 
         #endregion
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [AuthorizeUser(UserType = UserTypeEnum.Teacher, CheckType = true)]
+        public ActionResult DeleteArticle(int articleId)
+        {
+            unitOfWork.ArticleRepository.Delete(articleId);
+            unitOfWork.Save();
+
+            TempData.FlashMessage("The article was deleted!");
+            return RedirectToAction("Index");
+        }
     }
 }

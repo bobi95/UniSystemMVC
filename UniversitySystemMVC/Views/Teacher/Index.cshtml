@@ -9,7 +9,11 @@
 
 @foreach (var item in Model.CoursesSubjects)
 {
-    <h3>@item.Subject.Name - @item.Course.Name</h3>
+    <div class="row">
+        <h3 class="pull-left">@item.Subject.Name - @item.Course.Name</h3>
+        <h3 class="pull-right">@item.Course.Students.Count(s => s.IsActive)/@item.Course.Students.Count students</h3>
+    </div>
+    
     <table class="table">
         <tr>
             <th>Faculty Number</th>
@@ -46,7 +50,15 @@
                 <td>
                     @if (@student.Grades.Count > 0)
                     {
-                        <strong>@student.Grades.Where(g => g.SubjectId == item.Subject.Id).Average(g => g.GradeValue)</strong>
+                        double total = 0.0;
+                        foreach (var g in student.Grades.Where(g => g.SubjectId == item.Subject.Id))
+                        {
+                            total += g.GradeValue;
+                        }
+                        double avg = total / student.Grades.Count(g => g.SubjectId == item.Subject.Id);
+
+                        @*<strong>@student.Grades.Where(g => g.SubjectId == item.Subject.Id).Average(g => g.GradeValue)</strong>*@
+                        <strong>@avg.ToString("0.00")</strong>
                     }
                 </td>
                 <td class="grade-crud">
