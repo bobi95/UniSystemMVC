@@ -24,11 +24,14 @@
         </div>
 
         <div class="form-group">
-            @foreach (var item in Model.Courses)
+            @if (Model.Courses != null)
             {
-                <input type="checkbox" name="@item.Id" id="@item.Id" @if (item.CoursesSubjects.FirstOrDefault(g => g.SubjectId == Model.Id) != null) { @Html.Raw("checked")   } />
-                <label for="@item.Id">@item.Name</label>
-                <br />
+                foreach (var item in Model.Courses)
+                {
+                    <input type="checkbox" name="@item.Id" id="@item.Id" @if (item.CoursesSubjects.FirstOrDefault(g => g.SubjectId == Model.Id) != null) { @Html.Raw("checked")    } />
+                    <label for="@item.Id">@item.Name</label>
+                    <br />
+                }
             }
         </div>
 

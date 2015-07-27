@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Net.Mail;
 using System.Text;
 using System.Web;
@@ -182,7 +181,7 @@ namespace UniversitySystemMVC.Controllers
                     smtp.EnableSsl = true;
                     smtp.UseDefaultCredentials = false;
                     #region Private
-                    smtp.Credentials = new NetworkCredential("phonebookadm@gmail.com", "programistaphonebook");
+                    smtp.Credentials = new System.Net.NetworkCredential("phonebookadm@gmail.com", "programistaphonebook");
                     #endregion
 
                     smtp.Send(message);
@@ -248,6 +247,12 @@ namespace UniversitySystemMVC.Controllers
         [AllowAnonymous]
         public ActionResult ConfirmAccount(int? id)
         {
+            if (AuthenticationManager.LoggedUser != null)
+            {
+                TempData.FlashMessage("You are logged in! Please log out and then verify!", null, FlashMessageTypeEnum.Red);
+                return RedirectToAction("Index", "Home");
+            }
+
             if (!id.HasValue)
             {
                 return RedirectToAction("NotFound", "Error");

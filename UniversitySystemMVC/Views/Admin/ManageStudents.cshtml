@@ -27,7 +27,7 @@
             <th>Email</th>
             <th>Actions</th>
         </tr>
-        @foreach (var st in item.Students)
+        @foreach (var st in item.Students.OrderBy(s => s.FacultyNumber))
         {
             <tr>
                 <td @if (!st.IsActive) { @Html.Raw("style=color:red") }>@st.FacultyNumber</td>

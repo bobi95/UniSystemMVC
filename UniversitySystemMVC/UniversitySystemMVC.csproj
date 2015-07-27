@@ -216,6 +216,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service\AppConfig.cs" />
     <Compile Include="Service\AuthenticationService.cs" />
+    <Compile Include="ViewModels\AccountsVM\AccountsEditProfileVM.cs" />
     <Compile Include="ViewModels\AdminsVM\AdminsConfirmAccountVM.cs" />
     <Compile Include="ViewModels\AdminsVM\AdminsCreateAccountVM.cs" />
     <Compile Include="ViewModels\AdminsVM\AdminsDeleteAdminVM.cs" />
@@ -365,6 +366,7 @@
     <Content Include="Views\Article\CreateEditArticle.cshtml" />
     <Content Include="Views\Article\Index.cshtml" />
     <Content Include="Views\Article\Read.cshtml" />
+    <Content Include="Views\Account\EditProfile.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -25,5 +25,19 @@ namespace UniversitySystemMVC.DA
 
         //    return query;
         //} 
+
+        public bool CheckIfCourseCodeExists(int courseCode)
+        {
+            UnitOfWork unitOfWork = new UnitOfWork();
+            foreach (var c in unitOfWork.CourseRepository.GetAll())
+            {
+                if (c.Code == courseCode)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
     }
 }

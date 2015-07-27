@@ -18,21 +18,22 @@ namespace UniversitySystemMVC.Extensions
             sb.Append(course.Code.ToString("00"));
             sb.Append("1");
 
-            int idNumber = 1;
-            var students = unitOfWork.StudentRepository.GetAll(null, false);
+            var students = unitOfWork.StudentRepository.GetAll(null, false).OrderBy(s => s.FacultyNumber);
+            int lastIdNumber = 0;
             if (students.Count() > 0)
             {
                 foreach (var s in students)
                 {
                     if (s.FacultyNumber != null && s.FacultyNumber.StartsWith(sb.ToString()))
                     {
-                        idNumber++;
+                        lastIdNumber = int.Parse(s.FacultyNumber.Substring(7));
                     }
                 }
-                students = students.Where(s => s.FacultyNumber.StartsWith(sb.ToString()));
+                //students = students.Where(s => s.FacultyNumber.StartsWith(sb.ToString()));
             }
-            
-            sb.Append(idNumber.ToString("000"));
+
+            sb.Append((lastIdNumber + 1).ToString("000"));
+            //sb.Append(idNumber.ToString("000"));
 
             return sb.ToString();
         }

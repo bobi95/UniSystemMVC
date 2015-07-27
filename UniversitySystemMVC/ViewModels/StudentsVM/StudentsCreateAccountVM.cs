@@ -21,6 +21,7 @@ namespace UniversitySystemMVC.ViewModels.StudentsVM
         public string LastName { get; set; }
 
         [Required]
+        [EmailAddressAttribute]
         public string Email { get; set; }
 
         public string FacultyNumber { get; set; }

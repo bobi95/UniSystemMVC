@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using UniversitySystemMVC.DA;
 using UniversitySystemMVC.Entity;
+using UniversitySystemMVC.Extensions;
 
 namespace UniversitySystemMVC.Controllers
 {
@@ -20,27 +21,55 @@ namespace UniversitySystemMVC.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult AddGrade(int studentId, int subjectId, double gradeValue)
+        public ActionResult AddGrade(int studentId, int subjectId, string gradeValue)
         {
-            Grade grade = new Grade();
-            grade.GradeValue = gradeValue;
-            grade.StudentId = studentId;
-            grade.SubjectId = subjectId;
+            try
+            {
+                Grade grade = new Grade();
+                grade.GradeValue = double.Parse(gradeValue);
+                grade.StudentId = studentId;
+                grade.SubjectId = subjectId;
 
-            unitOfWork.GradeRepository.Insert(grade);
-            unitOfWork.Save();
+                if (grade.GradeValue < 2 || grade.GradeValue > 6)
+                {
+                    TempData.FlashMessage("Grade must be between 2.00 and 6.00!", null, FlashMessageTypeEnum.Red);
+                    return RedirectToAction("Index", "Teacher");
+                }
 
-            return RedirectToAction("Index", "Teacher");
+                unitOfWork.GradeRepository.Insert(grade);
+                unitOfWork.Save();
+            }
+            catch (FormatException)
+            {
+                TempData.FlashMessage("Grade must be a number!", null, FlashMessageTypeEnum.Red);
+            }
+
+            return View("Index", "Teacher");
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditGrade(int gradeId, double gradeValue)
+        public ActionResult EditGrade(int gradeId, string gradeValue)
         {
-            Grade grade = unitOfWork.GradeRepository.GetById(gradeId);
-            grade.GradeValue = gradeValue;
-            unitOfWork.GradeRepository.Update(grade);
-            unitOfWork.Save();
+            try
+            {
+                Grade grade = unitOfWork.GradeRepository.GetById(gradeId);
+                grade.GradeValue = double.Parse(gradeValue);
+
+                if (grade.GradeValue < 2 || grade.GradeValue > 6)
+                {
+                    TempData.FlashMessage("Grade must be between 2.00 and 6.00!", null, FlashMessageTypeEnum.Red);
+                    return RedirectToAction("Index", "Teacher");
+                }
+
+                unitOfWork.GradeRepository.Update(grade);
+                unitOfWork.Save();
+            }
+            catch (FormatException)
+            {
+                TempData.FlashMessage("Grade must be a number!", null, FlashMessageTypeEnum.Red);
+            }
+            
 
             return RedirectToAction("Index", "Teacher");
         }

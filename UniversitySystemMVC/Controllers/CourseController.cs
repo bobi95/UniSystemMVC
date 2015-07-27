@@ -73,6 +73,17 @@ namespace UniversitySystemMVC.Controllers
                     course = unitOfWork.CourseRepository.GetById(model.Id);
                 }
 
+                if (unitOfWork.CourseRepository.CheckIfCourseCodeExists(model.CourseCode))
+                {
+                    if (model.CourseCode != course.Code)
+                    {
+                        model.Subjects = unitOfWork.SubjectRepository.GetAll(true);
+                    
+                        TempData.FlashMessage("The course code you are trying to create is already in use", null, FlashMessageTypeEnum.Red);
+                        return View(model);   
+                    }
+                }
+
                 int oldCourseCode = course.Code;
 
                 course.Name = model.Name;
@@ -131,6 +142,7 @@ namespace UniversitySystemMVC.Controllers
                 return RedirectToAction("ManageCourses", "Admin");
             }
 
+            model.Subjects = unitOfWork.SubjectRepository.GetAll(true);
             return View(model);
         }
         #endregion CreateCourse
@@ -161,26 +173,29 @@ namespace UniversitySystemMVC.Controllers
         [HttpPost]
         public ActionResult DeleteCourse(CoursesDeleteVM model)
         {
-            if (ModelState.IsValid)
+            Course course = unitOfWork.CourseRepository.GetById(model.Id);
+
+            if (course.Students != null)
             {
-                Course course = unitOfWork.CourseRepository.GetById(model.Id);
-
-                List<CoursesSubjects> cs = unitOfWork.CoursesSubjectsRepository.GetByCourseId(course.Id, true);
-
-                cs.ForEach(x => x.Teachers.Clear());
-                course.CoursesSubjects.Clear();
-                course.Students.Clear();
-
-                unitOfWork.CoursesSubjectsRepository.UpdateTable(course, new List<Subject>());
-
-                unitOfWork.CourseRepository.Delete(course.Id);
-                unitOfWork.Save();
-
-                TempData.FlashMessage("Course Deleted");
-                return RedirectToAction("ManageCourses", "Admin");
+                TempData.FlashMessage("You cannot delete course with students in it!", null, FlashMessageTypeEnum.Red);
+                model.Name = course.Name;
+                model.CourseCode = course.Code;
+                return View(model);
             }
 
-            return View(model);
+            List<CoursesSubjects> cs = unitOfWork.CoursesSubjectsRepository.GetByCourseId(course.Id, true);
+
+            cs.ForEach(x => x.Teachers.Clear());
+            course.CoursesSubjects.Clear();
+            course.Students.Clear();
+
+            unitOfWork.CoursesSubjectsRepository.UpdateTable(course, new List<Subject>());
+
+            unitOfWork.CourseRepository.Delete(course.Id);
+            unitOfWork.Save();
+
+            TempData.FlashMessage("Course Deleted");
+            return RedirectToAction("ManageCourses", "Admin");
         }
         #endregion DeleteCourse
 

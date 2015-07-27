@@ -43,6 +43,12 @@ namespace UniversitySystemMVC.Controllers
         [AllowAnonymous]
         public ActionResult ConfirmAccount(int? id)
         {
+            if (AuthenticationManager.LoggedUser != null)
+            {
+                TempData.FlashMessage("You are logged in! Please log out and then verify!", null, FlashMessageTypeEnum.Red);
+                return RedirectToAction("Index", "Home");
+            }
+
             if (!id.HasValue)
             {
                 return RedirectToAction("Index", "Home");
@@ -107,6 +113,7 @@ namespace UniversitySystemMVC.Controllers
 
             return View("CreateEditStudent", model);
         }
+
         private IEnumerable<SelectListItem> GetCourses()
         {
             var courses = unitOfWork.CourseRepository.GetAll()
@@ -142,6 +149,7 @@ namespace UniversitySystemMVC.Controllers
             model.LastName = student.LastName;
             model.FacultyNumber = student.FacultyNumber;
             model.Email = student.Email;
+            model.CourseId = student.CourseId.Value;
             model.Courses = GetCourses();
 
             return View("CreateEditStudent", model);
@@ -270,6 +278,7 @@ namespace UniversitySystemMVC.Controllers
             if (ModelState.IsValid)
             {
                 Student student = unitOfWork.StudentRepository.GetById(model.Id);
+
                 student.IsActive = false;
                 unitOfWork.Save();
 

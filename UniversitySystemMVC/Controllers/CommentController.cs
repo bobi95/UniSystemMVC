@@ -30,17 +30,36 @@ namespace UniversitySystemMVC.Controllers
         //    Comment comment = new Comment();
         //}
 
-        public JsonResult CreateComment(string Title, string Content, int id, int UserId, UserTypeEnum UserType)
+        [HttpPost]
+        public JsonResult CreateComment(int id, string title, string content, int userId, UserTypeEnum userType)
+        //, int id, int UserId, UserTypeEnum UserType
         {
 
             Comment comment = new Comment();
-            comment.Title = Title;
-            comment.Content = Content;
+            comment.Title = title;
+            comment.Content = content;
             comment.ArticleId = id;
             comment.DateCreated = DateTime.Now;
             comment.DateModified = DateTime.Now;
-            comment.UserId = UserId;
-            comment.UserType = UserType;
+            comment.UserId = userId;
+            comment.UserType = userType;
+
+            string name =  String.Empty;
+            switch (userType)
+            {
+                case UserTypeEnum.Administrator:
+                    User admin =  unitOfWork.AdminRepository.GetById(comment.UserId);
+                    name = admin.FirstName + " " + admin.LastName;
+                    break;
+                case UserTypeEnum.Student:
+                    User student = unitOfWork.StudentRepository.GetById(comment.UserId);
+                    name = student.FirstName + " " + student.LastName;
+                    break;
+                case UserTypeEnum.Teacher:
+                    User teacher = unitOfWork.TeacherRepository.GetById(comment.UserId);
+                    name = teacher.FirstName + " " + teacher.LastName;
+                    break;
+            }
 
             unitOfWork.CommentRepository.Insert(comment);
             unitOfWork.Save();
@@ -49,9 +68,12 @@ namespace UniversitySystemMVC.Controllers
 
             var newComment = new
             {
+                Id = comment.Id,
                 Title = comment.Title,
                 Content = comment.Content,
-                DateCreated = comment.DateCreated
+                DateCreated = comment.DateCreated,
+                DateModified = comment.DateModified,
+                Name = name
             };
 
             return Json(newComment, JsonRequestBehavior.AllowGet);

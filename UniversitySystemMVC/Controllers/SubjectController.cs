@@ -102,6 +102,7 @@ namespace UniversitySystemMVC.Controllers
 				return RedirectToAction("ManageSubjects", "Admin");
 			}
 
+			model.Courses = unitOfWork.CourseRepository.GetAll().ToList();
 			return View(model);
 		}
 		#endregion CreateSubject

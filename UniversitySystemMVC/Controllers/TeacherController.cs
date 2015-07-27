@@ -42,6 +42,12 @@ namespace UniversitySystemMVC.Controllers
         [AllowAnonymous]
         public ActionResult ConfirmAccount(int? id)
         {
+            if (AuthenticationManager.LoggedUser != null)
+            {
+                TempData.FlashMessage("You are logged in! Please log out and then verify!", null, FlashMessageTypeEnum.Red);
+                return RedirectToAction("Index", "Home");
+            }
+
             if (!id.HasValue)
             {
                 return RedirectToAction("NotFound", "Error");

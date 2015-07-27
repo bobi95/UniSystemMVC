@@ -29,38 +29,7 @@ namespace UniversitySystemMVC.Migrations
                 IsConfirmed = true,
                 IsActive = true
             };
-
             context.Administrators.AddOrUpdate(a);
-
-            context.Courses.AddOrUpdate(
-                new Course
-                {
-                    Id = 1,
-                    Name = "Software Technologies and Design",
-                    Code = 68
-                });
-            context.Courses.AddOrUpdate(
-                new Course
-                {
-                    Id = 2,
-                    Name = "Bussiness Information Technologies",
-                    Code = 67
-                });
-
-            context.Students.AddOrUpdate(
-                new Student
-                {
-                    Id = 1,
-                    Username = "student",
-                    FirstName = "Student",
-                    LastName = "Student",
-                    Email = "student@domain.com",
-                    FacultyNumber = "1401681001",
-                    CourseId = 1,
-                    Hash = passPhrase.Hash,
-                    Salt = passPhrase.Salt,
-                    IsActive = true
-                });
         }
     }
 }

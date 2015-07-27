@@ -38,11 +38,11 @@
                         for (int i = 0; i < grades.Length; i++)
                         {
                             <span data-toggle="modal" data-target="#grade-edit" data-grade="@grades[i].Id" class="grade-value">
-                                @grades[i].GradeValue
+                                @grades[i].GradeValue.ToString("0.00")
                             </span>
                             if (i < grades.Length - 1)
                             {
-                                @Html.Raw(", ")
+                                @Html.Raw("| ")
                             }
                         }
                     }

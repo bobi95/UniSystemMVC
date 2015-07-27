@@ -50,12 +50,12 @@
                         @Html.HiddenFor(model => model.Id)
                         @Html.Hidden("UserId", Model.User.Id)
                         @Html.Hidden("UserType", UniversitySystemMVC.Models.AuthenticationManager.UserType)
-                        
+
 
                         @*<textarea class="form-control"></textarea>*@
                         <input type="submit" class="btn btn-block add-comment-btn" value="Add comment" id="submit-comment" />
                     }
-                    
+
                 </div>
             </div>
         </div>
@@ -67,21 +67,82 @@
     $(function () {
         //$('#')
         //var data = { title = }
-        alert('asdasd');
+
+        @*document.getElementById('submit-comment').addEventListener('click', function (e) {
+            alert('asdasd');
+
+            $.ajax({
+                type: "POST",
+                url: @Url.Action("CreateComment", "Comment"),
+                data: {id: @Model.Id, title: @Model.Title, content: @Model.Content, userId: @Model.UserId, userType: @UniversitySystemMVC.Models.AuthenticationManager.UserType},
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: successFunc,
+                error: errorFunc
+            });
+
+            function successFunc(data, status) {
+                alert(data);
+            }
+
+            function errorFunc() {
+                alert('error');
+            }
+        });*@
+
         document.getElementById('submit-comment').addEventListener('click', function (e) {
-            var data = { id = @Model.Id, title = @Model.Title, content = @Model.Content }
+
+            var serviceURL = '/Comment/CreateComment';
+
+            $.ajax({
+                type: "POST",
+                url: serviceURL,
+                //data: '{id:"'+@Model.Id+'",title:"'+@Model.Title+'",content:"'+@Model.Content+'",userId='+@UniversitySystemMVC.Models.AuthenticationManager.LoggedUser.Id+',userType="'+@UniversitySystemMVC.Models.AuthenticationManager.UserType+'"}',
+                data: '{id:@Model.Id,title:@Model.Title,content:@Model.Content,userId=@UniversitySystemMVC.Models.AuthenticationManager.LoggedUser.Id,userType=@UniversitySystemMVC.Models.AuthenticationManager.UserType}',
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: successFunc,
+                error: errorFunc
+            });
+
+            //  alert('a');
+
+            function successFunc(data, status) {
+                alert(data);
+                var appendComment = '<div class="comment-entry" id="' + data.id + '">';
+                appendComment += '<h5><span class="ui-icon ui-icon-comment pull-left"></span><strong>' + data.title + '</strong></h5>';
+                appendComment += '<p class="comment-creator">Added by: '+data.name+'</p>';
+                appendComment += '<p class="comment-date">Created: '+data.dateCreated+'</p>';
+                appendComment += '<p class="comment-date">Last modified: '+data.dateModified+'</p>';
+                appendComment += '<p class="comment-content">'+data.content+'</p>';
+                appendComment += '</div>';
+
+                document.getElementById('comments').innerHTML += appendComment;
+            }
+
+            function errorFunc() {
+                alert('error');
+            }
+        });
+    });
+    @*alert(e.target);
+            var data = { id: @Model.Id, title: @Model.Title, content: @Model.Content };
+            var data = { id: e.target.value };
             UniSystem.Ajax.get(@Url.Action("CreateComment"), data, function(json) {
                 json = JSON.parse(json);
-                //var appendComment = data.title
-                <div class="co@*mment-entry" id="@c.Id">
-                            <h5><span class="ui-icon ui-icon-comment pull-left"></span><strong>@c.Title</strong></h5>
-                            <p class="comment-creator">Added by: @Model.User.FirstName @Model.User.LastName</p>
-                            <p class="comment-date">Created: @c.DateCreated</p>
-                            <p class="comment-date">Last modified:  @c.DateModified</p>
+                for (var c in json) {
 
-                            <p class="comment-content">@c.Content</p>
-                        </div>*@
-            });
-        });
-    })
+                }
+                var appendComment = '<div class="comment-entry" id="'+data.id+'">';
+                appendComment += '<h5><span class="ui-icon ui-icon-comment pull-left"></span><strong>'+data.title+'</strong></h5>';
+                appendComment += '<p class="comment-creator">Added by: @Model.User.FirstName @Model.User.LastName</p>';
+                appendComment += '<p class="comment-date">Created: @Model.DateCreated</p>';
+                appendComment += '<p class="comment-date">Last modified:  @Model.DateModified</p>';
+                appendComment += '<p class="comment-content">@Model.Content</p>';
+                appendComment += '</div>';*@
+
+    //document.getElementById('comments').innerHTML += appendComment;
+    //});
+
+
 </script>

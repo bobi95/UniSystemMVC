@@ -3,26 +3,26 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
-using UniversitySystemMVC.Entity;
 
-namespace UniversitySystemMVC.ViewModels.AdminsVM
+namespace UniversitySystemMVC.ViewModels.AccountsVM
 {
-    public class AdminsCreateAccountVM
+    public class AccountsEditProfileVM
     {
         public int Id { get; set; }
 
+        [Required]
         public string Username { get; set; }
 
         [Required]
-        public string FirstName { get; set; }
+        public string OldPassword { get; set; }
 
-        [Required]
-        public string LastName { get; set; }
+        public string NewPassword { get; set; }
+
+        [Compare("NewPassword")]
+        public string NewPasswordRe { get; set; }
 
         [Required]
         [EmailAddressAttribute]
         public string Email { get; set; }
-
-        public UserTypeEnum UserType { get; set; }
     }
 }

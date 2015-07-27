@@ -114,6 +114,13 @@ namespace UniversitySystemMVC.Controllers
             if (ModelState.IsValid)
             {
                 Title title = unitOfWork.TitleRepository.GetById(model.Id, true);
+
+                if (title.Teachers != null || title.Teachers.Count > 0)
+                {
+                    TempData.FlashMessage("You cannot delete title that some teachers have!", null, FlashMessageTypeEnum.Red);
+                    return View(model);    
+                }
+
                 unitOfWork.TitleRepository.Delete(title.Id);
 
                 title.Teachers.Clear();
