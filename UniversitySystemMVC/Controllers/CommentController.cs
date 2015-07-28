@@ -12,59 +12,42 @@ namespace UniversitySystemMVC.Controllers
     {
         UnitOfWork unitOfWork = new UnitOfWork();
 
-        //[HttpPost]
-        //public ActionResult CreateComment(int? articleId)
-        //{
-        //    if (!articleId.HasValue)
-        //    {
-        //        return RedirectToAction("Index", "Article");
-        //    }
-
-        //    Article article = unitOfWork.ArticleRepository.GetById(articleId.Value);
-
-        //    if (article == null)
-        //    {
-        //        return RedirectToAction("Index", "Article");
-        //    }
-
-        //    Comment comment = new Comment();
-        //}
-
         [HttpPost]
-        public JsonResult CreateComment(int id, string title, string content, int userId, UserTypeEnum userType)
-        //, int id, int UserId, UserTypeEnum UserType
+        public JsonResult CreateComment(int articleId, int userId, string title, string content, UserTypeEnum userType, int? parentId)
         {
 
             Comment comment = new Comment();
             comment.Title = title;
             comment.Content = content;
-            comment.ArticleId = id;
+            comment.ArticleId = articleId;
             comment.DateCreated = DateTime.Now;
             comment.DateModified = DateTime.Now;
             comment.UserId = userId;
             comment.UserType = userType;
+            if (parentId.HasValue)
+            {
+                comment.CommentId = parentId.Value;
+            }
 
-            string name =  String.Empty;
+            string nameRes = String.Empty;
             switch (userType)
             {
                 case UserTypeEnum.Administrator:
-                    User admin =  unitOfWork.AdminRepository.GetById(comment.UserId);
-                    name = admin.FirstName + " " + admin.LastName;
+                    User admin = unitOfWork.AdminRepository.GetById(comment.UserId);
+                    nameRes = admin.FirstName + " " + admin.LastName;
                     break;
                 case UserTypeEnum.Student:
                     User student = unitOfWork.StudentRepository.GetById(comment.UserId);
-                    name = student.FirstName + " " + student.LastName;
+                    nameRes = student.FirstName + " " + student.LastName;
                     break;
                 case UserTypeEnum.Teacher:
                     User teacher = unitOfWork.TeacherRepository.GetById(comment.UserId);
-                    name = teacher.FirstName + " " + teacher.LastName;
+                    nameRes = teacher.FirstName + " " + teacher.LastName;
                     break;
             }
 
             unitOfWork.CommentRepository.Insert(comment);
             unitOfWork.Save();
-
-            //return "Your comment was added. Refresh to see it, please :)";
 
             var newComment = new
             {
@@ -73,40 +56,44 @@ namespace UniversitySystemMVC.Controllers
                 Content = comment.Content,
                 DateCreated = comment.DateCreated,
                 DateModified = comment.DateModified,
-                Name = name
+                Name = nameRes,
+                ParentId = comment.CommentId
             };
 
             return Json(newComment, JsonRequestBehavior.AllowGet);
-            //var subjects = unitOfWork.CoursesSubjectsRepository.GetByCourseId(id.Value).Select<CoursesSubjects, object>(cs =>
-            //        new
-            //        {
-            //            Name = cs.Subject.Name,
-            //            Id = cs.Subject.Id,
-            //            Checked = t.CourseSubjects.Any(ts => ts.Id == cs.Id)
-            //        });
+        }
 
-            //return Json(subjects, JsonRequestBehavior.AllowGet);
+        [HttpPost]
+        public JsonResult EditComment(int commentId, string title, string content)
+        //, int id, int UserId, UserTypeEnum UserType
+        {
 
-            //if (!articleId.HasValue)
-            //{
-            //    return new EmptyResult();
-            //}
+            Comment comment = unitOfWork.CommentRepository.GetById(commentId);
+            comment.Title = title;
+            comment.Content = content;
+            comment.DateModified = DateTime.Now;
 
-            //Article a = unitOfWork.ArticleRepository.GetById(articleId.Value);
+            unitOfWork.CommentRepository.Update(comment);
+            unitOfWork.Save();
 
-            //if (a == null)
-            //{
-            //    return new EmptyResult();
-            //}
+            var editedComment = new
+            {
+                Title = comment.Title,
+                Content = comment.Content,
+                DateModified = comment.DateModified
+            };
 
-            //var subjects = unitOfWork.CoursesSubjectsRepository.GetByCourseId(id.Value).Select<CoursesSubjects, object>(cs =>
-            //        new
-            //        {
-            //            Name = cs.Subject.Name,
-            //            Id = cs.Subject.Id,
-            //        });
+            return Json(editedComment, JsonRequestBehavior.AllowGet);
+        }
 
-            //return Json(subjects, JsonRequestBehavior.AllowGet);
+        [HttpPost]
+        public JsonResult DeleteComment(int commentId)
+        {
+            unitOfWork.CommentRepository.Delete(commentId);
+            unitOfWork.Save();
+
+            // ?
+            return Json(new object[]{new object()}, JsonRequestBehavior.AllowGet);
         }
     }
 }

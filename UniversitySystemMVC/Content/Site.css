@@ -100,14 +100,19 @@ textarea {
             padding-bottom: 4px;
             margin-top: 0;
         }
+        .comment-entry header h5::first-letter {
+            font-weight: bold;
+            font-size: 250%;
+            font-family: 'Times New Roman';
+            padding: 3px;
+        }
 
     #articles article .article-date, .comment-date {
         font-style: italic;
     }
 
     #articles article .article-content::first-letter, .comment-content::first-letter {
-        font-weight: bold;
-        font-size: 250%;
+        font-size: 180%;
         font-family: 'Times New Roman';
         padding: 3px;
     }
@@ -124,6 +129,12 @@ textarea {
 
 .comment-entry {
     border-bottom: 1px solid #ccc;
+    margin-bottom: 32px;
+}
+.comment-entry-child {
+    margin-left: 22px;
+    padding-left: 12px;
+    border-left: 5px solid #ccc;
 }
 
 .comment-container textarea {

@@ -35,7 +35,8 @@ namespace UniversitySystemMVC.Controllers
             List<Subject> subjects = unitOfWork.SubjectRepository.GetAll(true).Where(s => s.CoursesSubjects.Any(cs => cs.Teachers.Any(t => t.Id == AuthenticationManager.LoggedUser.Id))).ToList();
 
             return subjects;
-        } 
+        }
+
         private IEnumerable<SelectListItem> GetSubjects()
         {
             return GetSubjectsAsList().Select(s =>
@@ -182,22 +183,9 @@ namespace UniversitySystemMVC.Controllers
             model.Content = article.Content;
             model.DateCreated = article.DateCreated;
             model.DateModified = article.DateModified;
+            model.User = article.Teacher;
+            model.UserId = article.TeacherId;
             model.Comments = unitOfWork.CommentRepository.GetAll().Where(c => c.ArticleId == article.Id).ToList();
-            foreach (var c in model.Comments)
-            {
-                switch (c.UserType)
-                {
-                    case UserTypeEnum.Administrator:
-                        model.User = unitOfWork.AdminRepository.GetById(c.UserId);
-                        break;
-                    case UserTypeEnum.Student:
-                        model.User = unitOfWork.StudentRepository.GetById(c.UserId);
-                        break;
-                    case UserTypeEnum.Teacher:
-                        model.User = unitOfWork.TeacherRepository.GetById(c.UserId);
-                        break;
-                }
-            }
 
             return View(model);
         }

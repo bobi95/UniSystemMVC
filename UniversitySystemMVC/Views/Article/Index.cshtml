@@ -80,8 +80,8 @@
 
             @using (Html.BeginForm("DeleteArticle", "Article", FormMethod.Post, new { id = "form-delete-article" }))
             {
-            @Html.AntiForgeryToken()
-            <input type="hidden" name="articleId" class="articleId" value="" />
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="articleId" class="articleId" value="" />
             }
 
             <div class="modal-footer">
