@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using UniversitySystemMVC.DA;
 using UniversitySystemMVC.Entity;
+using UniversitySystemMVC.Models;
 
 namespace UniversitySystemMVC.Controllers
 {
@@ -13,7 +14,7 @@ namespace UniversitySystemMVC.Controllers
         UnitOfWork unitOfWork = new UnitOfWork();
 
         [HttpPost]
-        public JsonResult CreateComment(int articleId, int userId, string title, string content, UserTypeEnum userType, int? parentId)
+        public JsonResult CreateComment(int articleId, string title, string content, int? parentId)
         {
 
             Comment comment = new Comment();
@@ -22,15 +23,15 @@ namespace UniversitySystemMVC.Controllers
             comment.ArticleId = articleId;
             comment.DateCreated = DateTime.Now;
             comment.DateModified = DateTime.Now;
-            comment.UserId = userId;
-            comment.UserType = userType;
+            comment.UserId = AuthenticationManager.LoggedUser.Id;
+            comment.UserType = AuthenticationManager.UserType.Value;
             if (parentId.HasValue)
             {
                 comment.CommentId = parentId.Value;
             }
 
             string nameRes = String.Empty;
-            switch (userType)
+            switch (comment.UserType)
             {
                 case UserTypeEnum.Administrator:
                     User admin = unitOfWork.AdminRepository.GetById(comment.UserId);
