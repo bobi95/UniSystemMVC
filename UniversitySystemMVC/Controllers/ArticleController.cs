@@ -162,6 +162,7 @@ namespace UniversitySystemMVC.Controllers
             return RedirectToAction("Index");
         }
 
+        [AuthorizeUser]
         public ActionResult Read(int? id)
         {
             if (!id.HasValue)
@@ -185,7 +186,77 @@ namespace UniversitySystemMVC.Controllers
             model.DateModified = article.DateModified;
             model.User = article.Teacher;
             model.UserId = article.TeacherId;
-            model.Comments = unitOfWork.CommentRepository.GetAll().Where(c => c.ArticleId == article.Id).ToList();
+            model.Likes = new List<LikeExtended>();
+
+            foreach (var a in article.Likes)
+            {
+                LikeExtended likeExtended = new LikeExtended();
+                likeExtended.Id = a.Id;
+                likeExtended.UserId = a.UserId;
+                likeExtended.UserType = a.UserType;
+                likeExtended.ArticleId = a.ArticleId;
+                likeExtended.DateCreated = a.DateCreated;
+
+                Like currentLike = unitOfWork.LikeRepository.GetById(a.Id);
+                switch (a.UserType)
+                {
+                    case UserTypeEnum.Administrator:
+                        User admin = unitOfWork.AdminRepository.GetById(currentLike.UserId);
+                        likeExtended.FullName = admin.FirstName + " " + admin.LastName;
+                        break;
+                    case UserTypeEnum.Student:
+                        User student = unitOfWork.StudentRepository.GetById(currentLike.UserId);
+                        likeExtended.FullName = student.FirstName + " " + student.LastName;
+                        break;
+                    case UserTypeEnum.Teacher:
+                        User teacher = unitOfWork.TeacherRepository.GetById(currentLike.UserId);
+                        likeExtended.FullName = teacher.FirstName + " " + teacher.LastName;
+                        break;
+                }
+
+                model.Likes.Add(likeExtended);
+            }
+
+            model.LikeState = 0;
+            if (article.Likes.FirstOrDefault(l => l.UserType == AuthenticationManager.UserType.Value && l.UserId == AuthenticationManager.LoggedUser.Id) != null)
+            {
+                model.LikeState = 1;
+            }
+
+            var comments = unitOfWork.CommentRepository.GetAll().Where(c => c.ArticleId == article.Id).ToList();
+            model.Comments = new List<CommentExtended>();
+
+            foreach (var c in comments)
+            {
+                CommentExtended commentExtended = new CommentExtended();
+                commentExtended.Id = c.Id;;
+                commentExtended.Title = c.Title;
+                commentExtended.Content = c.Content;
+                commentExtended.UserId = c.UserId;
+                commentExtended.UserType = c.UserType;
+                commentExtended.ArticleId = c.ArticleId;
+                commentExtended.CommentId = c.CommentId;
+                commentExtended.DateCreated = c.DateCreated;
+                commentExtended.DateModified = c.DateModified;
+                Comment currentComment = unitOfWork.CommentRepository.GetById(c.Id);
+                switch (currentComment.UserType)
+                {
+                    case UserTypeEnum.Administrator:
+                        User admin = unitOfWork.AdminRepository.GetById(currentComment.UserId);
+                        commentExtended.FullName = admin.FirstName + " " + admin.LastName;
+                        break;
+                    case UserTypeEnum.Student:
+                        User student = unitOfWork.StudentRepository.GetById(currentComment.UserId);
+                        commentExtended.FullName = student.FirstName + " " + student.LastName;
+                        break;
+                    case UserTypeEnum.Teacher:
+                        User teacher = unitOfWork.TeacherRepository.GetById(currentComment.UserId);
+                        commentExtended.FullName = teacher.FirstName + " " + teacher.LastName;
+                        break;
+                }
+
+                model.Comments.Add(commentExtended);
+            }
 
             return View(model);
         }

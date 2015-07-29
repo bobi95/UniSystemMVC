@@ -124,6 +124,7 @@
     <Compile Include="Controllers\CourseController.cs" />
     <Compile Include="Controllers\GradeController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\LikeController.cs" />
     <Compile Include="Controllers\StudentController.cs" />
     <Compile Include="Controllers\SubjectController.cs" />
     <Compile Include="Controllers\TeacherController.cs" />
@@ -136,6 +137,7 @@
     <Compile Include="DA\CourseRepository.cs" />
     <Compile Include="DA\CoursesSubjectsRepository.cs" />
     <Compile Include="DA\GradeRepository.cs" />
+    <Compile Include="DA\LikeRepository.cs" />
     <Compile Include="DA\StudentRepository.cs" />
     <Compile Include="DA\SubjectRepository.cs" />
     <Compile Include="DA\TeacherRepository.cs" />
@@ -155,6 +157,7 @@
     <Compile Include="Entity\Teacher.cs" />
     <Compile Include="Entity\Title.cs" />
     <Compile Include="Entity\User.cs" />
+    <Compile Include="Extensions\CalculateRelativeTime.cs" />
     <Compile Include="Extensions\FlashMessageExtensions.cs" />
     <Compile Include="Extensions\GenerateFacultyNumber.cs" />
     <Compile Include="Filters\AuthorizeUser.cs" />
@@ -211,6 +214,10 @@
     <Compile Include="Migrations\201507241118090_CommentTitleAdded.Designer.cs">
       <DependentUpon>201507241118090_CommentTitleAdded.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201507290947051_DateCreatedToLikeAdded.cs" />
+    <Compile Include="Migrations\201507290947051_DateCreatedToLikeAdded.Designer.cs">
+      <DependentUpon>201507290947051_DateCreatedToLikeAdded.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AuthenticationManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -223,6 +230,8 @@
     <Compile Include="ViewModels\ArticlesVM\ArticlesCreateVM.cs" />
     <Compile Include="ViewModels\ArticlesVM\ArticlesIndexVM.cs" />
     <Compile Include="ViewModels\ArticlesVM\ArticlesReadVM.cs" />
+    <Compile Include="ViewModels\ArticlesVM\CommentExtended.cs" />
+    <Compile Include="ViewModels\ArticlesVM\LikeExtended.cs" />
     <Compile Include="ViewModels\CommentsVM\CommentsCreateCommentVM.cs" />
     <Compile Include="ViewModels\CoursesVM\CoursesDetailsVM.cs" />
     <Compile Include="ViewModels\PagingVM\PagingVM.cs" />
@@ -256,7 +265,10 @@
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\images\like.png" />
     <Content Include="Content\images\plus.png" />
+    <Content Include="Content\images\unlike.png" />
+    <Content Include="Content\images\x.png" />
     <Content Include="Content\themes\base\accordion.css" />
     <Content Include="Content\themes\base\all.css" />
     <Content Include="Content\themes\base\autocomplete.css" />
@@ -297,6 +309,7 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\comments.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
@@ -308,6 +321,7 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\likes.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
@@ -373,6 +387,7 @@
     <Folder Include="ViewModels\SharedVM\" />
     <Folder Include="Views\Comment\" />
     <Folder Include="Views\Grade\" />
+    <Folder Include="Views\Like\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -417,6 +432,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201507241118090_CommentTitleAdded.resx">
       <DependentUpon>201507241118090_CommentTitleAdded.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201507290947051_DateCreatedToLikeAdded.resx">
+      <DependentUpon>201507290947051_DateCreatedToLikeAdded.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

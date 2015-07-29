@@ -5,17 +5,33 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>@Model.Title</h2>
+@*<h2>@Model.Title</h2>*@
 
 <section id="articles" class="row">
     <article>
         <header>
             <h2>@Model.Title</h2>
+            <p>Added by @Model.User.FirstName @Model.User.LastName</p>
             <p class="article-date">Created: @Model.DateCreated</p>
             <p class="article-date">Last modified: @Model.DateModified</p>
         </header>
 
         <p class="article-content">@Model.Content</p>
+
+        @* <<<<<<<<< LIKES >>>>>>>>>> *@
+        <div class="likes-container row">
+            <button id="like-subject-@Model.Id" class="button-like pull-left" data-article="@Model.Id" data-state="@Model.LikeState" data-likescount="@Model.Likes.Count">
+                @if (Model.LikeState == 0)
+                {
+                    <img src="~/Content/images/like.png" alt="Like" />
+                }
+                else
+                {
+                    <img src="~/Content/images/unlike.png" alt="Unlike" />
+                }
+            </button>
+            <p id="like-subject-@Model.Id-info" class="pull-left">@Model.Likes.Count <a href="#" data-toggle="modal" data-target="#likes">people</a> like this</p>
+        </div>
 
         <div class="comment-container" id="comment-container-@Model.Id">
             <div class="well">
@@ -24,7 +40,7 @@
                     <h4>Comments</h4>
                     @if (Model.Comments.Count > 0)
                     {
-                        foreach (var c in Model.Comments)
+                        foreach (var c in Model.Comments.OrderByDescending(x => x.DateCreated))
                         {
                             if (c.CommentId == null)
                             {
@@ -48,13 +64,13 @@
                                         }
                                     </header>
 
-                                    <p class="comment-creator">Added by: @c.UserType - @c.UserId</p>
-                                    <p class="comment-date">Created: @c.DateCreated</p>
-                                    <p class="comment-date">Last modified:  @c.DateModified</p>
+                                    <p class="comment-creator">Added by: @c.FullName</p>
+                                    <p class="comment-date">Created: @UniversitySystemMVC.Extensions.CalculateRelativeTime.Calculate(c.DateCreated)</p>
+                                    <p class="comment-date">Last modified: @UniversitySystemMVC.Extensions.CalculateRelativeTime.Calculate(c.DateModified)</p>
 
                                     <p class="comment-content">@c.Content</p>
 
-                                    @foreach (var childC in Model.Comments)
+                                    @foreach (var childC in Model.Comments.OrderByDescending(x => x.DateCreated))
                                     {
                                         if (childC.CommentId == c.Id)
                                         {
@@ -71,9 +87,9 @@
                                                     }
                                                 </header>
 
-                                                <p class="comment-creator">Added by: @childC.UserType - @childC.UserId</p>
-                                                <p class="comment-date">Created: @childC.DateCreated</p>
-                                                <p class="comment-date">Last modified:  @childC.DateModified</p>
+                                                <p class="comment-creator">Replied by: @childC.FullName</p>
+                                                <p class="comment-date">Created: @UniversitySystemMVC.Extensions.CalculateRelativeTime.Calculate(childC.DateCreated)</p>
+                                                <p class="comment-date">Last modified: @UniversitySystemMVC.Extensions.CalculateRelativeTime.Calculate(childC.DateModified)</p>
 
                                                 <p class="comment-content">@childC.Content</p>
                                             </div>
@@ -116,6 +132,37 @@
     </article>
 </section>
 
+@*Modal - Likes*@
+
+
+<div class="modal fade" id="likes" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">People who like "@Model.Title"</h4>
+            </div>
+
+            <div class="modal-body">
+                <ul>
+                    @foreach (var like in Model.Likes.OrderByDescending(l => l.DateCreated))
+                    {
+                        <li>@like.FullName - @like.UserType - @UniversitySystemMVC.Extensions.CalculateRelativeTime.Calculate(like.DateCreated)</li>
+                    }
+                </ul>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+        
+    </div>
+</div>
+
+<script src="~/Scripts/likes.js"></script>
 <script>
     $(function () {
         document.getElementById('submit-comment').addEventListener('click', function (e) {

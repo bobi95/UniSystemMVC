@@ -144,3 +144,25 @@ textarea {
     margin-top: 12px;
     padding: 6px 20px;
 }
+
+/* <<< LIKES >>> */
+.likes-container {
+
+}
+    .button-like {
+        background-color: transparent;
+        border: none;
+        max-width: 80px;
+    }
+    .button-like-comments {
+        max-width: 50px;
+    }
+    
+        .button-like img {
+            width: 100%;
+        }
+    .likes-container p {
+        /*position: absolute;
+        bottom: 0;*/
+    }
+    

@@ -26,8 +26,25 @@
                     </div>
                 }
             </header>
+
+            @* <<<<<<<<< LIKES >>>>>>>>>> *@
+            @*<div class="likes-container row">
+                <button id="like-subject-@a.Id" class="button-like pull-left" data-article="@a.Id" data-state="@a.LikeState" data-likescount="@a.Likes.Count">
+                    @if (a.LikeState == 0)
+                    {
+                        <img src="~/Content/images/like.png" alt="Like" />
+                    }
+                    else
+                    {
+                        <img src="~/Content/images/unlike.png" alt="Unlike" />
+                    }
+                </button>
+                <p id="like-subject-@a.Id-info" class="pull-left">@a.Likes.Count people like this</p>
+            </div>*@
+
             <h4>@a.Subject.Name</h4>
             <p class="article-date">Created: @a.DateCreated</p>
+            <p><em>Added by @a.Teacher.FirstName @a.Teacher.LastName</em></p>
             <p class="article-content">@a.Content</p>
             @Html.ActionLink("Read More", "Read", "Article", new { id = @a.Id }, null)
 

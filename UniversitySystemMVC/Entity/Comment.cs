@@ -23,7 +23,7 @@ namespace UniversitySystemMVC.Entity
 
         public int? CommentId { get; set; }
 
-        public Article Article { get; set; }
+        public virtual Article Article { get; set; }
 
         public virtual Comment ParentComment { get; set; }
     }

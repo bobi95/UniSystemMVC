@@ -19,6 +19,7 @@ namespace UniversitySystemMVC.DA
         private CoursesSubjectsRepository coursesSubjectRepo;
         private ArticleRepository articleRepo;
         private CommentRepository commentRepo;
+        private LikeRepository likeRepo;
 
         private AppContext context;
 
@@ -144,6 +145,18 @@ namespace UniversitySystemMVC.DA
                     commentRepo = new CommentRepository(context);
                 }
                 return commentRepo;
+            }
+        }
+
+        public LikeRepository LikeRepository
+        {
+            get
+            {
+                if (likeRepo == null)
+                {
+                    likeRepo = new LikeRepository(context);
+                }
+                return likeRepo;
             }
         }
 

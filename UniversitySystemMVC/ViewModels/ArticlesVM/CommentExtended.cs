@@ -6,13 +6,15 @@ using UniversitySystemMVC.Entity;
 
 namespace UniversitySystemMVC.ViewModels.ArticlesVM
 {
-    public class ArticlesReadVM
+    public class CommentExtended
     {
         public int Id { get; set; }
 
-        public int SubjectId { get; set; }
+        public int ArticleId { get; set; }
 
         public int UserId { get; set; }
+
+        public UserTypeEnum UserType { get; set; }
 
         public string Title { get; set; }
 
@@ -22,12 +24,12 @@ namespace UniversitySystemMVC.ViewModels.ArticlesVM
 
         public DateTime DateModified { get; set; }
 
-        public List<CommentExtended> Comments { get; set; }
+        public int? CommentId { get; set; }
 
-        public List<LikeExtended> Likes { get; set; }
+        public Article Article { get; set; }
 
-        public User User { get; set; }
+        public virtual Comment ParentComment { get; set; }
 
-        public int LikeState { get; set; }
+        public string FullName { get; set; }
     }
 }
