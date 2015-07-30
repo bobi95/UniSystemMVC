@@ -32,9 +32,23 @@ namespace UniversitySystemMVC.Controllers
 
         private ICollection<Subject> GetSubjectsAsList()
         {
-            List<Subject> subjects = unitOfWork.SubjectRepository.GetAll(true)
-                .Where(s => s.CoursesSubjects.Any(cs => cs.Teachers
-                    .Any(t => t.Id == AuthenticationManager.LoggedUser.Id))).ToList();
+            List<Subject> subjects = new List<Subject>();
+
+            switch (AuthenticationManager.UserType.Value)
+            {
+                case UserTypeEnum.Administrator:
+                    subjects = unitOfWork.SubjectRepository.GetAll(true);
+                    break;
+                case UserTypeEnum.Student:
+                    subjects = unitOfWork.SubjectRepository.GetAll(true).Where(s => s.CoursesSubjects.Any(cs => cs.Course.Students.Any(st => st.Id == AuthenticationManager.LoggedUser.Id))).ToList();
+                    break;
+                case UserTypeEnum.Teacher:
+                    subjects = unitOfWork.SubjectRepository.GetAll(true)
+                        .Where(s => s.CoursesSubjects.Any(cs => cs.Teachers
+                            .Any(t => t.Id == AuthenticationManager.LoggedUser.Id))).ToList();
+                    break;
+
+            }
 
             return subjects;
         }
@@ -212,7 +226,7 @@ namespace UniversitySystemMVC.Controllers
             foreach (var c in comments)
             {
                 CommentExtended commentExtended = new CommentExtended();
-                commentExtended.Id = c.Id;;
+                commentExtended.Id = c.Id; ;
                 commentExtended.Title = c.Title;
                 commentExtended.Content = c.Content;
                 commentExtended.UserId = c.UserId;
