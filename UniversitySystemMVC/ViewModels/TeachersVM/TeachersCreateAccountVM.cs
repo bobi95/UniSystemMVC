@@ -15,15 +15,18 @@ namespace UniversitySystemMVC.ViewModels.TeachersVM
         public string Username { get; set; }
 
         [Required]
+        [Display(Name = "First Name")]
         public string FirstName { get; set; }
 
         [Required]
+        [Display(Name = "Last Name")]
         public string LastName { get; set; }
 
         [Required]
         [EmailAddressAttribute]
         public string Email { get; set; }
 
+        [Display(Name = "Title")]
         public int TitleId { get; set; }
 
         public IEnumerable<SelectListItem> Titles { get; set; }

@@ -15,6 +15,8 @@ namespace UniversitySystemMVC.ViewModels.CoursesVM
         public string Name { get; set; }
 
         [Required]
+        [Display(Name = "Course Code")]
+        [Range(0, 99)]
         public int CourseCode { get; set; }
 
         public List<Subject> Subjects { get; set; }

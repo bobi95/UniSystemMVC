@@ -17,10 +17,12 @@ namespace UniversitySystemMVC.ViewModels.TeachersVM
         public string Password { get; set; }
 
         [Required]
+        [Display(Name = "New Password")]
         public string NewPassword { get; set; }
 
         [Required]
         [Compare("NewPassword")]
+        [Display(Name = "Re-New Password")]
         public string NewPasswordRe { get; set; }
     }
 }

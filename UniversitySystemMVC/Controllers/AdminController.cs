@@ -46,7 +46,7 @@ namespace UniversitySystemMVC.Controllers
         public ActionResult ManageTeachers()
         {
             AdminsManageTeachersVM model = new AdminsManageTeachersVM();
-            model.Teachers = unitOfWork.TeacherRepository.GetAll().ToList();
+            model.Teachers = unitOfWork.TeacherRepository.GetAll(t => t.IsActive).ToList();
 
             return View(model);
         }
@@ -55,7 +55,7 @@ namespace UniversitySystemMVC.Controllers
         public ActionResult ManageAdmins()
         {
             AdminsManageAdminsVM model = new AdminsManageAdminsVM();
-            model.Admins = unitOfWork.AdminRepository.GetAll().ToList();
+            model.Admins = unitOfWork.AdminRepository.GetAll(a => a.IsActive).ToList();
 
             return View(model);
         }

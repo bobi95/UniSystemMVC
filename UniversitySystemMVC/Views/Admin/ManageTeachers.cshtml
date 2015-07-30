@@ -23,19 +23,16 @@
 
     @foreach (var t in Model.Teachers)
     {
-        if (t.IsActive)
-        {
-            <tr>
-                <td>@t.Title.Name @t.FirstName @t.LastName</td>
-                <td>@t.Username</td>
-                <td>@t.Email</td>
-                <td>
-                    @Html.ActionLink("Edit", "EditTeacher", "Teacher", new { id = t.Id }, null) |
-                    @Html.ActionLink("Details", "Details", "Teacher", new { id = t.Id }, null) |
-                    @Html.ActionLink("Delete", "DeleteTeacher", "Teacher", new { id = t.Id }, null) |
-                    @Html.ActionLink("AssignTo", "AssignTeacher", "Admin", new { id = t.Id }, null)
-                </td>
-            </tr>
-        }
+        <tr>
+            <td>@t.Title.Name @t.FirstName @t.LastName</td>
+            <td>@t.Username</td>
+            <td>@t.Email</td>
+            <td>
+                @Html.ActionLink("Edit", "EditTeacher", "Teacher", new { id = t.Id }, null) |
+                @Html.ActionLink("Details", "Details", "Teacher", new { id = t.Id }, null) |
+                @Html.ActionLink("Delete", "DeleteTeacher", "Teacher", new { id = t.Id }, null) |
+                @Html.ActionLink("AssignTo", "AssignTeacher", "Admin", new { id = t.Id }, null)
+            </td>
+        </tr>
     }
 </table>

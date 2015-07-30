@@ -386,9 +386,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="ViewModels\SharedVM\" />
-    <Folder Include="Views\Comment\" />
-    <Folder Include="Views\Grade\" />
-    <Folder Include="Views\Like\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

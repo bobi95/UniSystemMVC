@@ -12,13 +12,20 @@
     <tr>
         <th>Subject</th>
         <th>Grades</th>
+        <th>Final Grade</th>
         <th>Teachers</th>
     </tr>
     @foreach (var cs in Model.CoursesSubjects)
     {
         <tr>
             <td>@cs.Subject.Name</td>
-            <td>@string.Join(", ", cs.Subject.Grades.Where(g => g.StudentId == Model.Student.Id).Select(g=>g.GradeValue))</td>
+            <td>@string.Join(" | ", cs.Subject.Grades.Where(g => g.StudentId == Model.Student.Id).Select(g => g.GradeValue.ToString("0.00")))</td>
+            <td>
+                @if (cs.Subject.Grades.Count(g => g.StudentId == Model.Student.Id) > 0)
+                {
+                    @cs.Subject.Grades.Where(g => g.StudentId == Model.Student.Id).Select(g => g.GradeValue).Average().ToString("0.00")
+                }
+            </td>
             <td>
                 @if (cs.Teachers != null)
                 {

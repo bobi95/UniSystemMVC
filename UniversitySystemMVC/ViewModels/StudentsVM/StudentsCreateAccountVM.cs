@@ -15,17 +15,21 @@ namespace UniversitySystemMVC.ViewModels.StudentsVM
         public string Username { get; set; }
 
         [Required]
+        [Display(Name = "First Name")]
         public string FirstName { get; set; }
 
         [Required]
+        [Display(Name = "Last Name")]
         public string LastName { get; set; }
 
         [Required]
         [EmailAddressAttribute]
         public string Email { get; set; }
 
+        [Display(Name = "Faculty Number")]
         public string FacultyNumber { get; set; }
 
+        [Display(Name = "Course")]
         public int CourseId { get; set; }
 
         public IEnumerable<SelectListItem> Courses { get; set; }

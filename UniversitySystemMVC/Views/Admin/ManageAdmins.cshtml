@@ -20,19 +20,16 @@
 
     @foreach (var a in Model.Admins)
     {
-        if (a.IsActive)
-        {
-            <tr>
-                <td>@a.FirstName @a.LastName</td>
-                <td>@a.Username</td>
-                <td>@a.Email</td>
-                <td>
-                    @if (@UniversitySystemMVC.Models.AuthenticationManager.LoggedUser.Id == a.Id)
-                    {
-                        @Html.ActionLink("Edit", "EditAdmin", new { id = a.Id })
-                    }
-                </td>
-            </tr>
-        }
+        <tr>
+            <td>@a.FirstName @a.LastName</td>
+            <td>@a.Username</td>
+            <td>@a.Email</td>
+            <td>
+                @if (@UniversitySystemMVC.Models.AuthenticationManager.LoggedUser.Id == a.Id)
+                {
+                    @Html.ActionLink("Edit", "EditAdmin", new { id = a.Id })
+                }
+            </td>
+        </tr>
     }
 </table>

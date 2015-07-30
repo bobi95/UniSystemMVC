@@ -158,12 +158,13 @@
 
         var parentId = this.getAttribute("data-comment");
         var articleId = this.getAttribute("data-articleId");
-
+        console.log(articleId);
         $('#add-comment-toggle').click();
         setTimeout(function () {
+            console.log($("#comment-add-" + articleId));
             document.getElementById("comment-add-" + articleId).scrollIntoView();
         }, 800);
-
+        console.log(articleId);
         var hiddenParent = '<input type="hidden" name="parentId" id="parentId" value="' + parentId + '"/>';
         $("#comment-add-" + articleId + " form").append(hiddenParent);
 

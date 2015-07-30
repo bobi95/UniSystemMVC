@@ -57,7 +57,6 @@
                         }
                         double avg = total / student.Grades.Count(g => g.SubjectId == item.Subject.Id);
 
-                        @*<strong>@student.Grades.Where(g => g.SubjectId == item.Subject.Id).Average(g => g.GradeValue)</strong>*@
                         <strong>@avg.ToString("0.00")</strong>
                     }
                 </td>

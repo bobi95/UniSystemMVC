@@ -18,10 +18,12 @@ namespace UniversitySystemMVC.ViewModels.ArticlesVM
         [Required]
         public string Content { get; set; }
 
+        [Display(Name = "Date Created")]
         public DateTime DateCreated { get; set; }
 
         public IEnumerable<SelectListItem> Subjects { get; set; }
 
+        [Display(Name="Subject")]
         public int SubjectId { get; set; }
     }
 }
