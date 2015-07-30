@@ -26,5 +26,7 @@ namespace UniversitySystemMVC.Entity
         public virtual Article Article { get; set; }
 
         public virtual Comment ParentComment { get; set; }
+
+        public virtual List<Comment> Comments { get; set; }
     }
 }

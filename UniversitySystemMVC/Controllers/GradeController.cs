@@ -44,7 +44,7 @@ namespace UniversitySystemMVC.Controllers
                 TempData.FlashMessage("Grade must be a number!", null, FlashMessageTypeEnum.Red);
             }
 
-            return View("Index", "Teacher");
+            return RedirectToAction("Index", "Teacher");
         }
 
         [HttpPost]

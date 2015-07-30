@@ -41,6 +41,10 @@ namespace UniversitySystemMVC.DA
             T entity = dbSet.Find(id);
             dbSet.Remove(entity);
         }
+        public virtual void DeleteRange(List<T> items)
+        {
+            dbSet.RemoveRange(items);
+        }
         public void Update(T item)
         {
             context.Entry(item).State = EntityState.Modified;

@@ -155,12 +155,12 @@ namespace UniversitySystemMVC.Controllers
 
                                 unitOfWork.AdminRepository.Update(admin);
                                 unitOfWork.Save();
-                                TempData.FlashMessage("You successfully updated your account!", null, FlashMessageTypeEnum.Green);
-                                return RedirectToAction("Index", "Home");
+                                TempData.FlashMessage("You successfully updated your account! Login to the system again!", null, FlashMessageTypeEnum.Green);
+                                return RedirectToAction("Logout");
                             }
                             else
                             {
-                                ModelState.AddModelError(String.Empty, "Password must be at least 2 symbols");
+                                ModelState.AddModelError(String.Empty, "Password must be at least 3 symbols");
                             }
                         }
                         else
@@ -188,12 +188,12 @@ namespace UniversitySystemMVC.Controllers
 
                                 unitOfWork.StudentRepository.Update(student);
                                 unitOfWork.Save();
-                                TempData.FlashMessage("You successfully updated your account!", null, FlashMessageTypeEnum.Green);
-                                return RedirectToAction("Index", "Home");
+                                TempData.FlashMessage("You successfully updated your account! Login to the system again!", null, FlashMessageTypeEnum.Green);
+                                return RedirectToAction("Logout");
                             }
                             else
                             {
-                                ModelState.AddModelError(String.Empty, "Password must be at least 2 symbols");
+                                ModelState.AddModelError(String.Empty, "Password must be at least 3 symbols");
                             }
                         }
                         else
@@ -223,19 +223,20 @@ namespace UniversitySystemMVC.Controllers
 
                                     unitOfWork.TeacherRepository.Update(teacher);
                                     unitOfWork.Save();
-                                    TempData.FlashMessage("You successfully updated your account!", null, FlashMessageTypeEnum.Green);
-                                    return RedirectToAction("Index", "Home");
+                                    TempData.FlashMessage("You successfully updated your account! Login to the system again!", null, FlashMessageTypeEnum.Green);
+                                    return RedirectToAction("Logout");
                                 }
                                 else
                                 {
-                                    ModelState.AddModelError(String.Empty, "Password must be at least 2 symbols");
+                                    ModelState.AddModelError(String.Empty, "Password must be at least 3 symbols");
                                 }
                             }
                             else
                             {
                                 unitOfWork.TeacherRepository.Update(teacher);
                                 unitOfWork.Save();
-                                TempData.FlashMessage("You successfully updated your account!", null, FlashMessageTypeEnum.Green);
+                                TempData.FlashMessage("You successfully updated your account! Login to the system again!", null, FlashMessageTypeEnum.Green);
+                                AuthenticationManager.LoggedUser.Username = teacher.Username;
                                 return RedirectToAction("Index", "Home");
                             }
                         }

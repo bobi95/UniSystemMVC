@@ -102,12 +102,12 @@
                             @Html.ActionLink(item.Subject.Name, "Details", "Subject", new { id = item.Subject.Id }, new { target = "_blank"})
                         </td>
                         <td>
-                            @String.Join(", ", item.Subject.Grades)
+                            @String.Join(" | ", item.Subject.Grades.Select(g => g.GradeValue.ToString("0.00")))
                         </td>
                         <td>
                             @if (item.Subject.Grades != null && item.Subject.Grades.Count > 0)
                             {
-                                @item.Subject.Grades.Average(g => g.GradeValue)
+                                @item.Subject.Grades.Average(g => g.GradeValue).ToString("0.00")
                             }
                         </td>
                         <td>

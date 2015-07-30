@@ -10,54 +10,60 @@
 
         var serviceURL = '/Comment/CreateComment';
 
-        $.ajax({
-            type: "POST",
-            url: serviceURL,
-            data: "{articleId:'" + articleId + "',title:'" + title + "',content:'" + content + "',parentId:'" + parentId + "'}",
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            success: successFunc,
-            error: errorFunc
-        });
+        if (title.length > 3 && content.length > 3) {
+            $.ajax({
+                type: "POST",
+                url: serviceURL,
+                data: "{articleId:'" + articleId + "',title:'" + title + "',content:'" + content + "',parentId:'" + parentId + "'}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: successFunc,
+                error: errorFunc
+            });
 
-        function successFunc(data, status) {
-            var appendComment = "";
-            if (parentId != null) {
-                appendComment += '<div style="display:none" class="comment-entry comment-entry-child" id="comment-' + data.Id + '">';
+            function successFunc(data, status) {
+                var appendComment = "";
+                    if (parentId != null) {
+                        appendComment += '<div style="display:none" class="comment-entry comment-entry-child" id="comment-' + data.Id + '">';
+                    }
+                    else {
+                        appendComment += '<div style="display:none" class="comment-entry" id="comment-' + data.Id + '">';
+                    }
+                    appendComment += '<header>';
+                    appendComment += '<h5 class="pull-left"><span class="ui-icon ui-icon-comment pull-left"></span><strong>' + data.Title + '</strong></h5>';
+                    //appendComment += '<div class="pull-right">Edit | Delete</div>';
+                    appendComment += '</header>';
+                    appendComment += '<p class="comment-creator">Added by: ' + data.Name + '</p>';
+                    appendComment += '<p class="comment-date">Created: just now</p>';
+                    appendComment += '<p class="comment-date">Last modified: just now</p>';
+                    appendComment += '<p class="comment-content">' + data.Content + '</p>';
+                    appendComment += '</div>';
+
+                if (parentId != null) {
+                    $("#comment-" + data.ParentId).append(appendComment)
+                    setTimeout(function () {
+                        document.getElementById("comment-" + data.Id).scrollIntoView();
+                    }, 400);
+                }
+                else {
+                    $('#comments').append(appendComment);
+                }
+
+
+                $('#comment-' + data.Id).slideDown();
+
+                $("#Title").val('');
+                $("#Content").val('');
             }
-            else {
-                appendComment += '<div style="display:none" class="comment-entry" id="comment-' + data.Id + '">';
+
+            function errorFunc() {
+                alert('error');
             }
-            appendComment += '<header>';
-            appendComment += '<h5 class="pull-left"><span class="ui-icon ui-icon-comment pull-left"></span><strong>' + data.Title + '</strong></h5>';
-            //appendComment += '<div class="pull-right">Edit | Delete</div>';
-            appendComment += '</header>';
-            appendComment += '<p class="comment-creator">Added by: ' + data.Name + '</p>';
-            appendComment += '<p class="comment-date">Created: ' + data.DateCreated + '</p>';
-            appendComment += '<p class="comment-date">Last modified: ' + data.DateModified + '</p>';
-            appendComment += '<p class="comment-content">' + data.Content + '</p>';
-            appendComment += '</div>';
-
-            if (parentId != null) {
-                $("#comment-" + data.ParentId).append(appendComment)
-                setTimeout(function () {
-                    document.getElementById("comment-" + data.Id).scrollIntoView();
-                }, 400);
-            }
-            else {
-                $('#comments').append(appendComment);
-            }
-
-
-            $('#comment-' + data.Id).slideDown();
-
-            $("#Title").val('');
-            $("#Content").val('');
         }
-
-        function errorFunc() {
-            alert('error');
+        else {
+            alert('Title and Content of the comment must be at least 3 symbols ... fix this ugly alert later!');
         }
+        
     });
 
     // Showing Edit Views Main Comments
@@ -72,14 +78,14 @@
         var titleContent = $("#title-comment-" + commentId).html();
 
         var appendedTitleTextBox = '<div id="edit-title-' + commentId + '">';
-        appendedTitleTextBox += '<input type="text" id="Title" name="Title" value="' + titleContent + '" />';
-        appendedTitleTextBox += '</div>';
+            appendedTitleTextBox += '<input type="text" id="Title" name="Title" value="' + titleContent + '" />';
+            appendedTitleTextBox += '</div>';
         
 
         var appendedContentTextbox = '<div id="edit-comment-' + commentId + '-container">';
-        appendedContentTextbox += '<textarea class="form-control" cols="20" id="Content" name="Content" rows="2">' + commentContent + '</textarea>';
-        appendedContentTextbox += '<input type="hidden" name="Id" value="' + commentId + '" />';
-        appendedContentTextbox += '</div>';
+            appendedContentTextbox += '<textarea class="form-control" cols="20" id="Content" name="Content" rows="2">' + commentContent + '</textarea>';
+            appendedContentTextbox += '<input type="hidden" name="Id" value="' + commentId + '" />';
+            appendedContentTextbox += '</div>';
 
         var appendedEditBtn = '<button class="btn btn-edit-submit" id="edit-comment-' + commentId + '" data-comment="' + commentId + '">Edit</button>';
 
@@ -98,10 +104,6 @@
             $("#comment-" + commentId + ".comment-entry-child > .comment-content").hide();
         }
         
-
-       
-       
-
         document.getElementById('edit-comment-' + commentId).addEventListener('click', editComment, false);
     };
 
@@ -147,44 +149,12 @@
         }
     };
 
-    // Deleting Comments
-    var deleteBtns = document.getElementsByClassName('btn-delete-comment');
-
-    function deleteComment() {
-        var commentId = this.getAttribute("data-comment");
-
-        var serviceURL = '/Comment/DeleteComment';
-
-        $.ajax({
-            type: "POST",
-            url: serviceURL,
-            data: "{commentId:'" + commentId + "'}",
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            success: successFunc,
-            error: errorFunc
-        });
-
-        function successFunc(data, status) {
-            $("#comment-" + commentId).remove();
-        }
-
-        function errorFunc() {
-            alert('error');
-        }
-    }
-
-    for (var i = 0; i < deleteBtns.length; i++) {
-        deleteBtns[i].addEventListener('click', deleteComment, false);
-    }
-
+    
     // Replying Comments
     var replyBtns = document.getElementsByClassName('btn-reply-comment');
 
     function showReplyView() {
         $("#parentId").remove();
-
-        // to make it good
 
         var parentId = this.getAttribute("data-comment");
         var articleId = this.getAttribute("data-articleId");

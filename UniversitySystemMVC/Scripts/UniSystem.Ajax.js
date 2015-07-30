@@ -54,7 +54,7 @@ UniSystem.Ajax = (function () {
         if (method === "POST") {
 
             xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            xmlhttp.send(dataString);
+            xmlhttp.send(_getData(data));
 
         } else {
 

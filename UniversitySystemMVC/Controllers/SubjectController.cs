@@ -18,10 +18,10 @@ namespace UniversitySystemMVC.Controllers
 		UnitOfWork unitOfWork = new UnitOfWork();
 
 		// GET: Subject
-		public ActionResult Index()
-		{
-			return View();
-		}
+        //public ActionResult Index()
+        //{
+        //    return View();
+        //}
 
 		#region CreateSubject
 		[HttpGet]
@@ -135,18 +135,25 @@ namespace UniversitySystemMVC.Controllers
 			if (ModelState.IsValid)
 			{
 				Subject subject = unitOfWork.SubjectRepository.GetById(model.Id, true);
+                
+				List<CoursesSubjects> css = unitOfWork.CoursesSubjectsRepository.GetBySubjectId(subject.Id, true);
+                if (css.Count > 0)
+                {
+                    model.Name = subject.Name;
+                    TempData.FlashMessage("Subject cannot be deleted! It is assigned to one or more courses!", null, FlashMessageTypeEnum.Red);
+                    return View(model);
+                }
+				//cs.ForEach(x => x.Teachers.Clear());
 
-				List<CoursesSubjects> cs = unitOfWork.CoursesSubjectsRepository.GetBySubjectId(subject.Id, true);
+				//subject.CoursesSubjects.Clear();
+				//subject.Grades.Clear();
 
-				cs.ForEach(x => x.Teachers.Clear());
+				//unitOfWork.CoursesSubjectsRepository.UpdateTable(subject, new List<Course>());
 
-				subject.CoursesSubjects.Clear();
-				subject.Grades.Clear();
-
-				unitOfWork.CoursesSubjectsRepository.UpdateTable(subject, new List<Course>());
+                unitOfWork.GradeRepository.DeleteRange(subject.Grades.ToList());
+                subject.Grades.Clear();
 
 				unitOfWork.SubjectRepository.Delete(subject.Id);
-
 				unitOfWork.Save();
 
 				TempData.FlashMessage("Subject has been deleted");

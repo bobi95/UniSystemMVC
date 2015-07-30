@@ -55,8 +55,6 @@ namespace UniversitySystemMVC.Controllers
                 Id = comment.Id,
                 Title = comment.Title,
                 Content = comment.Content,
-                DateCreated = comment.DateCreated,
-                DateModified = comment.DateModified,
                 Name = nameRes,
                 ParentId = comment.CommentId
             };
@@ -80,8 +78,7 @@ namespace UniversitySystemMVC.Controllers
             var editedComment = new
             {
                 Title = comment.Title,
-                Content = comment.Content,
-                DateModified = comment.DateModified
+                Content = comment.Content
             };
 
             return Json(editedComment, JsonRequestBehavior.AllowGet);
@@ -90,10 +87,33 @@ namespace UniversitySystemMVC.Controllers
         [HttpPost]
         public JsonResult DeleteComment(int commentId)
         {
+            Comment comment = unitOfWork.CommentRepository.GetById(commentId);
+
+
+            // Excecuted again .. 
+            // TO BE FIXED
+
+            if (comment == null)
+            {
+                return Json(new object[] { new object() }, JsonRequestBehavior.AllowGet);
+            }
+            if (comment.Comments == null)
+            {
+                comment.Comments = new List<Comment>();     
+            }
+            
+
+            foreach (var child in unitOfWork.CommentRepository.GetAll().Where(c=>c.CommentId == commentId))
+            {
+                unitOfWork.CommentRepository.Delete(child.Id);
+            }
+            unitOfWork.Save();
+
+            comment.Comments.Clear(); 
+
             unitOfWork.CommentRepository.Delete(commentId);
             unitOfWork.Save();
 
-            // ?
             return Json(new object[]{new object()}, JsonRequestBehavior.AllowGet);
         }
     }

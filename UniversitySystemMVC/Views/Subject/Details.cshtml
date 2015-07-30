@@ -68,11 +68,11 @@
                 <tr @if (!s.IsActive) { @Html.Raw("style=color:red")  }>
                     <td>@s.FacultyNumber</td>
                     <td>@Html.ActionLink(s.FirstName + " " + s.LastName, "Details", "Student", new { id = s.Id }, new { target = "_blank" })</td>
-                    <td>@String.Join(", ", s.Grades.Where(g => g.SubjectId == @item.SubjectId).Select(g => g.GradeValue))</td>
+                    <td>@String.Join(" | ", s.Grades.Where(g => g.SubjectId == @item.SubjectId).Select(g => g.GradeValue.ToString("0.00")))</td>
                     <td>
                         @if (s.Grades.Where(g => g.SubjectId == item.Subject.Id).Count() > 0)
                         {
-                            @s.Grades.Where(g => g.SubjectId == item.Subject.Id).Average(g => g.GradeValue)
+                            @s.Grades.Where(g => g.SubjectId == item.Subject.Id).Average(g => g.GradeValue).ToString("0.00")
                         }
                     </td>
                 </tr>
