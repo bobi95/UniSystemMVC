@@ -38,6 +38,7 @@ namespace UniversitySystemMVC.Controllers
             return View(model);
         }
 
+        #region AccountConfirmation
         [HttpGet]
         [AllowAnonymous]
         public ActionResult ConfirmAccount(int? id)
@@ -68,6 +69,7 @@ namespace UniversitySystemMVC.Controllers
 
         [HttpPost]
         [AllowAnonymous]
+        [ValidateAntiForgeryToken]
         public ActionResult ConfirmAccount(TeachersConfirmAccountVM model)
         {
             if (ModelState.IsValid)
@@ -98,6 +100,7 @@ namespace UniversitySystemMVC.Controllers
 
             return View(model);
         }
+        #endregion AccountConfirmation
 
         #region CreateTeacher
         [HttpGet]
@@ -156,6 +159,7 @@ namespace UniversitySystemMVC.Controllers
 
         [HttpPost]
         [AuthorizeUser(UserType = UserTypeEnum.Administrator, CheckType = true)]
+        [ValidateAntiForgeryToken]
         public ActionResult CreateEditTeacher(TeachersCreateAccountVM model)
         {
             if (ModelState.IsValid)
@@ -270,6 +274,7 @@ namespace UniversitySystemMVC.Controllers
 
         [HttpPost]
         [AuthorizeUser(UserType = UserTypeEnum.Administrator, CheckType = true)]
+        [ValidateAntiForgeryToken]
         public ActionResult DeleteTeacher(TeachersDeleteAccountVM model)
         {
             if (ModelState.IsValid)

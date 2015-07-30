@@ -13,12 +13,6 @@ namespace UniversitySystemMVC.Controllers
     {
         UnitOfWork unitOfWork = new UnitOfWork();
 
-        // GET: Grade
-        public ActionResult Index()
-        {
-            return View();
-        }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult AddGrade(int studentId, int subjectId, string gradeValue)

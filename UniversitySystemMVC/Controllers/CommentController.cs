@@ -64,9 +64,7 @@ namespace UniversitySystemMVC.Controllers
 
         [HttpPost]
         public JsonResult EditComment(int commentId, string title, string content)
-        //, int id, int UserId, UserTypeEnum UserType
         {
-
             Comment comment = unitOfWork.CommentRepository.GetById(commentId);
             comment.Title = title;
             comment.Content = content;
@@ -88,7 +86,6 @@ namespace UniversitySystemMVC.Controllers
         public JsonResult DeleteComment(int commentId)
         {
             Comment comment = unitOfWork.CommentRepository.GetById(commentId);
-
 
             // Excecuted again .. 
             // TO BE FIXED

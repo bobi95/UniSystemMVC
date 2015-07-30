@@ -1,13 +1,14 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "Index";
 }
 
 <h2>Welcome to the admin panel</h2>
 
-@Html.ActionLink("Manage Students", "ManageStudents", "Admin") <br />
-@Html.ActionLink("Manage Teachers", "ManageTeachers", "Admin") <br />
-@Html.ActionLink("Manage Admins", "ManageAdmins", "Admin") <br />
-@Html.ActionLink("Manage Courses", "ManageCourses", "Admin") <br />
-@Html.ActionLink("Manage Subjects", "ManageSubjects", "Admin") <br />
-@Html.ActionLink("Manage Titles", "ManageTitles", "Admin") <br />
+<ul>
+    <li>@Html.ActionLink("Manage Students", "ManageStudents", "Admin")</li>
+    <li>@Html.ActionLink("Manage Teachers", "ManageTeachers", "Admin")</li>
+    <li>@Html.ActionLink("Manage Admins", "ManageAdmins", "Admin")</li>
+    <li>@Html.ActionLink("Manage Courses", "ManageCourses", "Admin")</li>
+    <li>@Html.ActionLink("Manage Subjects", "ManageSubjects", "Admin")</li>
+    <li>@Html.ActionLink("Manage Titles", "ManageTitles", "Admin")</li>
+</ul>

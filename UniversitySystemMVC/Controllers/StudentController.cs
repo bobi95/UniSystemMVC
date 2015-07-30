@@ -69,6 +69,7 @@ namespace UniversitySystemMVC.Controllers
 
         [HttpPost]
         [AllowAnonymous]
+        [ValidateAntiForgeryToken]
         public ActionResult ConfirmAccount(StudentsConfirmAccountVM model)
         {
             if (ModelState.IsValid)
@@ -157,6 +158,7 @@ namespace UniversitySystemMVC.Controllers
 
         [HttpPost]
         [AuthorizeUser(UserType = UserTypeEnum.Administrator, CheckType = true)]
+        [ValidateAntiForgeryToken]
         public ActionResult CreateEditStudent(StudentsCreateAccountVM model)
         {
             if (ModelState.IsValid)
@@ -273,6 +275,7 @@ namespace UniversitySystemMVC.Controllers
 
         [HttpPost]
         [AuthorizeUser(UserType = UserTypeEnum.Administrator, CheckType = true)]
+        [ValidateAntiForgeryToken]
         public ActionResult DeleteStudent(StudentsDeleteAccountVM model)
         {
             if (ModelState.IsValid)

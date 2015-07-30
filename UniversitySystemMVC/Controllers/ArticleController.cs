@@ -23,7 +23,7 @@ namespace UniversitySystemMVC.Controllers
             ArticlesIndexVM model = new ArticlesIndexVM();
             List<Subject> subjects = GetSubjectsAsList().ToList();
 
-            model.Articles = unitOfWork.ArticleRepository.GetAll().Where(a => subjects.Contains(a.Subject)).ToList();
+            model.Articles = unitOfWork.ArticleRepository.GetAll(a => subjects.Contains(a.Subject)).ToList();
 
             return View(model);
         }
@@ -32,7 +32,9 @@ namespace UniversitySystemMVC.Controllers
 
         private ICollection<Subject> GetSubjectsAsList()
         {
-            List<Subject> subjects = unitOfWork.SubjectRepository.GetAll(true).Where(s => s.CoursesSubjects.Any(cs => cs.Teachers.Any(t => t.Id == AuthenticationManager.LoggedUser.Id))).ToList();
+            List<Subject> subjects = unitOfWork.SubjectRepository.GetAll(true)
+                .Where(s => s.CoursesSubjects.Any(cs => cs.Teachers
+                    .Any(t => t.Id == AuthenticationManager.LoggedUser.Id))).ToList();
 
             return subjects;
         }
@@ -45,26 +47,6 @@ namespace UniversitySystemMVC.Controllers
                                     Value = s.Id.ToString(),
                                     Text = s.Name
                                 });
-
-            //var subjects = new List<Subject>();
-            //foreach (var s in unitOfWork.SubjectRepository.GetAll())
-            //{
-            //    s.CoursesSubjects = unitOfWork.CoursesSubjectsRepository.GetBySubjectId(s.Id, true);
-            //    foreach (var cs in s.CoursesSubjects)
-            //    {
-            //        if (s.Id == cs.Subject.Id)
-            //        {
-            //            foreach (var t in cs.Teachers)
-            //            {
-            //                if (t.Id == AuthenticationManager.LoggedUser.Id && !subjects.Contains(s))
-            //                {
-            //                    subjects.Add(s);
-            //                }
-            //            }    
-            //        }
-
-            //    }
-            //}
         }
 
         [HttpGet]
@@ -105,6 +87,7 @@ namespace UniversitySystemMVC.Controllers
 
         [HttpPost]
         [AuthorizeUser(UserType = UserTypeEnum.Teacher, CheckType = true)]
+        [ValidateAntiForgeryToken]
         public ActionResult CreateEditArticle(ArticlesCreateVM model)
         {
             if (ModelState.IsValid)

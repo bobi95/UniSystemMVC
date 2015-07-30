@@ -17,12 +17,6 @@ namespace UniversitySystemMVC.Controllers
     {
         UnitOfWork unitOfWork = new UnitOfWork();
 
-        // GET: Course
-        public ActionResult Index()
-        {
-            return View();
-        }
-
         #region CreateCourse
         [HttpGet]
         public ActionResult CreateCourse()
@@ -58,6 +52,7 @@ namespace UniversitySystemMVC.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult CreateEditCourse(CoursesCreateVM model)
         {
             if (ModelState.IsValid)
@@ -170,12 +165,14 @@ namespace UniversitySystemMVC.Controllers
 
             return View(model);
         }
+        
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult DeleteCourse(CoursesDeleteVM model)
         {
             Course course = unitOfWork.CourseRepository.GetById(model.Id);
 
-            if (course.Students != null)
+            if (course.Students.Count > 0)
             {
                 TempData.FlashMessage("You cannot delete course with students in it!", null, FlashMessageTypeEnum.Red);
                 model.Name = course.Name;
@@ -183,9 +180,9 @@ namespace UniversitySystemMVC.Controllers
                 return View(model);
             }
 
-            List<CoursesSubjects> cs = unitOfWork.CoursesSubjectsRepository.GetByCourseId(course.Id, true);
+            List<CoursesSubjects> css = unitOfWork.CoursesSubjectsRepository.GetByCourseId(course.Id, true);
 
-            cs.ForEach(x => x.Teachers.Clear());
+            css.ForEach(x => x.Teachers.Clear());
             course.CoursesSubjects.Clear();
             course.Students.Clear();
 

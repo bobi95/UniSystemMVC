@@ -128,6 +128,7 @@ namespace UniversitySystemMVC.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult CreateEditAdmin(AdminsCreateAccountVM model)
         {
             if (ModelState.IsValid)
@@ -227,6 +228,7 @@ namespace UniversitySystemMVC.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult DeleteAdmin(AdminsDeleteAdminVM model)
         {
             if (ModelState.IsValid)
@@ -273,6 +275,7 @@ namespace UniversitySystemMVC.Controllers
 
         [HttpPost]
         [AllowAnonymous]
+        [ValidateAntiForgeryToken]
         public ActionResult ConfirmAccount(AdminsConfirmAccountVM model)
         {
             if (ModelState.IsValid)
@@ -305,6 +308,7 @@ namespace UniversitySystemMVC.Controllers
         }
         #endregion AdminAccountConfirmation
 
+        #region AssignTeacher
         [HttpGet]
         public ActionResult AssignTeacher(int? id)
         {
@@ -321,6 +325,7 @@ namespace UniversitySystemMVC.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult AssignTeacher(TeachersAssignVM model)
         {
             if (ModelState.IsValid)
@@ -365,6 +370,7 @@ namespace UniversitySystemMVC.Controllers
             model.Courses = unitOfWork.CourseRepository.GetAll().ToList();
             return View(model);
         }
+        #endregion AssignTeacher
 
         [HttpGet]
         public ActionResult GetSubjects(int? id, int? teacher)

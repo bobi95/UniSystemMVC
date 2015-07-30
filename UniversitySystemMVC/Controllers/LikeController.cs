@@ -21,7 +21,8 @@ namespace UniversitySystemMVC.Controllers
             like.UserType = AuthenticationManager.UserType.Value;
             like.DateCreated = DateTime.Now;
 
-            if (unitOfWork.LikeRepository.GetAll().FirstOrDefault(l => l.ArticleId == articleId && l.UserType == AuthenticationManager.UserType && l.UserId == AuthenticationManager.LoggedUser.Id) == null)
+            if (unitOfWork.LikeRepository.GetAll()
+                .FirstOrDefault(l => l.ArticleId == articleId && l.UserType == AuthenticationManager.UserType && l.UserId == AuthenticationManager.LoggedUser.Id) == null)
             {
                 unitOfWork.LikeRepository.Insert(like);
                 unitOfWork.Save();
@@ -32,7 +33,9 @@ namespace UniversitySystemMVC.Controllers
 
         public JsonResult DeleteLike(int articleId)
         {
-            Like like = unitOfWork.LikeRepository.GetAll().FirstOrDefault(l => l.ArticleId == articleId && l.UserType == AuthenticationManager.UserType && l.UserId == AuthenticationManager.LoggedUser.Id);
+            Like like = unitOfWork.LikeRepository.GetAll()
+                .FirstOrDefault(l => l.ArticleId == articleId && l.UserType == AuthenticationManager.UserType && l.UserId == AuthenticationManager.LoggedUser.Id);
+
             unitOfWork.LikeRepository.Delete(like.Id);
             unitOfWork.Save();
 

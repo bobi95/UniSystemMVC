@@ -15,11 +15,6 @@ namespace UniversitySystemMVC.Controllers
     public class TitleController : Controller
     {
         UnitOfWork unitOfWork = new UnitOfWork();
-        // GET: Title
-        public ActionResult Index()
-        {
-            return View();
-        }
 
         #region CreateTitle
         [HttpGet]
@@ -51,6 +46,7 @@ namespace UniversitySystemMVC.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult CreateEditTitle(TitlesCreateVM model)
         {
             if (ModelState.IsValid)
@@ -108,7 +104,9 @@ namespace UniversitySystemMVC.Controllers
 
             return View(model);
         }
+
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult DeleteTitle(TitlesDeleteVM model)
         {
             if (ModelState.IsValid)

@@ -18,12 +18,7 @@ namespace UniversitySystemMVC.Controllers
     {
         UnitOfWork unitOfWork = new UnitOfWork();
 
-        // GET: Account
-        public ActionResult Index()
-        {
-            return View();
-        }
-
+        #region Login
         [HttpGet]
         public ActionResult Login()
         {
@@ -36,6 +31,7 @@ namespace UniversitySystemMVC.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Login(UsersLoginVM model)
         {
             if (ModelState.IsValid)
@@ -64,6 +60,7 @@ namespace UniversitySystemMVC.Controllers
 
             return View(model);
         }
+        #endregion EditProfile
 
         [HttpGet]
         public ActionResult Logout()
@@ -77,6 +74,7 @@ namespace UniversitySystemMVC.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        #region EditProfile
         [AuthorizeUser]
         public ActionResult EditProfile()
         {
@@ -251,5 +249,6 @@ namespace UniversitySystemMVC.Controllers
 
             return View(model);
         }
+        #endregion EditProfile
     }
 }

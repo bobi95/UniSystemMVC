@@ -17,12 +17,6 @@ namespace UniversitySystemMVC.Controllers
 	{
 		UnitOfWork unitOfWork = new UnitOfWork();
 
-		// GET: Subject
-		//public ActionResult Index()
-		//{
-		//    return View();
-		//}
-
 		#region CreateSubject
 		[HttpGet]
 		public ActionResult CreateSubject()
@@ -57,6 +51,7 @@ namespace UniversitySystemMVC.Controllers
 		}
 
 		[HttpPost]
+		[ValidateAntiForgeryToken]
 		public ActionResult CreateEditSubject(SubjectsCreateVM model)
 		{
 			if (ModelState.IsValid)
@@ -129,7 +124,9 @@ namespace UniversitySystemMVC.Controllers
 
 			return View(model);
 		}
+
 		[HttpPost]
+		[ValidateAntiForgeryToken]
 		public ActionResult DeleteSubject(SubjectsDeleteVM model)
 		{
 			if (ModelState.IsValid)
@@ -143,12 +140,6 @@ namespace UniversitySystemMVC.Controllers
 					TempData.FlashMessage("Subject cannot be deleted! It is assigned to one or more courses!", null, FlashMessageTypeEnum.Red);
 					return View(model);
 				}
-				//cs.ForEach(x => x.Teachers.Clear());
-
-				//subject.CoursesSubjects.Clear();
-				//subject.Grades.Clear();
-
-				//unitOfWork.CoursesSubjectsRepository.UpdateTable(subject, new List<Course>());
 
 				unitOfWork.GradeRepository.DeleteRange(subject.Grades.ToList());
 				subject.Grades.Clear();
@@ -318,6 +309,7 @@ namespace UniversitySystemMVC.Controllers
 
 			#endregion SortingFiltering
 
+			#region ExportGrades
 			if (submitBtn == "Export") // Export grades for single Subject
 			{
 				StringBuilder sb = new StringBuilder();
@@ -340,17 +332,9 @@ namespace UniversitySystemMVC.Controllers
 
 				return File(new System.Text.UTF8Encoding().GetBytes(sb.ToString()), "text/csv", filename);
 			}
+			#endregion ExportGrades
 
 			return View(model);
-		}
-
-		[AuthorizeUser(UserType=UserTypeEnum.Administrator, CheckType=true)]
-		public ActionResult ExportGrades(SubjectsDetailsVM model)
-		{
-			StringBuilder sb = new StringBuilder();
-			//sb.AppendLine(String.Format("{0},{1},{2},{3}", ));
-			string csv = "Charlie, Chaplin, Chuckles";
-			return File(new System.Text.UTF8Encoding().GetBytes(csv), "text/csv", "Report123.csv");
 		}
 	}
 }
