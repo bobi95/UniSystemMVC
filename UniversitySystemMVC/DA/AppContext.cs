@@ -12,8 +12,6 @@ namespace UniversitySystemMVC.DA
     {
         public AppContext() : base("UniversitySystemDB") { }
 
-
-        //public DbSet<User> Users { get; set; }
         public DbSet<Administrator> Administrators { get; set; }
         public DbSet<Student> Students { get; set; }
         public DbSet<Teacher> Teachers { get; set; }

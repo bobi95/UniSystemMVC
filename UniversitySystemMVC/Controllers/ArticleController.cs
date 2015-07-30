@@ -23,7 +23,7 @@ namespace UniversitySystemMVC.Controllers
             ArticlesIndexVM model = new ArticlesIndexVM();
             List<Subject> subjects = GetSubjectsAsList().ToList();
 
-            model.Articles = unitOfWork.ArticleRepository.GetAll(a => subjects.Contains(a.Subject)).ToList();
+            model.Articles = unitOfWork.ArticleRepository.GetAll().Where(a => subjects.Contains(a.Subject)).ToList();
 
             return View(model);
         }

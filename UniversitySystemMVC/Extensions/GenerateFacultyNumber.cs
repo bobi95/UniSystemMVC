@@ -33,7 +33,6 @@ namespace UniversitySystemMVC.Extensions
             }
 
             sb.Append((lastIdNumber + 1).ToString("000"));
-            //sb.Append(idNumber.ToString("000"));
 
             return sb.ToString();
         }
