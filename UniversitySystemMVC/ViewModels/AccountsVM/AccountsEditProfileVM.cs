@@ -14,11 +14,14 @@ namespace UniversitySystemMVC.ViewModels.AccountsVM
         public string Username { get; set; }
 
         [Required]
+        [Display(Name="Old Password")]
         public string OldPassword { get; set; }
 
+        [Display(Name = "New Password")]
         public string NewPassword { get; set; }
 
         [Compare("NewPassword")]
+        [Display(Name = "Re-New Password")]
         public string NewPasswordRe { get; set; }
 
         [Required]
