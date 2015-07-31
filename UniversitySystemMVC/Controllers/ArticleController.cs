@@ -214,6 +214,8 @@ namespace UniversitySystemMVC.Controllers
                 model.Likes.Add(likeExtended);
             }
 
+            model.Likes = model.Likes.OrderByDescending(l => l.DateCreated).ToList();
+
             model.LikeState = 0;
             if (article.Likes.FirstOrDefault(l => l.UserType == AuthenticationManager.UserType.Value && l.UserId == AuthenticationManager.LoggedUser.Id) != null)
             {
@@ -254,6 +256,8 @@ namespace UniversitySystemMVC.Controllers
 
                 model.Comments.Add(commentExtended);
             }
+
+            model.Comments = model.Comments.OrderByDescending(c => c.DateCreated).ToList();
 
             return View(model);
         }

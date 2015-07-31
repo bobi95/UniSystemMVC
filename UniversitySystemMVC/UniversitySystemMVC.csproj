@@ -306,6 +306,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Scripts\article-delete.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="JSLintNet.json" />
@@ -380,6 +381,9 @@
     <Content Include="Views\Article\Index.cshtml" />
     <Content Include="Views\Article\Read.cshtml" />
     <Content Include="Views\Account\EditProfile.cshtml" />
+    <Content Include="Views\Shared\_DeleteArticleModal.cshtml" />
+    <Content Include="Views\Shared\_DeleteCommentModal.cshtml" />
+    <Content Include="Views\Shared\_LikesModal.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

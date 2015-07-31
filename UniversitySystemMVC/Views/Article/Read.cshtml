@@ -1,222 +1,211 @@
 ﻿@model UniversitySystemMVC.ViewModels.ArticlesVM.ArticlesReadVM
 
 @{
-    ViewBag.Title = "Read";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+	ViewBag.Title = "Read";
+	Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <section id="articles" class="row">
-    <article>
-        <header>
-            <h2>@Model.Title</h2>
-            <p>Added by @Model.User.FirstName @Model.User.LastName</p>
-            <p class="article-date">Created: @Model.DateCreated</p>
-            <p class="article-date">Last modified: @Model.DateModified</p>
-        </header>
+	<article>
+		<header>
+			<h2 class="pull-left">@Model.Title</h2>
+			@if (UniversitySystemMVC.Models.AuthenticationManager.IsTeacher && (Model.User.Id == UniversitySystemMVC.Models.AuthenticationManager.LoggedUser.Id))
+			{
+				<div class="pull-right">
+					@Html.ActionLink("Edit", "EditArticle", "Article", new { id = @Model.Id }, null) |
+					<a href="#" data-toggle="modal" data-target="#article-delete" data-article="@Model.Id">Delete</a>
+				</div>
+			}
+		</header>    
+			<p>Added by @Model.User.FirstName @Model.User.LastName</p>
+			<p class="article-date">Created: @Model.DateCreated</p>
+			<p class="article-date">Last modified: @Model.DateModified</p>
+		
 
-        <p class="article-content">@Model.Content</p>
+		<p class="article-content">@Model.Content</p>
 
-        @* <<<<<<<<< LIKES >>>>>>>>>> *@
-        <div class="likes-container row">
-            <button id="like-subject-@Model.Id" class="button-like pull-left" data-article="@Model.Id" data-state="@Model.LikeState" data-likescount="@Model.Likes.Count">
-                @if (Model.LikeState == 0)
-                {
-                    <img src="~/Content/images/like.png" alt="Like" />
-                }
-                else
-                {
-                    <img src="~/Content/images/unlike.png" alt="Unlike" />
-                }
-            </button>
-            <p id="like-subject-@Model.Id-info" class="pull-left">@Model.Likes.Count <a href="#" data-toggle="modal" data-target="#likes">people</a> like this</p>
-        </div>
+		@* <<<<<<<<< LIKES >>>>>>>>>> *@
+		<div class="likes-container row">
+			<button id="like-subject-@Model.Id" class="button-like pull-left" data-article="@Model.Id" data-state="@Model.LikeState" data-likescount="@Model.Likes.Count">
+				@if (Model.LikeState == 0)
+				{
+					<img src="~/Content/images/like.png" alt="Like" />
+				}
+				else
+				{
+					<img src="~/Content/images/unlike.png" alt="Unlike" />
+				}
+			</button>
+			<p id="like-subject-@Model.Id-info" class="pull-left">
+				@if (Model.LikeState == 1)
+				{
+					if (Model.Likes.Count == 1)
+					{
+						@Html.Raw("You like this")
+					}
+					else
+					{
+						@Html.Raw("You and <a href='#' data-toggle='modal' data-target='#likes'>" + (@Model.Likes.Count - 1) + " more</a> like this")
+					}
+				}
+				else
+				{
+					if (Model.Likes.Count == 0)
+					{
+						@Html.Raw("No one likes this")
+					}
+					else
+					{
+						@Html.Raw(@Model.Likes.Count + " <a href='#' data-toggle='modal' data-target='#likes'>people</a> like this")
+					}
+				}
 
-        <div class="comment-container" id="comment-container-@Model.Id">
-            <div class="well">
+			</p>
+		</div>
 
-                <div class="comments" id="comments">
-                    <h4>Comments</h4>
-                    @if (Model.Comments.Count > 0)
-                    {
-                        foreach (var c in Model.Comments.OrderByDescending(x => x.DateCreated))
-                        {
-                            if (c.CommentId == null)
-                            {
-                                <div class="comment-entry comment-entry-main" id="comment-@c.Id">
-                                    <header>
-                                        <h5 class="pull-left"><span class="ui-icon ui-icon-comment pull-left"></span><strong id="title-comment-@c.Id" data-comment="@c.Id">@c.Title</strong></h5>
-                                        @if (@c.UserId == UniversitySystemMVC.Models.AuthenticationManager.LoggedUser.Id &&
-                                            c.UserType == UniversitySystemMVC.Models.AuthenticationManager.UserType)
-                                        {
-                                            <div class="pull-right">
-                                                <button class="btn btn-xs btn-primary btn-edit-comment" data-comment="@c.Id">Edit</button> |
-                                                <button class="btn btn-xs btn-danger" data-comment="@c.Id" data-toggle="modal" data-target="#confirm-delete">Delete</button> |
-                                                <button class="btn btn-xs btn-primary btn-reply-comment" data-comment="@c.Id" data-articleId="@Model.Id">Reply</button>
-                                            </div>
-                                        }
-                                        else
-                                        {
-                                            <div class="pull-right">
-                                                <button class="btn btn-xs btn-primary btn-reply-comment" data-comment="@c.Id" data-articleid="@Model.Id">Reply</button>
-                                            </div>
-                                        }
-                                    </header>
+		<div class="comment-container" id="comment-container-@Model.Id">
+			<div class="well">
 
-                                    <p class="comment-creator">Added by: @c.FullName</p>
-                                    <p class="comment-date">Created: @UniversitySystemMVC.Extensions.CalculateRelativeTime.Calculate(c.DateCreated)</p>
-                                    <p class="comment-date">Last modified: @UniversitySystemMVC.Extensions.CalculateRelativeTime.Calculate(c.DateModified)</p>
+				<div class="comments" id="comments">
+					<h4>Comments</h4>
+					@if (Model.Comments.Count > 0)
+					{
+						foreach (var c in Model.Comments.OrderByDescending(x => x.DateCreated))
+						{
+							if (c.CommentId == null)
+							{
+								<div class="comment-entry comment-entry-main" id="comment-@c.Id">
+									<header>
+										<h5 class="pull-left"><span class="ui-icon ui-icon-comment pull-left"></span><strong id="title-comment-@c.Id" data-comment="@c.Id">@c.Title</strong></h5>
+										@if (@c.UserId == UniversitySystemMVC.Models.AuthenticationManager.LoggedUser.Id &&
+											c.UserType == UniversitySystemMVC.Models.AuthenticationManager.UserType)
+										{
+											<div class="pull-right">
+												<button class="btn btn-xs btn-primary btn-edit-comment" data-comment="@c.Id">Edit</button> |
+												<button class="btn btn-xs btn-danger" data-comment="@c.Id" data-toggle="modal" data-target="#confirm-delete">Delete</button> |
+												<button class="btn btn-xs btn-primary btn-reply-comment" data-comment="@c.Id" data-articleid="@Model.Id">Reply</button>
+											</div>
+										}
+										else
+										{
+											<div class="pull-right">
+												<button class="btn btn-xs btn-primary btn-reply-comment" data-comment="@c.Id" data-articleid="@Model.Id">Reply</button>
+											</div>
+										}
+									</header>
 
-                                    <p class="comment-content">@c.Content</p>
+									<p class="comment-creator">Added by: @c.FullName</p>
+									<p class="comment-date">Created: @UniversitySystemMVC.Extensions.CalculateRelativeTime.Calculate(c.DateCreated)</p>
+									<p class="comment-date">Last modified: @UniversitySystemMVC.Extensions.CalculateRelativeTime.Calculate(c.DateModified)</p>
 
-                                    @foreach (var childC in Model.Comments.OrderBy(x => x.DateCreated))
-                                    {
-                                        if (childC.CommentId == c.Id)
-                                        {
-                                            <div class="comment-entry comment-entry-child" id="comment-@childC.Id">
-                                                <header>
-                                                    <h5 class="pull-left"><span class="ui-icon ui-icon-comment pull-left"></span><strong id="title-comment-@childC.Id" data-comment="@childC.Id">@childC.Title</strong></h5>
-                                                    @if (@childC.UserId == UniversitySystemMVC.Models.AuthenticationManager.LoggedUser.Id &&
-                                            childC.UserType == UniversitySystemMVC.Models.AuthenticationManager.UserType)
-                                                    {
-                                                        <div class="pull-right">
-                                                            <button class="btn btn-xs btn-primary btn-edit-comment" data-comment="@childC.Id" data-parent="@c.Id">Edit</button> |
-                                                            <button class="btn btn-xs btn-danger btn-delete-comment" data-comment="@childC.Id" data-toggle="modal" data-target="#confirm-delete">Delete</button>
-                                                        </div>
-                                                    }
-                                                </header>
+									<p class="comment-content">@c.Content</p>
 
-                                                <p class="comment-creator">Replied by: @childC.FullName</p>
-                                                <p class="comment-date">Created: @UniversitySystemMVC.Extensions.CalculateRelativeTime.Calculate(childC.DateCreated)</p>
-                                                <p class="comment-date">Last modified: @UniversitySystemMVC.Extensions.CalculateRelativeTime.Calculate(childC.DateModified)</p>
+									@foreach (var childC in Model.Comments.OrderBy(x => x.DateCreated))
+									{
+										if (childC.CommentId == c.Id)
+										{
+											<div class="comment-entry comment-entry-child" id="comment-@childC.Id">
+												<header>
+													<h5 class="pull-left"><span class="ui-icon ui-icon-comment pull-left"></span><strong id="title-comment-@childC.Id" data-comment="@childC.Id">@childC.Title</strong></h5>
+													@if (@childC.UserId == UniversitySystemMVC.Models.AuthenticationManager.LoggedUser.Id &&
+											childC.UserType == UniversitySystemMVC.Models.AuthenticationManager.UserType)
+													{
+														<div class="pull-right">
+															<button class="btn btn-xs btn-primary btn-edit-comment" data-comment="@childC.Id" data-parent="@c.Id">Edit</button> |
+															<button class="btn btn-xs btn-danger btn-delete-comment" data-comment="@childC.Id" data-toggle="modal" data-target="#confirm-delete">Delete</button>
+														</div>
+													}
+												</header>
 
-                                                <p class="comment-content">@childC.Content</p>
-                                            </div>
-                                        }
-                                    }
+												<p class="comment-creator">Replied by: @childC.FullName</p>
+												<p class="comment-date">Created: @UniversitySystemMVC.Extensions.CalculateRelativeTime.Calculate(childC.DateCreated)</p>
+												<p class="comment-date">Last modified: @UniversitySystemMVC.Extensions.CalculateRelativeTime.Calculate(childC.DateModified)</p>
 
-                                </div>
-                            }
-                        }
-                    }
-                </div>
+												<p class="comment-content">@childC.Content</p>
+											</div>
+										}
+									}
 
-                <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#comment-add-@Model.Id" aria-expanded="false" id="add-comment-toggle">
-                    Add Comment
-                </button>
+								</div>
+							}
+						}
+					}
+				</div>
 
-                <div class="collapse comment-container" id="comment-add-@Model.Id">
-                    <h3>Add a comment</h3>
-                    @using (Ajax.BeginForm("CreateComment", "Comment", new AjaxOptions { InsertionMode = InsertionMode.InsertAfter, UpdateTargetId = "comments" }))
-                    {
-                        @Html.LabelFor(x => x.Title)
-                        @Html.TextBox("Title", "", new { @class = "form-control" })
-                        @Html.LabelFor(x => x.Content)
-                        @Html.TextArea("Content", "", new { @class = "form-control" })
+				<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#comment-add-@Model.Id" aria-expanded="false" id="add-comment-toggle">
+					Add Comment
+				</button>
 
-                        @Html.HiddenFor(model => model.Id)
-                        if (Model.User != null)
-                        {
-                            Html.Hidden("UserId", Model.User.Id);
-                        }
-                        @Html.Hidden("UserType", UniversitySystemMVC.Models.AuthenticationManager.UserType)
+				<div class="collapse comment-container" id="comment-add-@Model.Id">
+					<h3>Add a comment</h3>
+					@using (Ajax.BeginForm("CreateComment", "Comment", new AjaxOptions { InsertionMode = InsertionMode.InsertAfter, UpdateTargetId = "comments" }))
+					{
+						@Html.LabelFor(x => x.Title)
+						@Html.TextBox("Title", "", new { @class = "form-control" })
+						@Html.LabelFor(x => x.Content)
+						@Html.TextArea("Content", "", new { @class = "form-control" })
 
-                        <input type="submit" class="btn btn-block add-comment-btn" value="Add comment" id="submit-comment" data-articleid="@Model.Id" />
-                    }
+						@Html.HiddenFor(model => model.Id)
+						if (Model.User != null)
+						{
+							Html.Hidden("UserId", Model.User.Id);
+						}
+						@Html.Hidden("UserType", UniversitySystemMVC.Models.AuthenticationManager.UserType)
 
-                </div>
-            </div>
-        </div>
+						<input type="submit" class="btn btn-block add-comment-btn" value="Add comment" id="submit-comment" data-articleid="@Model.Id" />
+					}
 
-    </article>
+				</div>
+			</div>
+		</div>
+
+	</article>
 </section>
 
-@*Modal - Likes*@
-<div class="modal fade" id="likes" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog modal-sm" role="document">
-        <div class="modal-content">
 
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">People who like "@Model.Title"</h4>
-            </div>
+@Html.Partial("_LikesModal", Model)
 
-            <div class="modal-body">
-                <ul>
-                    @foreach (var like in Model.Likes.OrderByDescending(l => l.DateCreated))
-                    {
-                        <li>@like.FullName - @like.UserType - @UniversitySystemMVC.Extensions.CalculateRelativeTime.Calculate(like.DateCreated)</li>
-                    }
-                </ul>
-            </div>
+@Html.Partial("_DeleteArticleModal", Model)
 
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            </div>
-
-        </div>
-
-    </div>
-</div>
-
-@* Modal - Delete Confirmation *@
-<div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog modal-sm" role="document">
-        <div class="modal-content">
-
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Delete confirmation</h4>
-            </div>
-
-            <div class="modal-body">
-                Are you sure you want to delete this comment?
-            </div>
-
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" id="close-confirm-delete" data-dismiss="modal">Close</button>
-                <a class="btn btn-danger btn-ok" id="btn-delete-comment-confirm">Delete</a>
-            </div>
-        </div>
-
-    </div>
-</div>
+@Html.Partial("_DeleteCommentModal", Model)
 
 
 <script src="~/Scripts/likes.js"></script>
 <script src="~/Scripts/comments.js"></script>
+<script src="~/Scripts/article-delete.js"></script>
 <script>
-    $('#confirm-delete').on('show.bs.modal', function (e) {
-        
-        var commentId = $(e.relatedTarget).data("comment"); // HERE
-        //$(this).find('.btn-ok').addClass('btn-delete-comment');
+	$('#confirm-delete').on('show.bs.modal', function (e) {
 
-        $("#btn-delete-comment-confirm").click(function() {
-      
-            var serviceURL = '/Comment/DeleteComment';
+		var commentId = $(e.relatedTarget).data("comment"); // HERE
+		//$(this).find('.btn-ok').addClass('btn-delete-comment');
 
-            UniSystem.Ajax.post(serviceURL, { commentId: commentId }, function () {
-                successFunc();
-            });
+		$("#btn-delete-comment-confirm").click(function () {
 
-            //$.ajax({
-            //    type: "POST",
-            //    url: serviceURL,
-            //    data: "{commentId:'" + commentId + "'}",
-            //    contentType: "application/json; charset=utf-8",
-            //    dataType: "json",
-            //    success: successFunc,
-            //    error: errorFunc
-            //});
+			var serviceURL = '/Comment/DeleteComment';
 
-            function successFunc(data, status) {
-                $('#close-confirm-delete').click();
-                $("#comment-" + commentId).remove();
-            }
+			UniSystem.Ajax.post(serviceURL, { commentId: commentId }, function () {
+				successFunc();
+			});
 
-            function errorFunc() {
-                alert('error');
-            }
-        });
+			//$.ajax({
+			//    type: "POST",
+			//    url: serviceURL,
+			//    data: "{commentId:'" + commentId + "'}",
+			//    contentType: "application/json; charset=utf-8",
+			//    dataType: "json",
+			//    success: successFunc,
+			//    error: errorFunc
+			//});
 
-    });
+			function successFunc(data, status) {
+				$('#close-confirm-delete').click();
+				$("#comment-" + commentId).remove();
+			}
+
+			function errorFunc() {
+				alert('error');
+			}
+		});
+
+	});
 </script>

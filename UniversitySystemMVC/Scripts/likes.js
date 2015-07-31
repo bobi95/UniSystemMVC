@@ -21,7 +21,13 @@
             });
 
             function addSuccessFunc(data, status) {
-                $('#like-subject-' + articleId + '-info').html("You and <a href='#' data-toggle='modal' data-target='#likes'>" + count + " more</a> like this");
+                if (count == 0) {
+                    $('#like-subject-' + articleId + '-info').html("You like this");
+                }
+                else {
+                    $('#like-subject-' + articleId + '-info').html("You and <a href='#' data-toggle='modal' data-target='#likes'>" + count + " more</a> like this");
+                }
+                
                 $('#like-subject-' + articleId + ' img').attr("src", "/Content/images/unlike.png");
                 $('#like-subject-' + articleId).attr("data-state", "1");
                 $('#like-subject-' + articleId).attr("data-likesCount", parseInt(count) + 1);
@@ -49,7 +55,13 @@
                 if (state == 1) {
                     count--;
                 }
-                $('#like-subject-' + articleId + '-info').html(count + " <a href='#' data-toggle='modal' data-target='#likes'>people</a> like this");
+                if (count == 0) {
+                    $('#like-subject-' + articleId + '-info').html("No one likes this");
+                }
+                else {
+                    $('#like-subject-' + articleId + '-info').html(count + " <a href='#' data-toggle='modal' data-target='#likes'>people</a> like this");
+                }
+                
                 $('#like-subject-' + articleId + ' img').attr("src", "/Content/images/like.png");
                 $('#like-subject-' + articleId).attr("data-state", "0");
                 $('#like-subject-' + articleId).attr("data-likesCount", parseInt(count));

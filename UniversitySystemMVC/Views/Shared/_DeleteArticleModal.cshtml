@@ -1,0 +1,29 @@
+﻿<!-- Modal Delete Article -->
+<div class="modal fade" id="article-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-sm" role="document">
+
+        <div class="modal-content">
+            @Html.AntiForgeryToken()
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Delete Article</h4>
+            </div>
+            <div class="modal-body">
+                Are you sure?
+            </div>
+
+            @using (Html.BeginForm("DeleteArticle", "Article", FormMethod.Post, new { id = "form-delete-article" }))
+            {
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="articleId" class="articleId" value="" />
+            }
+
+            <div class="modal-footer">
+                <button id="delete-btn" type="button" class="btn btn-danger">Delete Article</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+
+    </div>
+</div>

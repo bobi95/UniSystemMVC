@@ -24,10 +24,10 @@
             function successFunc(data, status) {
                 var appendComment = "";
                     if (parentId != null) {
-                        appendComment += '<div style="display:none" class="comment-entry comment-entry-child" id="comment-' + data.Id + '">';
+                        appendComment += '<div style="display:none" class="comment-entry comment-entry-child new-entry" id="comment-' + data.Id + '">';
                     }
                     else {
-                        appendComment += '<div style="display:none" class="comment-entry" id="comment-' + data.Id + '">';
+                        appendComment += '<div style="display:none" class="comment-entry new-entry" id="comment-' + data.Id + '">';
                     }
                     appendComment += '<header>';
                     appendComment += '<h5 class="pull-left"><span class="ui-icon ui-icon-comment pull-left"></span><strong>' + data.Title + '</strong></h5>';
@@ -41,19 +41,21 @@
 
                 if (parentId != null) {
                     $("#comment-" + data.ParentId).append(appendComment)
-                    setTimeout(function () {
-                        document.getElementById("comment-" + data.Id).scrollIntoView();
-                    }, 400);
                 }
                 else {
                     $('#comments').append(appendComment);
+                    
                 }
-
-
-                $('#comment-' + data.Id).slideDown();
+                setTimeout(function () {
+                    document.getElementById("comment-" + data.Id).scrollIntoView();
+                }, 400);
 
                 $("#Title").val('');
                 $("#Content").val('');
+
+                $('#comment-' + data.Id).slideDown();
+
+                
             }
 
             function errorFunc() {
@@ -158,16 +160,19 @@
 
         var parentId = this.getAttribute("data-comment");
         var articleId = this.getAttribute("data-articleId");
-        console.log(articleId);
-        $('#add-comment-toggle').click();
+        
+
+        if ($('#add-comment-toggle').next().hasClass('collapse')) {
+            $('#add-comment-toggle').click();
+        }
+
         setTimeout(function () {
-            console.log($("#comment-add-" + articleId));
             document.getElementById("comment-add-" + articleId).scrollIntoView();
         }, 800);
-        console.log(articleId);
+        
+        
         var hiddenParent = '<input type="hidden" name="parentId" id="parentId" value="' + parentId + '"/>';
         $("#comment-add-" + articleId + " form").append(hiddenParent);
-
     }
 
     for (var i = 0; i < replyBtns.length; i++) {
