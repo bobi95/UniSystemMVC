@@ -37,7 +37,7 @@ namespace UniversitySystemMVC.Controllers
                 .FirstOrDefault(l => l.ArticleId == articleId && l.UserType == AuthenticationManager.UserType && l.UserId == AuthenticationManager.LoggedUser.Id);
 
             unitOfWork.LikeRepository.Delete(like.Id);
-            unitOfWork.Save();
+            unitOfWork.Save();  
 
             return Json(new object[] { new object() }, JsonRequestBehavior.AllowGet);
         }
