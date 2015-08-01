@@ -1,10 +1,11 @@
 ﻿@model UniversitySystemMVC.ViewModels.StudentsVM.StudentsCreateAccountVM
 
 @{
-    ViewBag.Title = "CreateStudent";
+    ViewBag.Type = Model.Id == 0 ? "Create" : "Edit";
+    ViewBag.Title = ViewBag.Type + " Student";
 }
 
-<h2>Create Student</h2>
+<h2>@ViewBag.Type Student</h2>
 
 
 @using (Html.BeginForm("CreateEditStudent", "Student", FormMethod.Post)) 

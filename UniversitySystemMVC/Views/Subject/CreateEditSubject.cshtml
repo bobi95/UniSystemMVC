@@ -1,10 +1,11 @@
 ﻿@model UniversitySystemMVC.ViewModels.SubjectsVM.SubjectsCreateVM
 
 @{
-    ViewBag.Title = "CreateEditSubject";
+    ViewBag.Type = Model.Id == 0 ? "Create" : "Edit";
+    ViewBag.Title = ViewBag.Type + " Subject";
 }
 
-<h2>Create-Edit Subject</h2>
+<h2>@ViewBag.Type Subject</h2>
 
 @using (Html.BeginForm("CreateEditSubject", "Subject", FormMethod.Post))
 {

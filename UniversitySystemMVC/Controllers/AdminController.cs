@@ -332,6 +332,13 @@ namespace UniversitySystemMVC.Controllers
             {
                 Course selectedCourse = unitOfWork.CourseRepository.GetById(model.SelectedCourseId);
 
+                if (selectedCourse == null)
+                {
+                    model.Courses = unitOfWork.CourseRepository.GetAll().ToList();
+                    TempData.FlashMessage("Select a course", null, FlashMessageTypeEnum.Red);
+                    return View(model);
+                }
+
                 Teacher teacher = unitOfWork.TeacherRepository.GetById(model.Id, true);
 
                 List<CoursesSubjects> css = unitOfWork.CoursesSubjectsRepository.GetByCourseId(model.SelectedCourseId);

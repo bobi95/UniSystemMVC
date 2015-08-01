@@ -1,13 +1,15 @@
 ﻿@model UniversitySystemMVC.ViewModels.TeachersVM.TeachersAssignVM
 
 @{
-    ViewBag.Title = "AssignTeacher";
+    ViewBag.Title = "Assign Teacher";
 }
 
 <h2>AssignTeacher</h2>
 
 @using (Html.BeginForm())
 {
+    @Html.AntiForgeryToken()
+    
     foreach (var c in Model.Courses)
     {
         <div class="form-control height-auto">

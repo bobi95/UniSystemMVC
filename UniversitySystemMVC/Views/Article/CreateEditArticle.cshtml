@@ -1,11 +1,12 @@
 ﻿@model UniversitySystemMVC.ViewModels.ArticlesVM.ArticlesCreateVM
 
 @{
-    ViewBag.Title = "CreateEditArticle";
+    ViewBag.Type = Model.Id == 0 ? "Create" : "Edit";
+    ViewBag.Title = ViewBag.Type + " Article";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Create-Edit Article</h2>
+<h2>@ViewBag.Type Article</h2>
 
 @using (Html.BeginForm("CreateEditArticle", "Article", FormMethod.Post)) 
 {

@@ -1,10 +1,11 @@
 ﻿@model UniversitySystemMVC.ViewModels.CoursesVM.CoursesCreateVM
 
 @{
-    ViewBag.Title = "CreateEditCourse";
+    ViewBag.Type = Model.Id == 0 ? "Create" : "Edit";
+    ViewBag.Title = ViewBag.Type + " Course";
 }
 
-<h2>Create-Edit Course</h2>
+<h2>@ViewBag.Type Course</h2>
 
 @using (Html.BeginForm("CreateEditCourse", "Course", FormMethod.Post))
 {

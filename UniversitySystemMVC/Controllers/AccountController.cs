@@ -134,6 +134,68 @@ namespace UniversitySystemMVC.Controllers
         {
             if (ModelState.IsValid)
             {
+                //User user;
+                ////UserRepository<User> repo;
+
+                //switch (AuthenticationManager.UserType.Value)
+                //{
+                //    case UserTypeEnum.Administrator:
+                //        AdministratorRepository adminrepo = unitOfWork.AdminRepository; 
+                //        user = unitOfWork.AdminRepository.GetById(model.Id);
+                //        break;
+                //    case UserTypeEnum.Student:
+                //        StudentRepository studentrepo = unitOfWork.StudentRepository; 
+                //        user = unitOfWork.StudentRepository.GetById(model.Id);
+                //        break;
+                //    case UserTypeEnum.Teacher:
+                //        TeacherRepository teacherrepo = unitOfWork.TeacherRepository; 
+                //        user = unitOfWork.TeacherRepository.GetById(model.Id);
+                //        break;
+                //}
+                //Type t = user.GetType();
+                //if (t.IsAssignableFrom(typeof(User)))
+                //{
+                //    //UserRepository<t> repo = new UserRepository<t>;
+                //}
+              
+
+                //if (PasswordHasher.Equals(model.OldPassword, user.Salt, user.Hash))
+                //{
+                //    user.Username = model.Username;
+                //    user.Email = model.Email;
+                //    AuthenticationManager.LoggedUser.Username = user.Username;
+
+                //    if (model.NewPassword != null)
+                //    {
+                //        if (model.NewPassword.Length > 2)
+                //        {
+                //            var passPhrase = PasswordHasher.Hash(model.NewPassword);
+                //            user.Hash = passPhrase.Hash;
+                //            user.Salt = passPhrase.Salt;
+
+                //            repo.Update(user);
+                //            unitOfWork.Save();
+                //            TempData.FlashMessage("You successfully updated your account!", null, FlashMessageTypeEnum.Green);
+                //            return RedirectToAction("Index", "Home");
+                //        }
+                //        else
+                //        {
+                //            ModelState.AddModelError(String.Empty, "Password must be at least 3 symbols");
+                //        }
+                //    }
+                //    else
+                //    {
+                //        repo.Update(user);
+                //        unitOfWork.Save();
+                //        TempData.FlashMessage("You successfully updated your account!", null, FlashMessageTypeEnum.Green);
+                //        return RedirectToAction("Index", "Home");
+                //    }
+                //}
+                //else
+                //{
+                //    ModelState.AddModelError(String.Empty, "Wrong Password!");
+                //}
+
                 switch (AuthenticationManager.UserType.Value)
                 {
                     case UserTypeEnum.Administrator:
@@ -142,30 +204,42 @@ namespace UniversitySystemMVC.Controllers
 
                         if (PasswordHasher.Equals(model.OldPassword, admin.Salt, admin.Hash))
                         {
+
                             admin.Username = model.Username;
                             admin.Email = model.Email;
+                            AuthenticationManager.LoggedUser.Username = admin.Username;
 
-                            if (model.NewPassword.Length > 2)
+                            if (model.NewPassword != null)
                             {
-                                var passPhrase = PasswordHasher.Hash(model.NewPassword);
-                                admin.Hash = passPhrase.Hash;
-                                admin.Salt = passPhrase.Salt;
+                                if (model.NewPassword.Length > 2)
+                                {
+                                    var passPhrase = PasswordHasher.Hash(model.NewPassword);
+                                    admin.Hash = passPhrase.Hash;
+                                    admin.Salt = passPhrase.Salt;
 
-                                unitOfWork.AdminRepository.Update(admin);
-                                unitOfWork.Save();
-                                TempData.FlashMessage("You successfully updated your account! Login to the system again!", null, FlashMessageTypeEnum.Green);
-                                return RedirectToAction("Logout");
+                                    unitOfWork.AdminRepository.Update(admin);
+                                    unitOfWork.Save();
+                                    TempData.FlashMessage("You successfully updated your account!", null, FlashMessageTypeEnum.Green);
+                                    return RedirectToAction("Index", "Home");
+                                }
+                                else
+                                {
+                                    ModelState.AddModelError(String.Empty, "Password must be at least 3 symbols");
+                                }
                             }
                             else
                             {
-                                ModelState.AddModelError(String.Empty, "Password must be at least 3 symbols");
+                                unitOfWork.AdminRepository.Update(admin);
+                                unitOfWork.Save();
+                                TempData.FlashMessage("You successfully updated your account!", null, FlashMessageTypeEnum.Green);
+                                return RedirectToAction("Index", "Home");
                             }
                         }
                         else
                         {
                             ModelState.AddModelError(String.Empty, "Wrong Password!");
                         }
-                        
+
                         break;
 
                     case UserTypeEnum.Student:
@@ -177,21 +251,32 @@ namespace UniversitySystemMVC.Controllers
 
                             student.Username = model.Username;
                             student.Email = model.Email;
+                            AuthenticationManager.LoggedUser.Username = student.Username;
 
-                            if (model.NewPassword.Length > 2)
+                            if (model.NewPassword != null)
                             {
-                                var passPhrase = PasswordHasher.Hash(model.NewPassword);
-                                student.Hash = passPhrase.Hash;
-                                student.Salt = passPhrase.Salt;
+                                if (model.NewPassword.Length > 2)
+                                {
+                                    var passPhrase = PasswordHasher.Hash(model.NewPassword);
+                                    student.Hash = passPhrase.Hash;
+                                    student.Salt = passPhrase.Salt;
 
-                                unitOfWork.StudentRepository.Update(student);
-                                unitOfWork.Save();
-                                TempData.FlashMessage("You successfully updated your account! Login to the system again!", null, FlashMessageTypeEnum.Green);
-                                return RedirectToAction("Logout");
+                                    unitOfWork.StudentRepository.Update(student);
+                                    unitOfWork.Save();
+                                    TempData.FlashMessage("You successfully updated your account!", null, FlashMessageTypeEnum.Green);
+                                    return RedirectToAction("Index", "Home");
+                                }
+                                else
+                                {
+                                    ModelState.AddModelError(String.Empty, "Password must be at least 3 symbols");
+                                }
                             }
                             else
                             {
-                                ModelState.AddModelError(String.Empty, "Password must be at least 3 symbols");
+                                unitOfWork.StudentRepository.Update(student);
+                                unitOfWork.Save();
+                                TempData.FlashMessage("You successfully updated your account!", null, FlashMessageTypeEnum.Green);
+                                return RedirectToAction("Index", "Home");
                             }
                         }
                         else
@@ -210,6 +295,7 @@ namespace UniversitySystemMVC.Controllers
 
                             teacher.Username = model.Username;
                             teacher.Email = model.Email;
+                            AuthenticationManager.LoggedUser.Username = teacher.Username;
 
                             if (model.NewPassword != null)
                             {
@@ -221,8 +307,8 @@ namespace UniversitySystemMVC.Controllers
 
                                     unitOfWork.TeacherRepository.Update(teacher);
                                     unitOfWork.Save();
-                                    TempData.FlashMessage("You successfully updated your account! Login to the system again!", null, FlashMessageTypeEnum.Green);
-                                    return RedirectToAction("Logout");
+                                    TempData.FlashMessage("You successfully updated your account!", null, FlashMessageTypeEnum.Green);
+                                    return RedirectToAction("Index", "Home");
                                 }
                                 else
                                 {
@@ -233,8 +319,7 @@ namespace UniversitySystemMVC.Controllers
                             {
                                 unitOfWork.TeacherRepository.Update(teacher);
                                 unitOfWork.Save();
-                                TempData.FlashMessage("You successfully updated your account! Login to the system again!", null, FlashMessageTypeEnum.Green);
-                                AuthenticationManager.LoggedUser.Username = teacher.Username;
+                                TempData.FlashMessage("You successfully updated your account!", null, FlashMessageTypeEnum.Green);
                                 return RedirectToAction("Index", "Home");
                             }
                         }

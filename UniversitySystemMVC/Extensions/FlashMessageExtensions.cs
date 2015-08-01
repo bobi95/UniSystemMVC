@@ -24,6 +24,11 @@ namespace UniversitySystemMVC.Extensions
     {
         public static void FlashMessage(this TempDataDictionary data, string message, string title = null, FlashMessageTypeEnum type = FlashMessageTypeEnum.Green)
         {
+            if (data.FlashExists())
+            {
+                data.ResetFlash();
+            }
+
             data.Add("FlashMessage", new FlashMessage
             {
                 Message = message,

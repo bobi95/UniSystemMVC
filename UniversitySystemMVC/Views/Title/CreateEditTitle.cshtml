@@ -1,10 +1,11 @@
 ﻿@model UniversitySystemMVC.ViewModels.TitlesVM.TitlesCreateVM
 
 @{
-    ViewBag.Title = "CreateEditTitle";
+    ViewBag.Type = Model.Id == 0 ? "Create" : "Edit";
+    ViewBag.Title = ViewBag.Type + " Title";
 }
 
-<h2>Create-Edit Title</h2>
+<h2>@ViewBag.Type Title</h2>
 
 @using (Html.BeginForm("CreateEditTitle", "Title", FormMethod.Post))
 {
