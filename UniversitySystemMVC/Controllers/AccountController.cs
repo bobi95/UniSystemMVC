@@ -14,7 +14,7 @@ using UniversitySystemMVC.Hasher;
 
 namespace UniversitySystemMVC.Controllers
 {
-    public class AccountController : Controller
+    public class AccountController : BaseController
     {
         UnitOfWork unitOfWork = new UnitOfWork();
 

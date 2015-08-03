@@ -9,7 +9,7 @@ using UniversitySystemMVC.Models;
 
 namespace UniversitySystemMVC.Controllers
 {
-    public class CommentController : Controller
+    public class CommentController : BaseController
     {
         UnitOfWork unitOfWork = new UnitOfWork();
 

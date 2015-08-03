@@ -22,7 +22,7 @@ using UniversitySystemMVC.ViewModels.TitlesVM;
 namespace UniversitySystemMVC.Controllers
 {
     [AuthorizeUser(UserType = UserTypeEnum.Administrator, CheckType = true)]
-    public class AdminController : Controller
+    public class AdminController : BaseController
     {
         UnitOfWork unitOfWork = new UnitOfWork();
 

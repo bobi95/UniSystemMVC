@@ -120,6 +120,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\ArticleController.cs" />
+    <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\CommentController.cs" />
     <Compile Include="Controllers\CourseController.cs" />
     <Compile Include="Controllers\GradeController.cs" />
@@ -132,6 +133,8 @@
     <Compile Include="DA\AdministratorRepository.cs" />
     <Compile Include="DA\AppContext.cs" />
     <Compile Include="DA\ArticleRepository.cs" />
+    <Compile Include="DA\AuthActionsRepository.cs" />
+    <Compile Include="DA\AuthControllersRepository.cs" />
     <Compile Include="DA\BaseRepository.cs" />
     <Compile Include="DA\CommentRepository.cs" />
     <Compile Include="DA\CourseRepository.cs" />
@@ -146,6 +149,8 @@
     <Compile Include="DA\UserRepository.cs" />
     <Compile Include="Entity\Administrator.cs" />
     <Compile Include="Entity\Article.cs" />
+    <Compile Include="Entity\AuthAction.cs" />
+    <Compile Include="Entity\AuthController.cs" />
     <Compile Include="Entity\BaseEntity.cs" />
     <Compile Include="Entity\Comment.cs" />
     <Compile Include="Entity\Course.cs" />
@@ -217,6 +222,10 @@
     <Compile Include="Migrations\201507290947051_DateCreatedToLikeAdded.cs" />
     <Compile Include="Migrations\201507290947051_DateCreatedToLikeAdded.Designer.cs">
       <DependentUpon>201507290947051_DateCreatedToLikeAdded.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201508030744581_AuthEntitiesAdded.cs" />
+    <Compile Include="Migrations\201508030744581_AuthEntitiesAdded.Designer.cs">
+      <DependentUpon>201508030744581_AuthEntitiesAdded.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AuthenticationManager.cs" />
@@ -388,6 +397,8 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="ViewModels\SharedVM\" />
+    <Folder Include="Views\Base\" />
+    <Folder Include="Views\Test\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -435,6 +446,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201507290947051_DateCreatedToLikeAdded.resx">
       <DependentUpon>201507290947051_DateCreatedToLikeAdded.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201508030744581_AuthEntitiesAdded.resx">
+      <DependentUpon>201508030744581_AuthEntitiesAdded.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -13,7 +13,7 @@ using UniversitySystemMVC.ViewModels.StudentsVM;
 namespace UniversitySystemMVC.Controllers
 {
     [AuthorizeUser(UserType = UserTypeEnum.Administrator, CheckType = true)]
-    public class CourseController : Controller
+    public class CourseController : BaseController
     {
         UnitOfWork unitOfWork = new UnitOfWork();
 

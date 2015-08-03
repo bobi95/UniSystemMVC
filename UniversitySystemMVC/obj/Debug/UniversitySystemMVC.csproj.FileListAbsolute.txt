@@ -118,3 +118,4 @@ D:\UniSystemMVC\UniversitySystemMVC\obj\Debug\UniversitySystemMVC.Migrations.Par
 D:\UniSystemMVC\UniversitySystemMVC\obj\Debug\UniversitySystemMVC.Migrations.DatesAdded.resources
 D:\UniSystemMVC\UniversitySystemMVC\obj\Debug\UniversitySystemMVC.Migrations.CommentTitleAdded.resources
 D:\UniSystemMVC\UniversitySystemMVC\obj\Debug\UniversitySystemMVC.Migrations.DateCreatedToLikeAdded.resources
+D:\UniSystemMVC\UniversitySystemMVC\obj\Debug\UniversitySystemMVC.Migrations.AuthEntitiesAdded.resources

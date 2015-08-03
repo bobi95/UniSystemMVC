@@ -12,7 +12,7 @@ using UniversitySystemMVC.ViewModels.ArticlesVM;
 
 namespace UniversitySystemMVC.Controllers
 {
-    public class ArticleController : Controller
+    public class ArticleController : BaseController
     {
         UnitOfWork unitOfWork = new UnitOfWork();
 

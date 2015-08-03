@@ -13,7 +13,7 @@ using System.Text;
 namespace UniversitySystemMVC.Controllers
 {
 	[AuthorizeUser(UserType = UserTypeEnum.Administrator, CheckType = true)]
-	public class SubjectController : Controller
+	public class SubjectController : BaseController
 	{
 		UnitOfWork unitOfWork = new UnitOfWork();
 

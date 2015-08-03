@@ -16,7 +16,7 @@ using System.Text;
 
 namespace UniversitySystemMVC.Controllers
 {
-    public class StudentController : Controller
+    public class StudentController : BaseController
     {
         UnitOfWork unitOfWork = new UnitOfWork();
 

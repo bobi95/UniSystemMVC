@@ -12,7 +12,7 @@ using UniversitySystemMVC.Extensions;
 namespace UniversitySystemMVC.Controllers
 {
     [AuthorizeUser(UserType = UserTypeEnum.Administrator)]
-    public class TitleController : Controller
+    public class TitleController : BaseController
     {
         UnitOfWork unitOfWork = new UnitOfWork();
 

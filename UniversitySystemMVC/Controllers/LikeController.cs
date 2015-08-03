@@ -9,7 +9,7 @@ using UniversitySystemMVC.Models;
 
 namespace UniversitySystemMVC.Controllers
 {
-    public class LikeController : Controller
+    public class LikeController : BaseController
     {
         UnitOfWork unitOfWork = new UnitOfWork();
 

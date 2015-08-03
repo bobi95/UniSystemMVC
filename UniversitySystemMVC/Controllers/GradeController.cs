@@ -9,7 +9,7 @@ using UniversitySystemMVC.Extensions;
 
 namespace UniversitySystemMVC.Controllers
 {
-    public class GradeController : Controller
+    public class GradeController : BaseController
     {
         UnitOfWork unitOfWork = new UnitOfWork();
 

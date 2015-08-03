@@ -20,6 +20,8 @@ namespace UniversitySystemMVC.DA
         private ArticleRepository articleRepo;
         private CommentRepository commentRepo;
         private LikeRepository likeRepo;
+        private AuthControllersRepository authControllerRepo;
+        private AuthActionsRepository authActionRepo;
 
         private AppContext context;
 
@@ -157,6 +159,30 @@ namespace UniversitySystemMVC.DA
                     likeRepo = new LikeRepository(context);
                 }
                 return likeRepo;
+            }
+        }
+
+        public AuthControllersRepository AuthControllersRepository 
+        {
+            get
+            {
+                if (authControllerRepo == null)
+                {
+                    authControllerRepo = new AuthControllersRepository(context);
+                }
+                return authControllerRepo;
+            }
+        }
+
+        public AuthActionsRepository AuthActionsRepository
+        {
+            get
+            {
+                if (authActionRepo == null)
+                {
+                    authActionRepo = new AuthActionsRepository(context);
+                }
+                return authActionRepo;
             }
         }
 

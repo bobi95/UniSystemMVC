@@ -23,6 +23,8 @@ namespace UniversitySystemMVC.DA
         public DbSet<Article> Articles { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Like> Likes { get; set; }
+        public DbSet<AuthController> AuthControllers { get; set; }
+        public DbSet<AuthAction> AuthActions { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
